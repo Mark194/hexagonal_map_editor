@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include <QString>
+#include "static/project_types.hpp"
 
 
 class MapParser
@@ -9,5 +9,5 @@ class MapParser
 public:
     MapParser();
 
-    void load( QString fileName );
+    MapDict load( QString fileName );
 };
