@@ -118,7 +118,7 @@ QList<QRegularPolygon *> Regulatory::create(int rows, int columns)
     return polygons;
 }
 
-const char * COORD_FMT = "%1,%2";
+const char * COORD_FMT = "%1, %2";
 
 void Regulatory::createCoords(QList<QRegularPolygon *> & polygons, int columns)
 {
