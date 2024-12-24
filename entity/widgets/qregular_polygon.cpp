@@ -8,6 +8,16 @@
 #include <QBrush>
 
 
+void QRegularPolygon::setCoord(const QString & coord)
+{
+    m_coord = coord;
+}
+
+QString QRegularPolygon::coord() const
+{
+    return m_coord;
+}
+
 QRegularPolygon::QRegularPolygon(double sides,
                                  double radius,
                                  QPointF center,

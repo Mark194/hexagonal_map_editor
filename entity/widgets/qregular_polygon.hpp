@@ -14,6 +14,8 @@ class QRegularPolygon : public QGraphicsPolygonItem
 
     QPointF m_center;
 
+    QString m_coord;
+
 public:
     QRegularPolygon(double sides,
                     double radius,
@@ -24,6 +26,11 @@ public:
     void addText( QString text );
 
     void addImage( QString source );
+
+
+    void setCoord(const QString & coord);
+
+    QString coord() const;
 
 private:
 
