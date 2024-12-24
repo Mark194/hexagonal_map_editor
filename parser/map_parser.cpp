@@ -8,7 +8,7 @@
 
 MapParser::MapParser() {}
 
-void MapParser::load(QString fileName)
+MapDict MapParser::load(QString fileName)
 {
     QFile file( fileName );
 
@@ -32,8 +32,12 @@ void MapParser::load(QString fileName)
 
     QJsonObject obj = doc.object();
 
+    MapDict dict;
+
     for ( auto it = obj.begin(); it != obj.end(); it++ )
-    {
-        qDebug() << *it;
-    }
+
+        dict.insert( it.key(), it.value().toString() );
+
+
+    return dict;
 }

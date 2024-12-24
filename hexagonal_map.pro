@@ -26,7 +26,8 @@ HEADERS += \
     entity/widgets/qregular_polygon.hpp \
     form/mainwindow.hpp \
     parser/map_parser.hpp \
-    regulatory.hpp
+    regulatory.hpp \
+    static/project_types.hpp
 
 
 # Default rules for deployment.

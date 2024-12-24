@@ -1,4 +1,5 @@
 #include "regulatory.hpp"
+#include "qdebug.h"
 
 
 #include <cmath>
@@ -39,9 +40,20 @@ void Regulatory::run()
     m_hexGrid->show();
 
 
-    MapParser parser;
+    try
+    {
+        MapParser parser;
 
-    parser.load( qApp->applicationDirPath() + "/map.json" );
+        auto mapStruct = parser.load( qApp->applicationDirPath() + "/map.json" );
+
+        loadStyles( polygons, mapStruct, {} );
+    }
+    catch ( std::logic_error & err )
+    {
+        qApp->exit( -1 );
+    }
+
+
 }
 
 QList<QRegularPolygon *> Regulatory::create(int rows, int columns)
@@ -108,7 +120,11 @@ void Regulatory::createCoords(QList<QRegularPolygon *> & polygons, int columns)
 
     for ( auto & polygon : polygons )
     {
-        polygon->addText( QString( COORD_FMT ).arg( row ).arg( count ) );
+        auto coord = QString( COORD_FMT ).arg( row ).arg( count );
+
+        polygon->addText( coord );
+
+        polygon->setCoord( coord );
 
         count++;
 
@@ -119,4 +135,9 @@ void Regulatory::createCoords(QList<QRegularPolygon *> & polygons, int columns)
             count = 0;
         }
     }
+}
+
+void Regulatory::loadStyles(QList<QRegularPolygon *> & polygons, MapDict & config, StylesDict styles)
+{
+
 }
