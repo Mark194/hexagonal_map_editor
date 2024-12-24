@@ -4,8 +4,13 @@
 #include <cmath>
 
 
+#include <QApplication>
+
+
 #include <entity/controls/mover.hpp>
 #include <entity/controls/zoomer.hpp>
+
+#include <parser/map_parser.hpp>
 
 
 Regulatory::Regulatory()
@@ -32,6 +37,11 @@ void Regulatory::run()
     createCoords( polygons, 32 );
 
     m_hexGrid->show();
+
+
+    MapParser parser;
+
+    parser.load( qApp->applicationDirPath() + "/map.json" );
 }
 
 QList<QRegularPolygon *> Regulatory::create(int rows, int columns)
