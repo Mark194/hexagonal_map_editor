@@ -1,11 +1,11 @@
 #include "regulatory.hpp"
 
 
-#include "mover.hpp"
-#include "qregular_polygon.hpp"
-#include "zoomer.hpp"
-
 #include <cmath>
+
+
+#include <entity/controls/mover.hpp>
+#include <entity/controls/zoomer.hpp>
 
 
 Regulatory::Regulatory()

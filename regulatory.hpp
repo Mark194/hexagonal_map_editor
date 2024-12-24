@@ -1,8 +1,8 @@
 #pragma once
 
 
-#include "hexgrid.hpp"
-#include "qregular_polygon.hpp"
+#include <entity/widgets/hexgrid.hpp>
+#include <entity/widgets/qregular_polygon.hpp>
 
 
 class Regulatory
