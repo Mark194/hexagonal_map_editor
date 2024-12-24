@@ -15,6 +15,7 @@ SOURCES += \
     entity/widgets/qregular_polygon.cpp \
     form/mainwindow.cpp \
     main.cpp \
+    parser/map_parser.cpp \
     regulatory.cpp
 
 
@@ -24,6 +25,7 @@ HEADERS += \
     entity/widgets/hexgrid.hpp \
     entity/widgets/qregular_polygon.hpp \
     form/mainwindow.hpp \
+    parser/map_parser.hpp \
     regulatory.hpp
 
 
@@ -31,3 +33,9 @@ HEADERS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+
+OBJECTS_DIR += tmp/.o
+MOC_DIR     += tmp/.moc
+UI_DIR      += tmp/.ui
+RCC_DIR     += tmp/.rcc
