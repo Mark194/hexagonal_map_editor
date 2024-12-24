@@ -23,6 +23,8 @@ SOURCES += \
 HEADERS += \
     entity/controls/mover.hpp \
     entity/controls/zoomer.hpp \
+    entity/map_style.hpp \
+    entity/struct_map.hpp \
     entity/widgets/hexgrid.hpp \
     entity/widgets/qregular_polygon.hpp \
     form/mainwindow.hpp \

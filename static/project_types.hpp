@@ -4,6 +4,10 @@
 #include <QMap>
 
 
-using MapDict    = QMap<QString, QString>;
+#include "entity/map_style.hpp"
+#include "entity/struct_map.hpp"
 
-using StylesDict = QMap<QString, QString>;
+
+using MapDict    = QMap<QString, StructMap>;
+
+using StylesDict = QMap<QString, MapStyle>;

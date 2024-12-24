@@ -25,4 +25,6 @@ private:
     void createCoords(QList<QRegularPolygon *> & polygons, int columns);
 
     void loadStyles( QList<QRegularPolygon *> & polygons, MapDict & config, StylesDict styles );
+
+    void saveToFile();
 };

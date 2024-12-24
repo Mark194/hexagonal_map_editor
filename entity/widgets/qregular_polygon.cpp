@@ -59,13 +59,33 @@ void QRegularPolygon::addText(QString text)
 
 void QRegularPolygon::addImage(QString source)
 {
-    QGraphicsPixmapItem * item = new QGraphicsPixmapItem( QPixmap( source ), this );
+    if ( source.isEmpty() ) return;
+
+    QPixmap pixmap( source );
+
+    if ( pixmap.isNull() ) return;
+
+    auto img = pixmap.scaled( 60, 60 );
+
+
+    QGraphicsPixmapItem * item = new QGraphicsPixmapItem( img, this );
 
     auto rect = item->boundingRect();
 
     rect.moveCenter( boundingRect().center() );
 
     item->setPos( rect.topLeft() );
+}
+
+void QRegularPolygon::addColor(QString color)
+{
+    QColor shapeColor( color );
+
+
+    if ( not shapeColor.isValid() ) return;
+
+
+    setBrush( QBrush( shapeColor, Qt::SolidPattern ) );
 }
 
 void QRegularPolygon::draw()

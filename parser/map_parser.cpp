@@ -35,9 +35,17 @@ MapDict MapParser::load(QString fileName)
     MapDict dict;
 
     for ( auto it = obj.begin(); it != obj.end(); it++ )
+    {
+        auto jsonStyle = it.value().toObject();
 
-        dict.insert( it.key(), it.value().toString() );
+        StructMap structMap
+        {
+            jsonStyle.value( "custom_color" ).toString(),
+            jsonStyle.value( "style" ).toString()
+        };
 
+        dict.insert( it.key(), structMap );
 
+    }
     return dict;
 }

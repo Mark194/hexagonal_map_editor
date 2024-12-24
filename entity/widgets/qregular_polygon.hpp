@@ -27,6 +27,8 @@ public:
 
     void addImage( QString source );
 
+    void addColor( QString color );
+
 
     void setCoord(const QString & coord);
 

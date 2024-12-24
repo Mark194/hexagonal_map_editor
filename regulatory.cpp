@@ -34,11 +34,10 @@ Regulatory::Regulatory()
 
 void Regulatory::run()
 {
-    auto polygons = create( 47, 16 );
+    auto polygons = create( 100, 50 );
 
-    createCoords( polygons, 32 );
+    createCoords( polygons, 100 );
 
-    m_hexGrid->show();
 
 
     try
@@ -60,6 +59,12 @@ void Regulatory::run()
     }
 
 
+    qApp->sync();
+
+    saveToFile();
+
+
+    m_hexGrid->show();
 }
 
 QList<QRegularPolygon *> Regulatory::create(int rows, int columns)
@@ -118,7 +123,9 @@ QList<QRegularPolygon *> Regulatory::create(int rows, int columns)
     return polygons;
 }
 
+
 const char * COORD_FMT = "%1, %2";
+
 
 void Regulatory::createCoords(QList<QRegularPolygon *> & polygons, int columns)
 {
@@ -145,5 +152,45 @@ void Regulatory::createCoords(QList<QRegularPolygon *> & polygons, int columns)
 
 void Regulatory::loadStyles(QList<QRegularPolygon *> & polygons, MapDict & config, StylesDict styles)
 {
+    for ( auto polygon : polygons )
+    {
+        QString polygonCoord = polygon->coord();
 
+        auto styleCoord = config[polygonCoord];
+
+        if ( styleCoord.style == "default" )
+
+            continue;
+
+        auto styleMap = styles.value( styleCoord.style );
+
+        if ( styleCoord.customColor.isEmpty() )
+
+            polygon->addColor( styleMap.color );
+
+        else
+
+            polygon->addColor( styleCoord.customColor );
+
+        polygon->addImage( styleMap.image );
+    }
+}
+
+void Regulatory::saveToFile()
+{
+    auto scene = m_hexGrid->scene();
+
+    scene->clearSelection();
+
+    scene->setSceneRect( scene->itemsBoundingRect() );
+
+    QImage img( scene->sceneRect().size().toSize(), QImage::Format_ARGB32 );
+
+    img.fill( Qt::black );
+
+    QPainter painter( &img );
+
+    scene->render( &painter );
+
+    img.save( "./map.png" );
 }

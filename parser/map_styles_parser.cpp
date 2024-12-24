@@ -1,8 +1,11 @@
 #include "map_styles_parser.hpp"
 
+
+#include <QApplication>
 #include <QFile>
 #include <QJsonObject>
 #include <QJsonParseError>
+
 
 MapStylesParser::MapStylesParser() {}
 
@@ -25,7 +28,7 @@ StylesDict MapStylesParser::load(QString fileName)
 
     if ( parser.error != QJsonParseError::NoError )
 
-    throw std::logic_error( parser.errorString().toStdString() );
+        throw std::logic_error( parser.errorString().toStdString() );
 
 
     QJsonObject obj = doc.object();
@@ -33,8 +36,16 @@ StylesDict MapStylesParser::load(QString fileName)
     StylesDict dict;
 
     for ( auto it = obj.begin(); it != obj.end(); it++ )
+    {
+        auto jsonStyle = it.value().toObject();
 
-        dict.insert( it.key(), it.value().toString() );
+        MapStyle styleMap{ jsonStyle.value( "color" ).toString(),
+                           jsonStyle.value( "image" ).toString()  };
+
+        if ( styleMap.image[0] == '.' ) styleMap.image.replace( 0, 1, qApp->applicationDirPath() );
+
+        dict.insert( it.key(), styleMap );
+    }
 
 
     return dict;
