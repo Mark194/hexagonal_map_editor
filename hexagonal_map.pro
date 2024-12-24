@@ -16,6 +16,7 @@ SOURCES += \
     form/mainwindow.cpp \
     main.cpp \
     parser/map_parser.cpp \
+    parser/map_styles_parser.cpp \
     regulatory.cpp
 
 
@@ -26,6 +27,7 @@ HEADERS += \
     entity/widgets/qregular_polygon.hpp \
     form/mainwindow.hpp \
     parser/map_parser.hpp \
+    parser/map_styles_parser.hpp \
     regulatory.hpp \
     static/project_types.hpp
 

@@ -12,6 +12,7 @@
 #include <entity/controls/zoomer.hpp>
 
 #include <parser/map_parser.hpp>
+#include <parser/map_styles_parser.hpp>
 
 
 Regulatory::Regulatory()
@@ -42,11 +43,16 @@ void Regulatory::run()
 
     try
     {
-        MapParser parser;
+        MapParser parserMapStruct;
 
-        auto mapStruct = parser.load( qApp->applicationDirPath() + "/map.json" );
+        auto mapStruct = parserMapStruct.load( qApp->applicationDirPath() + "/map.json" );
 
-        loadStyles( polygons, mapStruct, {} );
+
+        MapStylesParser parserStyles;
+
+        auto styles = parserStyles.load( qApp->applicationDirPath() + "/styles.json" );
+
+        loadStyles( polygons, mapStruct, styles );
     }
     catch ( std::logic_error & err )
     {
