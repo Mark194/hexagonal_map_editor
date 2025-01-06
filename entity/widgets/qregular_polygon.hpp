@@ -17,6 +17,7 @@ class QRegularPolygon : public QGraphicsPolygonItem
     QString m_coord;
 
 public:
+
     QRegularPolygon(double sides,
                     double radius,
                     QPointF center,

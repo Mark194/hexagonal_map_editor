@@ -6,6 +6,8 @@
 
 
 #include <QBrush>
+#include <QGraphicsSvgItem>
+#include <QSvgRenderer>
 
 
 void QRegularPolygon::setCoord(const QString & coord)
@@ -39,6 +41,8 @@ QRegularPolygon::QRegularPolygon(double sides,
     m_center = center;
 
 
+    setFlags( QGraphicsItem::ItemIsSelectable );
+
     draw();
 }
 
@@ -52,7 +56,7 @@ void QRegularPolygon::addText(QString text)
 
     QPointF pos = rect.topLeft();
 
-    pos.setY( pos.y() - m_radius / 2 );
+    pos.setY( pos.y() - m_radius / 2 - 4 );
 
     item->setPos( pos );
 }
@@ -65,10 +69,7 @@ void QRegularPolygon::addImage(QString source)
 
     if ( pixmap.isNull() ) return;
 
-    auto img = pixmap.scaled( 60, 60 );
-
-
-    QGraphicsPixmapItem * item = new QGraphicsPixmapItem( img, this );
+    QGraphicsSvgItem * item = new QGraphicsSvgItem( source, this );
 
     auto rect = item->boundingRect();
 
