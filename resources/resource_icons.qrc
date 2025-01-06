@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file alias="brush">icons/brush.png</file>
+        <file alias="cursor">icons/cursor.png</file>
+        <file alias="eraser">icons/eraser.png</file>
+        <file alias="bucket_fill">icons/bucket_fill.png</file>
+        <file alias="color_mode">icons/color_mode.png</file>
+        <file alias="pippet">icons/pippet.png</file>
+        <file alias="scale">icons/scale.png</file>
+        <file alias="stamp">icons/stamp.png</file>
+    </qresource>
+</RCC>

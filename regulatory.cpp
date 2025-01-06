@@ -6,6 +6,7 @@
 
 
 #include <QApplication>
+#include <QSvgGenerator>
 
 
 #include <entity/controls/mover.hpp>
@@ -32,39 +33,61 @@ Regulatory::Regulatory()
     m_objects.append( mover );
 }
 
+Regulatory::~Regulatory()
+{
+    qDeleteAll( m_objects );
+
+    m_objects.clear();
+
+
+    delete m_editor;
+}
+
 void Regulatory::run()
 {
-    auto polygons = create( 100, 50 );
 
-    createCoords( polygons, 100 );
+    m_editor = new EditorWindow;
 
-
-
-    try
-    {
-        MapParser parserMapStruct;
-
-        auto mapStruct = parserMapStruct.load( qApp->applicationDirPath() + "/map.json" );
+    m_editor->show();
 
 
-        MapStylesParser parserStyles;
-
-        auto styles = parserStyles.load( qApp->applicationDirPath() + "/styles.json" );
-
-        loadStyles( polygons, mapStruct, styles );
-    }
-    catch ( std::logic_error & err )
-    {
-        qApp->exit( -1 );
-    }
+    // m_hexGrid->setUpdatesEnabled( false );
 
 
-    qApp->sync();
+    // auto polygons = create( 100, 50 );
 
-    saveToFile();
+    // createCoords( polygons, 100 );
 
 
-    m_hexGrid->show();
+
+    // try
+    // {
+    //     MapParser parserMapStruct;
+
+    //     auto mapStruct = parserMapStruct.load( qApp->applicationDirPath() + "/map.json" );
+
+
+    //     MapStylesParser parserStyles;
+
+    //     auto styles = parserStyles.load( qApp->applicationDirPath() + "/styles.json" );
+
+    //     loadStyles( polygons, mapStruct, styles );
+    // }
+    // catch ( std::logic_error & err )
+    // {
+    //     qApp->exit( -1 );
+    // }
+
+
+    // qApp->sync();
+
+    // saveToFile();
+
+    // saveToSvg();
+
+    // m_hexGrid->setUpdatesEnabled( true );
+
+    // m_hexGrid->show();
 }
 
 QList<QRegularPolygon *> Regulatory::create(int rows, int columns)
@@ -193,4 +216,21 @@ void Regulatory::saveToFile()
     scene->render( &painter );
 
     img.save( "./map.png" );
+}
+
+void Regulatory::saveToSvg()
+{
+    auto scene = m_hexGrid->scene();
+
+    QSvgGenerator generator;        // Create a file generator object
+    generator.setFileName( qApp->applicationDirPath() + "/map.svg" );    // We set the path to the file where to save vector graphics
+    generator.setSize(QSize(scene->width(), scene->height()));  // Set the dimensions of the working area of the document in millimeters
+    generator.setViewBox(QRect(0, 0, scene->width(), scene->height())); // Set the work area in the coordinates
+    generator.setTitle( "SVG Example" );                          // The title document
+    generator.setDescription( "File created by SVG Example" );
+
+    QPainter painter;
+    painter.begin(&generator);
+    scene->render(&painter);
+    painter.end();
 }
