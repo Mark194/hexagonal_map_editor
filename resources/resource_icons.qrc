@@ -8,5 +8,8 @@
         <file alias="pippet">icons/pippet.png</file>
         <file alias="scale">icons/scale.png</file>
         <file alias="stamp">icons/stamp.png</file>
+        <file alias="change_size">icons/change_size.png</file>
+        <file alias="rotate">icons/rotate.png</file>
+        <file alias="coordinate">icons/coordinate.png</file>
     </qresource>
 </RCC>
