@@ -1,5 +1,4 @@
 #include "regulatory.hpp"
-#include "qdebug.h"
 
 
 #include <cmath>

@@ -19,6 +19,7 @@ SOURCES += \
     form/editor_window.cpp \
     form/subform/grid_sub_form.cpp \
     form/subform/instrument_subform.cpp \
+    form/subform/styles_view.cpp \
     main.cpp \
     parser/map_parser.cpp \
     parser/map_styles_parser.cpp \
@@ -36,6 +37,7 @@ HEADERS += \
     form/editor_window.hpp \
     form/subform/grid_sub_form.hpp \
     form/subform/instrument_subform.hpp \
+    form/subform/styles_view.hpp \
     parser/map_parser.hpp \
     parser/map_styles_parser.hpp \
     regulatory.hpp \
