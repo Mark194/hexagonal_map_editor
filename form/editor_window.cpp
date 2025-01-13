@@ -20,27 +20,37 @@ void EditorWindow::createForm()
     setCentralWidget( central );
 
 
-    QVBoxLayout * contentLayout = new QVBoxLayout( central );
+    QHBoxLayout * contentLayout = new QHBoxLayout( central );
 
 
-    QHBoxLayout * subformsLayout = new QHBoxLayout;
+    QVBoxLayout * subformsLayout = new QVBoxLayout;
 
 
     m_instruments = new InstrumentSubForm;
 
     m_gridSetup   = new GridSubForm;
 
+    m_stylesView  = new StylesView;
+
+
+    subformsLayout->addWidget( m_gridSetup );
 
     subformsLayout->addWidget( m_instruments );
 
-    subformsLayout->addWidget( m_gridSetup );
+    subformsLayout->addWidget( m_stylesView );
+
+
+    subformsLayout->addItem( new QSpacerItem( 50, 50 ) );
+
+    subformsLayout->setStretch( 2, 5 );
+
+    subformsLayout->setMargin( 0 );
 
 
     m_hexView   = new HexGrid;
 
 
-    contentLayout->addLayout( subformsLayout, 1 );
-
     contentLayout->addWidget( m_hexView,      5 );
 
+    contentLayout->addLayout( subformsLayout, 1 );
 }
