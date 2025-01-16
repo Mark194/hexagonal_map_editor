@@ -9,6 +9,10 @@ EditorWindow::EditorWindow(
     : QMainWindow(parent)
 {
     createForm();
+
+    m_menuForm = new MenuSubForm;
+
+    setMenuBar( m_menuForm );
 }
 
 EditorWindow::~EditorWindow() {}

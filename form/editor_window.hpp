@@ -10,6 +10,7 @@
 #include <form/subform/instrument_subform.hpp>
 #include <form/subform/grid_sub_form.hpp>
 #include <form/subform/styles_view.hpp>
+#include <form/subform/menu_sub_form.hpp>
 
 
 class EditorWindow : public QMainWindow
@@ -24,6 +25,8 @@ class EditorWindow : public QMainWindow
     GridSubForm       * m_gridSetup;
 
     StylesView        * m_stylesView;
+
+    MenuSubForm       * m_menuForm;
 
 public:
 
