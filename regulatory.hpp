@@ -6,16 +6,13 @@
 
 #include <form/editor_window.hpp>
 
+#include "interfaces/isubscriber.hpp"
+
 #include "static/project_types.hpp"
 
 
-class Regulatory
+class Regulatory : public ISubscriber
 {
-    HexGrid * m_hexGrid;
-
-    QObjectList m_objects;
-
-
     EditorWindow * m_editor;
 
 public:
@@ -25,6 +22,10 @@ public:
     ~Regulatory();
 
     void run();
+
+    // ISubscriber interface
+
+    void notifyCreateMap();
 
 private:
 
@@ -37,4 +38,6 @@ private:
     void saveToFile();
 
     void saveToSvg();
+
+
 };

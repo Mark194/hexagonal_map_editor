@@ -12,11 +12,15 @@
 #include <form/subform/styles_view.hpp>
 #include <form/subform/menu_sub_form.hpp>
 
+#include <interfaces/isubscriber.hpp>
+
 
 class EditorWindow : public QMainWindow
 {
     Q_OBJECT
 
+
+    ISubscriber       * m_subscriber;
 
     HexGrid           * m_hexView;
 
@@ -28,13 +32,17 @@ class EditorWindow : public QMainWindow
 
     MenuSubForm       * m_menuForm;
 
+    QObjectList         m_actions;
+
 public:
 
-    EditorWindow(QWidget *parent = nullptr);
+    EditorWindow(ISubscriber * subscriber, QWidget *parent = nullptr);
 
     ~EditorWindow();
 
 private:
 
     void createForm();
+
+    void createActions();
 };

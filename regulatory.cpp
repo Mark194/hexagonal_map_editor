@@ -14,40 +14,25 @@
 #include <parser/map_parser.hpp>
 #include <parser/map_styles_parser.hpp>
 
+#include <form/map_size_editor.hpp>
+
 
 Regulatory::Regulatory()
 {
-    m_hexGrid = new HexGrid( { 0.0, 0.0, 500.0, 500.0 } );
 
-
-    Zoomer * zoomer = new Zoomer( m_hexGrid );
-
-    zoomer->setModifiers( Qt::NoModifier );
-
-    m_objects.append( zoomer );
-
-
-    Mover * mover = new Mover( m_hexGrid );
-
-    m_objects.append( mover );
 }
 
 Regulatory::~Regulatory()
 {
-    qDeleteAll( m_objects );
-
-    m_objects.clear();
-
-
     delete m_editor;
 }
 
 void Regulatory::run()
 {
 
-    m_editor = new EditorWindow;
+    m_editor = new EditorWindow( this );
 
-    m_editor->show();
+    m_editor->showMaximized();
 
 
     // m_hexGrid->setUpdatesEnabled( false );
@@ -87,6 +72,16 @@ void Regulatory::run()
     // m_hexGrid->setUpdatesEnabled( true );
 
     // m_hexGrid->show();
+}
+
+void Regulatory::notifyCreateMap()
+{
+    auto mapSizeEditor = new MapSizeEditor;
+
+    mapSizeEditor->setWindowTitle( "Окно создания карты" );
+
+
+    if ( mapSizeEditor->exec() != QDialog::Accepted ) return;
 }
 
 QList<QRegularPolygon *> Regulatory::create(int rows, int columns)
@@ -136,9 +131,9 @@ QList<QRegularPolygon *> Regulatory::create(int rows, int columns)
             polygons.append( { h1, h2 } );
 
 
-            m_hexGrid->scene()->addItem( h1 );
+            // m_hexGrid->scene()->addItem( h1 );
 
-            m_hexGrid->scene()->addItem( h2 );
+            // m_hexGrid->scene()->addItem( h2 );
         }
     }
 
@@ -200,36 +195,36 @@ void Regulatory::loadStyles(QList<QRegularPolygon *> & polygons, MapDict & confi
 
 void Regulatory::saveToFile()
 {
-    auto scene = m_hexGrid->scene();
+    // auto scene = m_hexGrid->scene();
 
-    scene->clearSelection();
+    // scene->clearSelection();
 
-    scene->setSceneRect( scene->itemsBoundingRect() );
+    // scene->setSceneRect( scene->itemsBoundingRect() );
 
-    QImage img( scene->sceneRect().size().toSize(), QImage::Format_ARGB32 );
+    // QImage img( scene->sceneRect().size().toSize(), QImage::Format_ARGB32 );
 
-    img.fill( Qt::black );
+    // img.fill( Qt::black );
 
-    QPainter painter( &img );
+    // QPainter painter( &img );
 
-    scene->render( &painter );
+    // scene->render( &painter );
 
-    img.save( "./map.png" );
+    // img.save( "./map.png" );
 }
 
 void Regulatory::saveToSvg()
 {
-    auto scene = m_hexGrid->scene();
+    // auto scene = m_hexGrid->scene();
 
-    QSvgGenerator generator;        // Create a file generator object
-    generator.setFileName( qApp->applicationDirPath() + "/map.svg" );    // We set the path to the file where to save vector graphics
-    generator.setSize(QSize(scene->width(), scene->height()));  // Set the dimensions of the working area of the document in millimeters
-    generator.setViewBox(QRect(0, 0, scene->width(), scene->height())); // Set the work area in the coordinates
-    generator.setTitle( "SVG Example" );                          // The title document
-    generator.setDescription( "File created by SVG Example" );
+    // QSvgGenerator generator;        // Create a file generator object
+    // generator.setFileName( qApp->applicationDirPath() + "/map.svg" );    // We set the path to the file where to save vector graphics
+    // generator.setSize(QSize(scene->width(), scene->height()));  // Set the dimensions of the working area of the document in millimeters
+    // generator.setViewBox(QRect(0, 0, scene->width(), scene->height())); // Set the work area in the coordinates
+    // generator.setTitle( "SVG Example" );                          // The title document
+    // generator.setDescription( "File created by SVG Example" );
 
-    QPainter painter;
-    painter.begin(&generator);
-    scene->render(&painter);
-    painter.end();
+    // QPainter painter;
+    // painter.begin(&generator);
+    // scene->render(&painter);
+    // painter.end();
 }
