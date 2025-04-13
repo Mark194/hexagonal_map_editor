@@ -1,4 +1,4 @@
-QT       += core gui svg
+QT       += core gui svg concurrent
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -11,6 +11,7 @@ CONFIG += c++17
 QMAKE_LFLAGS_RELEASE += -static -static-libgcc
 
 SOURCES += \
+    entity/adapter/gui_state_provider.cpp \
     entity/builder/gui_builder.cpp \
     entity/controls/mover.cpp \
     entity/controls/zoomer.cpp \
@@ -26,10 +27,14 @@ SOURCES += \
     parser/map_parser.cpp \
     parser/map_styles_parser.cpp \
     regulatory.cpp \
-    services/loader_styles.cpp
+    services/hex_map_manager.cpp \
+    services/loader_styles.cpp \
+    worker/async_map_worker.cpp
 
 
 HEADERS += \
+    entity/adapter/friend_gui_state_provider.hpp \
+    entity/adapter/gui_state_provider.hpp \
     entity/builder/gui_builder.hpp \
     entity/controls/mover.hpp \
     entity/controls/zoomer.hpp \
@@ -47,8 +52,11 @@ HEADERS += \
     parser/map_parser.hpp \
     parser/map_styles_parser.hpp \
     regulatory.hpp \
+    services/hex_map_manager.hpp \
     services/loader_styles.hpp \
-    static/project_types.hpp
+    static/project_types.hpp \
+    static/types.hpp \
+    worker/async_map_worker.hpp
 
 
 # Default rules for deployment.

@@ -6,8 +6,10 @@
 
 #include <QApplication>
 #include <QSvgGenerator>
+#include <QtConcurrent>
 
 
+#include <entity/adapter/gui_state_provider.hpp>
 #include <entity/controls/mover.hpp>
 #include <entity/controls/zoomer.hpp>
 
@@ -17,7 +19,12 @@
 #include <form/map_size_editor.hpp>
 
 
+#include <services/hex_map_manager.hpp>
+
+
 Regulatory::Regulatory()
+    : m_editor( new EditorWindow( this ) ),
+      m_worker( new AsyncMapWorker( m_editor, this ) )
 {
 
 }
@@ -25,15 +32,17 @@ Regulatory::Regulatory()
 Regulatory::~Regulatory()
 {
     delete m_editor;
+
+    delete m_worker;
 }
 
 void Regulatory::run()
 {
 
-    m_editor = new EditorWindow( this );
-
     m_editor->showMaximized();
 
+
+    GuiStateProvider::createRelations( m_editor );
 
     // m_hexGrid->setUpdatesEnabled( false );
 
@@ -82,62 +91,11 @@ void Regulatory::notifyCreateMap()
 
 
     if ( mapSizeEditor->exec() != QDialog::Accepted ) return;
-}
-
-QList<QRegularPolygon *> Regulatory::create(int rows, int columns)
-{
-    double radius = 50;
-
-    int ri = int( radius / 2 * sqrt( 3 ) );
-
-    int sides = 6;
 
 
-    int apothem = int( ri * cos( M_PI / sides ) );
+    auto mapSize = mapSizeEditor->mapSize();
 
-    int side = int( 2 * apothem * tan( M_PI / sides ) );
-
-
-    int initX = 50;
-
-    int initY = 50;
-
-    double angle = M_PI / 2;
-
-
-    QList<QRegularPolygon *> polygons;
-
-    for ( int x = initX; x < (initX + rows); x++ )
-    {
-        double timesX  = x - initX;
-
-        double centerX = x + ( 2 * apothem - 1 ) * timesX;
-
-        for ( int y = initY; y < (initY + columns); y++ )
-        {
-            double timesY  = y - initY;
-
-            double centerY = y + (( 2 * ri ) + side ) * timesY;
-
-            QPointF centerOne( centerX, centerY );
-
-            QPointF centerTwo( centerX + apothem, centerY + ri + side / 2 );
-
-
-            auto h1 = new QRegularPolygon( sides, ri, centerOne, angle );
-
-            auto h2 = new QRegularPolygon( sides, ri, centerTwo, angle );
-
-            polygons.append( { h1, h2 } );
-
-
-            // m_hexGrid->scene()->addItem( h1 );
-
-            // m_hexGrid->scene()->addItem( h2 );
-        }
-    }
-
-    return polygons;
+    m_worker->startGeneration( mapSize );
 }
 
 

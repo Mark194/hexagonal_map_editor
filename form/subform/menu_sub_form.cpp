@@ -11,7 +11,7 @@ void MenuSubForm::createFileMenu()
 {
     QMenu * fileMenu = addMenu( "Файл" );
 
-    fileMenu->addAction( "Создать" );
+    m_createMap = fileMenu->addAction( "Создать" );
 
     fileMenu->addSeparator();
 

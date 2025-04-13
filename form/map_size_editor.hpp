@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QSpinBox>
+#include <QVBoxLayout>
 
 
 class MapSizeEditor : public QDialog
@@ -16,14 +17,12 @@ public:
 
     explicit MapSizeEditor(QWidget * parent = nullptr);
 
-    int mapWidth() const;
-
-    int mapHeight() const;
+    QSize mapSize() const;
 
 private:
 
-    void createForm();
+    QLayout * createForm();
 
-    void createActions();
+    QLayout * createActions();
 };
 

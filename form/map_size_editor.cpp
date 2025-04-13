@@ -8,24 +8,25 @@
 
 MapSizeEditor::MapSizeEditor(QWidget * parent) : QDialog( parent )
 {
-    createForm();
+    auto dialogLayout = new QVBoxLayout;
 
-    createActions();
+    dialogLayout->addLayout( createForm() );
+
+    dialogLayout->addLayout( createActions() );
+
+    setLayout( dialogLayout );
+
+    setFixedSize( 300, 150 );
 }
 
-int MapSizeEditor::mapWidth() const
+QSize MapSizeEditor::mapSize() const
 {
-    return m_mapWidthEditor->value();
+    return { m_mapWidthEditor->value(), m_mapHeightEditor->value() };
 }
 
-int MapSizeEditor::mapHeight() const
+QLayout * MapSizeEditor::createForm()
 {
-    return m_mapHeightEditor->value();
-}
-
-void MapSizeEditor::createForm()
-{
-    auto formLayout  = new QFormLayout( this );
+    auto formLayout  = new QFormLayout;
 
 
     auto dialogLabel = new QLabel( "Введите размер карты:" );
@@ -45,10 +46,12 @@ void MapSizeEditor::createForm()
 
     formLayout->addRow( "Ширина:", m_mapWidthEditor );
 
-    formLayout->addRow( "Высота:", m_mapWidthEditor );
+    formLayout->addRow( "Высота:", m_mapHeightEditor );
+
+    return formLayout;
 }
 
-void MapSizeEditor::createActions()
+QLayout * MapSizeEditor::createActions()
 {
     auto actionsLayout = new QHBoxLayout;
 
@@ -66,4 +69,6 @@ void MapSizeEditor::createActions()
     actionsLayout->addWidget( applyButton );
 
     actionsLayout->addWidget( cancelButton );
+
+    return actionsLayout;
 }
