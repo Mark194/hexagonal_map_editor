@@ -49,3 +49,10 @@ void GuiStateProvider::clearCells(EditorWindow * window)
 
     qDeleteAll( groups );
 }
+
+void GuiStateProvider::loadCoords(const HexGridCells & cells, const QStringList coords)
+{
+    for ( int i = 0; i < cells.size(); i++ )
+
+        cells[i]->addText( coords.at( i ) );
+}

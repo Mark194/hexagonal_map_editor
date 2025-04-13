@@ -49,3 +49,32 @@ HexGridCells HexMapManager::generateCells(const QSize & gridSize, bool isRotate)
 
     return cells;
 }
+
+const char * COORD_FMT = "%1, %2";
+
+QStringList HexMapManager::generateCoord(const QSize & size)
+{
+    const auto countCell = size.width() * size.width();
+
+    QStringList coords;
+
+    coords.reserve( countCell );
+
+    for ( int i = 0, row = 0, count=0; i < countCell; ++i )
+    {
+        auto coord = QString( COORD_FMT ).arg( count ).arg( row );
+
+        coords.append( coord );
+
+        count++;
+
+        if ( count >= size.height() )
+        {
+            row++;
+
+            count = 0;
+        }
+    }
+
+    return coords;
+}

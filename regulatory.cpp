@@ -100,33 +100,6 @@ void Regulatory::notifyCreateMap()
     m_worker->startGeneration( mapSize, isRotateCell );
 }
 
-
-const char * COORD_FMT = "%1, %2";
-
-
-void Regulatory::createCoords(QList<QRegularPolygon *> & polygons, int columns)
-{
-    int row = 0, count = 0;
-
-    for ( auto & polygon : polygons )
-    {
-        auto coord = QString( COORD_FMT ).arg( row ).arg( count );
-
-        polygon->addText( coord );
-
-        polygon->setCoord( coord );
-
-        count++;
-
-        if ( count >= columns )
-        {
-            row++;
-
-            count = 0;
-        }
-    }
-}
-
 void Regulatory::loadStyles(QList<QRegularPolygon *> & polygons, MapDict & config, StylesDict styles)
 {
     for ( auto polygon : polygons )

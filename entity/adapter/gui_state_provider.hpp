@@ -18,5 +18,8 @@ public:
     static void loadCells(EditorWindow * window, const HexGridCells & cells);
 
     static void clearCells( EditorWindow * window );
+
+    static void loadCoords(const HexGridCells & cells,
+                           const QStringList coords);
 };
 

@@ -3,12 +3,17 @@
 
 #include <QObject>
 #include <QFutureWatcher>
+#include <QFutureSynchronizer>
 
 
 #include "static/types.hpp"
 
 
 using HexGridWatcher = QFutureWatcher<HexGridCells>;
+
+using CoordWatcher   = QFutureWatcher<QStringList>;
+
+using SyncWatcher    = QFutureWatcher<void>;
 
 class EditorWindow;
 
@@ -17,12 +22,21 @@ class AsyncMapWorker : public QObject
 {
     Q_OBJECT
 
-    HexGridWatcher  * m_watcher;
+    QFutureSynchronizer<void> m_synchronizer;
+
+    SyncWatcher     * m_syncWatcher;
+
+    HexGridWatcher  * m_cellWatcher;
+
+    CoordWatcher    * m_coordsWatcher;
 
     EditorWindow    * m_editor;
 
-    bool              m_isRunning;
+    HexGridCells      m_generatedCells;
 
+    QStringList       m_generatedCoords;
+
+    std::atomic_bool  m_isRunning{false};
 
 public:
 
@@ -45,6 +59,19 @@ signals:
 
 
 private slots:
-    void handleGenerationFinished();
+
+    void handleCellsFinished();
+
+    void handleCoordsFinished();
+
+    void handleSyncFinished();
+
+private:
+
+    void combineResults();
+
+    void cleanup();
+
+    bool isAllFuturesFinished();
 };
 
