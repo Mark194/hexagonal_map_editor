@@ -1,5 +1,6 @@
 #include "hex_map_manager.hpp"
 
+#pragma omp parallel for
 
 #include <cmath>
 
@@ -12,41 +13,37 @@
 
 HexMapManager::HexMapManager() {}
 
-HexGridCells HexMapManager::generateCells(const QSize & size)
+HexGridCells HexMapManager::generateCells(const QSize & gridSize, bool isRotate)
 {
-    const double radius = 25.0; // Радиус шестиугольника (половина ширины)
-    const int sides = 6;        // Количество сторон (шестиугольник)
+    constexpr float radius = 25.0f;
+    constexpr float sqrt3 = 1.73205080757f; // √3
+    constexpr float hexHeight = radius * 2.0f;
+    constexpr float hexWidth = radius * sqrt3;
 
+           // Параметры для обеих ориентаций
+    constexpr struct {
+        float xStep, yStep;
+        float xOffset, yOffset;
+        float angle;
+    } params[2] = {
+        // Вертикальная ориентация (острием вверх)
+        {hexWidth, hexHeight * 0.75f, hexWidth/2, 0, M_PI_2},
+        // Горизонтальная ориентация (ребром вверх)
+        {hexHeight * 0.75f, hexWidth, 0, hexWidth/2, 0}
+    };
 
-    const double apothem = radius * std::sqrt(3) / 2;
-
-    // Рассчитываем шаги для сетки
-    const double horizontalStep = 2 * apothem;
-    const double verticalStep = 1.5 * radius;
-
+    const auto& p = params[isRotate ? 1 : 0];
     HexGridCells cells;
-    cells.reserve(size.width() * size.height() * 2);
+    cells.reserve(gridSize.width() * gridSize.height());
 
-    // Начальные координаты (с отступом)
-    const double startX = radius;
-    const double startY = radius;
+    const int rows = isRotate ? gridSize.height() : gridSize.width();
+    const int cols = isRotate ? gridSize.width() : gridSize.height();
 
-    for (int row = 0; row < size.height(); ++row)
-    {
-        for (int col = 0; col < size.width(); ++col)
-        {
-            // Смещение для нечетных рядов
-            const double xOffset = (row % 2) ? apothem : 0.0;
-
-            // Центр шестиугольника
-            const double centerX = startX + col * horizontalStep + xOffset;
-            const double centerY = startY + row * verticalStep;
-
-            QPointF center(centerX, centerY);
-
-            auto hexagon = new QRegularPolygon(sides, radius, center, M_PI / 2);
-
-            cells.append(hexagon);
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
+            float x = radius + j * p.xStep + (i % 2) * p.xOffset;
+            float y = radius + i * p.yStep + (j % 2) * p.yOffset;
+            cells.append(new QRegularPolygon(6, radius, QPointF(x,y), p.angle));
         }
     }
 

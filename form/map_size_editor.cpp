@@ -24,6 +24,11 @@ QSize MapSizeEditor::mapSize() const
     return { m_mapWidthEditor->value(), m_mapHeightEditor->value() };
 }
 
+bool MapSizeEditor::isRotate() const
+{
+    return m_rotateEditor->isChecked();
+}
+
 QLayout * MapSizeEditor::createForm()
 {
     auto formLayout  = new QFormLayout;
@@ -44,9 +49,16 @@ QLayout * MapSizeEditor::createForm()
     m_mapHeightEditor->setRange( 1, 1000 );
 
 
+    m_rotateEditor = new QCheckBox();
+
+    m_rotateEditor->setChecked( true );
+
+
     formLayout->addRow( "Ширина:", m_mapWidthEditor );
 
     formLayout->addRow( "Высота:", m_mapHeightEditor );
+
+    formLayout->addRow( "Поворот:", m_rotateEditor );
 
     return formLayout;
 }

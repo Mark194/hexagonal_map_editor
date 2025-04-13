@@ -31,7 +31,7 @@ public:
     ~AsyncMapWorker();
 
 
-    void startGeneration(const QSize & mapSize);
+    void startGeneration(const QSize & mapSize, bool isRotate);
 
     void cancelGeneration();
 

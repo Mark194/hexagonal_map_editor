@@ -93,9 +93,11 @@ void Regulatory::notifyCreateMap()
     if ( mapSizeEditor->exec() != QDialog::Accepted ) return;
 
 
-    auto mapSize = mapSizeEditor->mapSize();
+    auto mapSize      = mapSizeEditor->mapSize();
 
-    m_worker->startGeneration( mapSize );
+    auto isRotateCell = mapSizeEditor->isRotate();
+
+    m_worker->startGeneration( mapSize, isRotateCell );
 }
 
 

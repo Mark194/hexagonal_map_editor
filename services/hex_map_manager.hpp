@@ -12,6 +12,6 @@ class HexMapManager
 public:
     HexMapManager();
 
-    static HexGridCells generateCells(const QSize & size);
+    static HexGridCells generateCells(const QSize & size, bool isRotate = true);
 };
 

@@ -24,7 +24,7 @@ AsyncMapWorker::~AsyncMapWorker()
     cancelGeneration();
 }
 
-void AsyncMapWorker::startGeneration(const QSize & mapSize)
+void AsyncMapWorker::startGeneration(const QSize & mapSize, bool isRotate)
 {
     if ( m_isRunning ) cancelGeneration();
 
@@ -38,7 +38,12 @@ void AsyncMapWorker::startGeneration(const QSize & mapSize)
     m_isRunning = true;
     emit generationStarted();
 
-    auto future = QtConcurrent::run( &HexMapManager::generateCells, mapSize);
+    auto future = QtConcurrent::run
+    (
+        &HexMapManager::generateCells,
+        mapSize,
+        isRotate
+    );
 
     m_watcher->setFuture(future);
 }
