@@ -6,6 +6,7 @@
 
 
 #include <QBrush>
+#include <QFont>
 #include <QGraphicsSvgItem>
 #include <QSvgRenderer>
 
@@ -49,6 +50,12 @@ QRegularPolygon::QRegularPolygon(double sides,
 void QRegularPolygon::addText(QString text)
 {
     QGraphicsSimpleTextItem * item = new QGraphicsSimpleTextItem( text, this );
+
+    auto font = item->font();
+
+    font.setPointSize( 4 );
+
+    item->setFont( font );
 
     auto rect = item->boundingRect();
 
