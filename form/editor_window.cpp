@@ -6,6 +6,7 @@
 
 #include <entity/controls/mover.hpp>
 
+#include <entity/widgets/context_panel.hpp>
 #include <entity/widgets/toolpanel.hpp>
 
 
@@ -65,6 +66,27 @@ void EditorWindow::createForm()
 
     panel->addButton( QIcon(":/icons/coordinate"),  "Координаты" );
 
+
+    auto styleButton = panel->addButton( QIcon(), "Стили" );
+
+    styleButton->setCheckable(true);
+
+    auto contextPanel = new ContextPanel( this );
+
+    connect( styleButton, &QToolButton::clicked, contextPanel, [=](){
+
+        if ( styleButton->isChecked() )
+            {
+
+        contextPanel->setOpacity(100.0);
+        contextPanel->showNearWidget( styleButton );
+            }
+            else
+                {
+                contextPanel->setOpacity(0.0);
+                    contextPanel->close();
+                }
+            } );
 
     panel->collapse();
 

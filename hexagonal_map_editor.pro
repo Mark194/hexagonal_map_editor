@@ -15,6 +15,7 @@ SOURCES += \
     entity/builder/gui_builder.cpp \
     entity/controls/mover.cpp \
     entity/controls/zoomer.cpp \
+    entity/widgets/context_panel.cpp \
     entity/widgets/hexgrid.cpp \
     entity/widgets/qregular_polygon.cpp \
     entity/widgets/toolpanel.cpp \
@@ -39,6 +40,7 @@ HEADERS += \
     entity/controls/zoomer.hpp \
     entity/map_style.hpp \
     entity/struct_map.hpp \
+    entity/widgets/context_panel.hpp \
     entity/widgets/hexgrid.hpp \
     entity/widgets/qregular_polygon.hpp \
     entity/widgets/toolpanel.hpp \
