@@ -17,12 +17,11 @@ SOURCES += \
     entity/controls/zoomer.cpp \
     entity/widgets/hexgrid.cpp \
     entity/widgets/qregular_polygon.cpp \
+    entity/widgets/toolpanel.cpp \
     form/editor_window.cpp \
     form/map_size_editor.cpp \
     form/subform/grid_sub_form.cpp \
-    form/subform/instrument_subform.cpp \
     form/subform/menu_sub_form.cpp \
-    form/subform/styles_view.cpp \
     main.cpp \
     parser/map_parser.cpp \
     parser/map_styles_parser.cpp \
@@ -42,12 +41,11 @@ HEADERS += \
     entity/struct_map.hpp \
     entity/widgets/hexgrid.hpp \
     entity/widgets/qregular_polygon.hpp \
+    entity/widgets/toolpanel.hpp \
     form/editor_window.hpp \
     form/map_size_editor.hpp \
     form/subform/grid_sub_form.hpp \
-    form/subform/instrument_subform.hpp \
     form/subform/menu_sub_form.hpp \
-    form/subform/styles_view.hpp \
     interfaces/isubscriber.hpp \
     parser/map_parser.hpp \
     parser/map_styles_parser.hpp \

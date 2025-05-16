@@ -6,6 +6,8 @@
 
 #include <entity/controls/mover.hpp>
 
+#include <entity/widgets/toolpanel.hpp>
+
 
 EditorWindow::EditorWindow(ISubscriber * subscriber,
     QWidget *parent)
@@ -37,36 +39,48 @@ void EditorWindow::createForm()
     QHBoxLayout * contentLayout = new QHBoxLayout( central );
 
 
-    QVBoxLayout * subformsLayout = new QVBoxLayout;
+    // QVBoxLayout * subformsLayout = new QVBoxLayout;
+
+    ToolPanel * panel = new ToolPanel;
+
+    panel->addButton( QIcon(":/icons/cursor"), "Выбрать" );
+
+    panel->addButton( QIcon(":/icons/brush"),  "Кисть" );
+
+    panel->addButton( QIcon(":/icons/bucket_fill"),  "Заливка" );
+
+    panel->addButton( QIcon(":/icons/stamp"),  "Штамп" );
+
+    panel->addButton( QIcon(":/icons/eraser"),  "Ластик" );
+
+    panel->addButton( QIcon(":/icons/pippet"),  "Пипетка" );
 
 
-    m_instruments = new InstrumentSubForm;
-
-    m_gridSetup   = new GridSubForm;
-
-    m_stylesView  = new StylesView;
+    panel->addSeparator();
 
 
-    subformsLayout->addWidget( m_gridSetup );
+    panel->addButton( QIcon(":/icons/change_size"),  "Размер" );
 
-    subformsLayout->addWidget( m_instruments );
+    panel->addButton( QIcon(":/icons/rotate"),  "Повернуть" );
 
-    subformsLayout->addWidget( m_stylesView );
+    panel->addButton( QIcon(":/icons/coordinate"),  "Координаты" );
 
 
-    subformsLayout->addItem( new QSpacerItem( 50, 50 ) );
-
-    subformsLayout->setStretch( 2, 5 );
-
-    subformsLayout->setMargin( 0 );
+    panel->collapse();
 
 
     m_hexView   = new HexGrid;
 
+    contentLayout->setMargin( 0 );
 
-    contentLayout->addWidget( m_hexView,      5 );
+    contentLayout->setContentsMargins( 0, 0, 0, 0 );
 
-    contentLayout->addLayout( subformsLayout, 1 );
+    contentLayout->setSpacing( 0 );
+
+
+    contentLayout->addWidget( panel, 1 );
+
+    contentLayout->addWidget( m_hexView, 5 );
 }
 
 void EditorWindow::createActions()
