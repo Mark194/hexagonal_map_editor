@@ -15,6 +15,8 @@ class MenuSubForm : public QMenuBar
 
     QAction * m_saveMap;
 
+    QAction * m_quit;
+
 public:
     MenuSubForm();
 

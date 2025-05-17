@@ -138,6 +138,11 @@ void Regulatory::notifySaveMap()
 
 }
 
+void Regulatory::notifyQuit()
+{
+    qApp->exit();
+}
+
 void Regulatory::loadStyles(QList<QRegularPolygon *> & polygons, MapDict & config, StylesDict styles)
 {
     for ( auto polygon : polygons )

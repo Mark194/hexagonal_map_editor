@@ -25,7 +25,7 @@ void MenuSubForm::createFileMenu()
 
     fileMenu->addSeparator();
 
-    fileMenu->addAction( "Выход" );
+    m_quit = fileMenu->addAction( "Выход" );
 }
 
 void MenuSubForm::createStyleMenu()

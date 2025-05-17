@@ -16,6 +16,9 @@ void GuiStateProvider::createRelations(EditorWindow * window)
 
     connect( window->m_menuForm->m_saveMap,   &QAction::triggered,
              window->m_subscriber,            &ISubscriber::notifySaveMap );
+
+    connect( window->m_menuForm->m_quit,      &QAction::triggered,
+             window->m_subscriber,            &ISubscriber::notifyQuit );
 }
 
 void GuiStateProvider::loadCells(

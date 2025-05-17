@@ -33,6 +33,8 @@ public:
 
     void notifySaveMap();
 
+    void notifyQuit();
+
 private:
 
     QList<QRegularPolygon *> create(int rows, int columns);
