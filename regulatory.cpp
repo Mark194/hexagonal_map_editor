@@ -5,6 +5,8 @@
 
 
 #include <QApplication>
+#include <QFileDialog>
+#include <QMessageBox>
 #include <QSvgGenerator>
 #include <QtConcurrent>
 
@@ -12,6 +14,7 @@
 #include <entity/adapter/gui_state_provider.hpp>
 #include <entity/controls/mover.hpp>
 #include <entity/controls/zoomer.hpp>
+#include <saver/map_saver.hpp>
 
 #include <parser/map_parser.hpp>
 #include <parser/map_styles_parser.hpp>
@@ -98,6 +101,41 @@ void Regulatory::notifyCreateMap()
     auto isRotateCell = mapSizeEditor->isRotate();
 
     m_worker->startGeneration( mapSize, isRotateCell );
+}
+
+void Regulatory::notifySaveMap()
+{
+    QString selectedFilter;
+
+    QString tempFileName = qApp->applicationDirPath() + "/map";
+
+    const QString formats = MapSaver::supportedFormats();
+
+    auto fileName = QFileDialog::getSaveFileName( m_editor,
+                                                  "Сохранить файл как",
+                                                  tempFileName,
+                                                  formats,
+                                                  &selectedFilter );
+
+    if ( fileName.isEmpty() ) return;
+
+    try
+    {
+        auto saver = MapSaver::saver(selectedFilter);
+
+        auto scene = GuiStateProvider::scene( m_editor );
+
+        saver->save( fileName, scene );
+
+        QMessageBox::information( m_editor,
+                                  "Окно сообщения",
+                                  "Успешно сохранено!" );
+    }
+    catch (const std::logic_error & err)
+    {
+        QMessageBox::critical(m_editor, "Окно ошибки", err.what() );
+    }
+
 }
 
 void Regulatory::loadStyles(QList<QRegularPolygon *> & polygons, MapDict & config, StylesDict styles)

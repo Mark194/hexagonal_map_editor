@@ -15,7 +15,7 @@ StylesDict MapStylesParser::load(QString fileName)
 
     if ( not file.open( QFile::ReadOnly | QFile::Text ) )
 
-    throw std::logic_error( file.errorString().toStdString() );
+        throw std::logic_error( file.errorString().toStdString() );
 
     QByteArray content = file.readAll();
 

@@ -11,4 +11,6 @@ class ISubscriber : public QObject
 public:
 
     virtual void notifyCreateMap() = 0;
+
+    virtual void notifySaveMap() = 0;
 };

@@ -11,5 +11,6 @@
         <file alias="change_size">icons/change_size.png</file>
         <file alias="rotate">icons/rotate.png</file>
         <file alias="coordinate">icons/coordinate.png</file>
+        <file alias="styles">icons/styles.png</file>
     </qresource>
 </RCC>

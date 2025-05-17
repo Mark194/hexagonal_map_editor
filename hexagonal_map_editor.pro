@@ -21,14 +21,16 @@ SOURCES += \
     entity/widgets/toolpanel.cpp \
     form/editor_window.cpp \
     form/map_size_editor.cpp \
-    form/subform/grid_sub_form.cpp \
     form/subform/menu_sub_form.cpp \
     main.cpp \
     parser/map_parser.cpp \
     parser/map_styles_parser.cpp \
     regulatory.cpp \
+    saver/map_saver.cpp \
+    saver/png_map_saver.cpp \
     services/hex_map_manager.cpp \
     services/loader_styles.cpp \
+    saver/svg_map_saver.cpp \
     worker/async_map_worker.cpp
 
 
@@ -46,16 +48,20 @@ HEADERS += \
     entity/widgets/toolpanel.hpp \
     form/editor_window.hpp \
     form/map_size_editor.hpp \
-    form/subform/grid_sub_form.hpp \
     form/subform/menu_sub_form.hpp \
+    interfaces/imap_saver.hpp \
     interfaces/isubscriber.hpp \
+    interfaces/map_saver_base.hpp \
     parser/map_parser.hpp \
     parser/map_styles_parser.hpp \
     regulatory.hpp \
+    saver/map_saver.hpp \
+    saver/png_map_saver.hpp \
     services/hex_map_manager.hpp \
     services/loader_styles.hpp \
     static/project_types.hpp \
     static/types.hpp \
+    saver/svg_map_saver.hpp \
     worker/async_map_worker.hpp
 
 

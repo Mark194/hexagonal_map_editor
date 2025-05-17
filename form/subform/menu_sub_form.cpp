@@ -21,7 +21,7 @@ void MenuSubForm::createFileMenu()
 
     fileMenu->addAction( "Сохранить" );
 
-    fileMenu->addAction( "Сохранить как..." );
+    m_saveMap = fileMenu->addAction( "Сохранить как..." );
 
     fileMenu->addSeparator();
 

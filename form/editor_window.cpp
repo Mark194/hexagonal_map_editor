@@ -66,8 +66,9 @@ void EditorWindow::createForm()
 
     panel->addButton( QIcon(":/icons/coordinate"),  "Координаты" );
 
+    panel->addSeparator();
 
-    auto styleButton = panel->addButton( QIcon(), "Стили" );
+    auto styleButton = panel->addButton( QIcon(":/icons/styles"), "Стили" );
 
     styleButton->setCheckable(true);
 

@@ -31,6 +31,8 @@ public:
 
     void notifyCreateMap();
 
+    void notifySaveMap();
+
 private:
 
     QList<QRegularPolygon *> create(int rows, int columns);
@@ -42,6 +44,5 @@ private:
     void saveToFile();
 
     void saveToSvg();
-
 
 };

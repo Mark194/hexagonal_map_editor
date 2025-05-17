@@ -13,6 +13,9 @@ void GuiStateProvider::createRelations(EditorWindow * window)
 {
     connect( window->m_menuForm->m_createMap, &QAction::triggered,
              window->m_subscriber,            &ISubscriber::notifyCreateMap );
+
+    connect( window->m_menuForm->m_saveMap,   &QAction::triggered,
+             window->m_subscriber,            &ISubscriber::notifySaveMap );
 }
 
 void GuiStateProvider::loadCells(
@@ -55,4 +58,9 @@ void GuiStateProvider::loadCoords(const HexGridCells & cells, const QStringList 
     for ( int i = 0; i < cells.size(); i++ )
 
         cells[i]->addText( coords.at( i ) );
+}
+
+QGraphicsScene * GuiStateProvider::scene(EditorWindow * window)
+{
+    return window->m_hexView->scene();
 }

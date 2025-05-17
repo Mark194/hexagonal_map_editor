@@ -21,5 +21,7 @@ public:
 
     static void loadCoords(const HexGridCells & cells,
                            const QStringList coords);
+
+    static QGraphicsScene * scene( EditorWindow * window );
 };
 
