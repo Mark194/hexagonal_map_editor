@@ -11,11 +11,13 @@ class MenuSubForm : public QMenuBar
 {
     DECLARE_GUI_STATE_PROVIDER_FRIEND()
 
-    QAction * m_createMap;
+    QAction * m_createMap{};
 
-    QAction * m_saveMap;
+    QAction * m_openMap{};
 
-    QAction * m_quit;
+    QAction * m_saveMap{};
+
+    QAction * m_quit{};
 
 public:
     MenuSubForm();

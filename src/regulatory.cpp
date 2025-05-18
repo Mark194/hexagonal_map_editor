@@ -11,6 +11,7 @@
 
 
 #include "entity/adapter/gui_state_provider.hpp"
+#include "entity/adapter/struct_map_adapter.h"
 #include "entity/controls/mover.hpp"
 #include "saver/map_saver.hpp"
 
@@ -97,15 +98,32 @@ void Regulatory::notifyCreateMap()
     m_worker->startGeneration( mapSize, isRotateCell );
 }
 
+void Regulatory::notifyOpenMap()
+{
+    QString fileName = QFileDialog::getOpenFileName(m_editor, "Окно выбора карты",
+        qApp->applicationDirPath(),
+        "Файл карты (*.json)");
+
+    if ( fileName.isEmpty() ) return;
+
+    auto mapDict = MapParser::load(fileName);
+
+    auto maxElement = StructMapAdapter::findMaxElement(mapDict.keys());
+
+    auto maxSize = StructMapAdapter::maxSize(maxElement);
+
+    m_worker->startGeneration(maxSize, true);
+}
+
 void Regulatory::notifySaveMap()
 {
     QString selectedFilter;
 
-    QString tempFileName = qApp->applicationDirPath() + "/map";
+    const QString tempFileName = qApp->applicationDirPath() + "/map";
 
     const QString formats = MapSaver::supportedFormats();
 
-    auto fileName = QFileDialog::getSaveFileName( m_editor,
+    const auto fileName = QFileDialog::getSaveFileName( m_editor,
                                                   "Сохранить файл как",
                                                   tempFileName,
                                                   formats,
@@ -137,64 +155,28 @@ void Regulatory::notifyQuit()
     qApp->exit();
 }
 
-void Regulatory::loadStyles(QList<QRegularPolygon *> & polygons, MapDict & config, StylesDict styles)
-{
-    for ( auto polygon : polygons )
-    {
-        QString polygonCoord = polygon->coord();
-
-        auto styleCoord = config[polygonCoord];
-
-        if ( styleCoord.style == "default" )
-
-            continue;
-
-        auto styleMap = styles.value( styleCoord.style );
-
-        if ( styleCoord.customColor.isEmpty() )
-
-            polygon->addColor( styleMap.color );
-
-        else
-
-            polygon->addColor( styleCoord.customColor );
-
-        polygon->addImage( styleMap.image );
-    }
-}
-
-void Regulatory::saveToFile()
-{
-    // auto scene = m_hexGrid->scene();
-
-    // scene->clearSelection();
-
-    // scene->setSceneRect( scene->itemsBoundingRect() );
-
-    // QImage img( scene->sceneRect().size().toSize(), QImage::Format_ARGB32 );
-
-    // img.fill( Qt::black );
-
-    // QPainter painter( &img );
-
-    // scene->render( &painter );
-
-    // img.save( "./map.png" );
-}
-
-void Regulatory::saveToSvg()
-{
-    // auto scene = m_hexGrid->scene();
-
-    // QSvgGenerator generator;        // Create a file generator object
-    // generator.setFileName( qApp->applicationDirPath() + "/map.svg" );    // We set the path to the file where to save vector graphics
-    // generator.setSize(QSize(scene->width(), scene->height()));  // Set the dimensions of the working area of the document in millimeters
-    // generator.setViewBox(QRect(0, 0, scene->width(), scene->height())); // Set the work area in the coordinates
-    // generator.setTitle( "SVG Example" );                          // The title document
-    // generator.setDescription( "File created by SVG Example" );
-
-    // QPainter painter;
-    // painter.begin(&generator);
-    // scene->render(&painter);
-    // painter.end();
-}
+// void Regulatory::loadStyles(QList<QRegularPolygon *> & polygons, MapDict & config, const StylesDict& styles)
+// {
+//     for ( auto polygon : polygons )
+//     {
+//         QString polygonCoord = polygon->coord();
+//
+//         auto styleCoord = config[polygonCoord];
+//
+//         if ( styleCoord.style == "default" )
+//
+//             continue;
+//
+//         auto styleMap = styles.value( styleCoord.style );
+//
+//         if ( styleCoord.customColor.isEmpty() )
+//
+//             polygon->addColor( styleMap.color );
+//
+//         else
+//
+//             polygon->addColor( styleCoord.customColor );
+//
+//         polygon->addImage( styleMap.image );
+//     }
+// }

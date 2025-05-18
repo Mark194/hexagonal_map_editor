@@ -1,7 +1,6 @@
 #pragma once
 
 
-#include "entity/widgets/hexgrid.hpp"
 #include "entity/widgets/qregular_polygon.hpp"
 
 #include "form/editor_window.hpp"
@@ -31,16 +30,9 @@ public:
 
     void notifyCreateMap() override;
 
+    void notifyOpenMap() override;
+
     void notifySaveMap() override;
 
     void notifyQuit() override;
-
-private:
-
-    void loadStyles( QList<QRegularPolygon *> & polygons, MapDict & config, StylesDict styles );
-
-    void saveToFile();
-
-    void saveToSvg();
-
 };

@@ -14,6 +14,8 @@ public:
 
     virtual void notifyCreateMap() = 0;
 
+    virtual void notifyOpenMap() = 0;
+
     virtual void notifySaveMap() = 0;
 
     virtual void notifyQuit() = 0;

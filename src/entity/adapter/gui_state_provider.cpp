@@ -13,6 +13,9 @@ void GuiStateProvider::createRelations(EditorWindow * window)
     connect( window->m_menuForm->m_createMap, &QAction::triggered,
              window->m_subscriber,            &ISubscriber::notifyCreateMap );
 
+    connect( window->m_menuForm->m_openMap, &QAction::triggered,
+             window->m_subscriber,            &ISubscriber::notifyOpenMap );
+
     connect( window->m_menuForm->m_saveMap,   &QAction::triggered,
              window->m_subscriber,            &ISubscriber::notifySaveMap );
 

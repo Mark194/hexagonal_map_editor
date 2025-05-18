@@ -28,6 +28,8 @@ set(SOURCES
     services/loader_styles.cpp
     saver/svg_map_saver.cpp
     worker/async_map_worker.cpp
+        entity/adapter/struct_map_adapter.cpp
+        entity/adapter/struct_map_adapter.h
 )
 
 # Список заголовочных файлов
@@ -65,6 +67,8 @@ set(HEADERS
 # Ресурсы
 set(RESOURCES
     ../resources/resource_icons.qrc
+        entity/adapter/struct_map_adapter.cpp
+        entity/adapter/struct_map_adapter.h
 )
 
 # Создаем исполняемый файл

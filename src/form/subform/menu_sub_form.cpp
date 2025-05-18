@@ -15,7 +15,7 @@ void MenuSubForm::createFileMenu()
 
     fileMenu->addSeparator();
 
-    fileMenu->addAction( "Открыть" );
+    m_openMap = fileMenu->addAction( "Открыть" );
 
     fileMenu->addSeparator();
 
