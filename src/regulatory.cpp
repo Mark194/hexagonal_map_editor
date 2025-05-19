@@ -87,16 +87,16 @@ void Regulatory::notifyCreateMap()
         return;
 
 
-    auto mapSize = mapSizeEditor->mapSize();
+    const auto mapSize = mapSizeEditor->mapSize();
 
-    auto isRotateCell = mapSizeEditor->isRotate();
+    const auto isRotateCell = mapSizeEditor->isRotate();
 
     m_worker->startGeneration( mapSize, isRotateCell );
 }
 
 void Regulatory::notifyOpenMap()
 {
-    QString fileName = QFileDialog::getOpenFileName( m_editor,
+    const QString fileName = QFileDialog::getOpenFileName( m_editor,
                                                      "Окно выбора карты",
                                                      qApp->applicationDirPath(),
                                                      "Файл карты (*.json)" );
@@ -104,11 +104,11 @@ void Regulatory::notifyOpenMap()
     if ( fileName.isEmpty() )
         return;
 
-    auto mapDict = MapParser::load( fileName );
+    const auto mapDict = MapParser::load( fileName );
 
-    auto maxElement = StructMapAdapter::findMaxElement( mapDict.keys() );
+    const auto maxElement = StructMapAdapter::findMaxElement( mapDict.keys() );
 
-    auto maxSize = StructMapAdapter::maxSize( maxElement );
+    const auto maxSize = StructMapAdapter::maxSize( maxElement );
 
     m_worker->startGeneration( maxSize, true );
 }
