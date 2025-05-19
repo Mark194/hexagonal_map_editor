@@ -21,11 +21,8 @@
 
 
 Regulatory::Regulatory()
-    : m_editor( new EditorWindow( this ) ),
-      m_worker( new AsyncMapWorker( m_editor, this ) )
-{
-
-}
+    : m_editor( new EditorWindow( this ) )
+  , m_worker( new AsyncMapWorker( m_editor, this ) ) {}
 
 Regulatory::~Regulatory()
 {
@@ -36,7 +33,6 @@ Regulatory::~Regulatory()
 
 void Regulatory::run()
 {
-
     m_editor->showMaximized();
 
 
@@ -48,7 +44,6 @@ void Regulatory::run()
     // auto polygons = create( 100, 50 );
 
     // createCoords( polygons, 100 );
-
 
 
     // try
@@ -88,10 +83,11 @@ void Regulatory::notifyCreateMap()
     mapSizeEditor->setWindowTitle( "Окно создания карты" );
 
 
-    if ( mapSizeEditor->exec() != QDialog::Accepted ) return;
+    if ( mapSizeEditor->exec() != QDialog::Accepted )
+        return;
 
 
-    auto mapSize      = mapSizeEditor->mapSize();
+    auto mapSize = mapSizeEditor->mapSize();
 
     auto isRotateCell = mapSizeEditor->isRotate();
 
@@ -100,19 +96,21 @@ void Regulatory::notifyCreateMap()
 
 void Regulatory::notifyOpenMap()
 {
-    QString fileName = QFileDialog::getOpenFileName(m_editor, "Окно выбора карты",
-        qApp->applicationDirPath(),
-        "Файл карты (*.json)");
+    QString fileName = QFileDialog::getOpenFileName( m_editor,
+                                                     "Окно выбора карты",
+                                                     qApp->applicationDirPath(),
+                                                     "Файл карты (*.json)" );
 
-    if ( fileName.isEmpty() ) return;
+    if ( fileName.isEmpty() )
+        return;
 
-    auto mapDict = MapParser::load(fileName);
+    auto mapDict = MapParser::load( fileName );
 
-    auto maxElement = StructMapAdapter::findMaxElement(mapDict.keys());
+    auto maxElement = StructMapAdapter::findMaxElement( mapDict.keys() );
 
-    auto maxSize = StructMapAdapter::maxSize(maxElement);
+    auto maxSize = StructMapAdapter::maxSize( maxElement );
 
-    m_worker->startGeneration(maxSize, true);
+    m_worker->startGeneration( maxSize, true );
 }
 
 void Regulatory::notifySaveMap()
@@ -124,30 +122,28 @@ void Regulatory::notifySaveMap()
     const QString formats = MapSaver::supportedFormats();
 
     const auto fileName = QFileDialog::getSaveFileName( m_editor,
-                                                  "Сохранить файл как",
-                                                  tempFileName,
-                                                  formats,
-                                                  &selectedFilter );
+                                                        "Сохранить файл как",
+                                                        tempFileName,
+                                                        formats,
+                                                        &selectedFilter );
 
-    if ( fileName.isEmpty() ) return;
+    if ( fileName.isEmpty() )
+        return;
 
     try
     {
-        auto saver = MapSaver::saver(selectedFilter);
+        auto saver = MapSaver::saver( selectedFilter );
 
         auto scene = GuiStateProvider::scene( m_editor );
 
         saver->save( fileName, scene );
 
-        QMessageBox::information( m_editor,
-                                  "Окно сообщения",
-                                  "Успешно сохранено!" );
+        QMessageBox::information( m_editor, "Окно сообщения", "Успешно сохранено!" );
     }
-    catch (const std::logic_error & err)
+    catch ( const std::logic_error & err )
     {
-        QMessageBox::critical(m_editor, "Окно ошибки", err.what() );
+        QMessageBox::critical( m_editor, "Окно ошибки", err.what() );
     }
-
 }
 
 void Regulatory::notifyQuit()
