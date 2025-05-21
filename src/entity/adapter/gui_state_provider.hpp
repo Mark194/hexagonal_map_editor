@@ -3,26 +3,28 @@
 
 #include "../../form/editor_window.hpp"
 #include "../../static/types.hpp"
+#include "../../static/project_types.hpp"
 
 
 class GuiStateProvider : public QObject
 {
-    Q_OBJECT
-
-public:
+    Q_OBJECT public:
     GuiStateProvider();
 
     ~GuiStateProvider() override;
 
-    static void createRelations( EditorWindow * window );
+    static void createRelations(EditorWindow * window);
 
-    static void loadCells(EditorWindow * window, const HexGridCells & cells);
+    static void loadCells(QGraphicsScene * graphicsScene, const HexGridCells & cells);
 
-    static void clearCells( EditorWindow * window );
+    static void clearCells(EditorWindow * window);
 
-    static void loadCoords(const HexGridCells & cells,
-                           const QStringList & coords);
+    static void loadCoords(const HexGridCells & cells, const QStringList & coords);
 
-    static QGraphicsScene * scene(const EditorWindow * window );
+    static QGraphicsScene * scene(const EditorWindow * window);
+
+    static void loadStylesMiniatures(const EditorWindow * window, const StylesDict & styles);
+
+    static void loadStyles(const HexGridCells & cells, const MapDict & config, const StylesDict & styles);
 };
 

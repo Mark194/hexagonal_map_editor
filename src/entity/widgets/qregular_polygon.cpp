@@ -21,11 +21,8 @@ QString QRegularPolygon::coord() const
     return m_coord;
 }
 
-QRegularPolygon::QRegularPolygon(double sides,
-                                 double radius,
-                                 QPointF center,
-                                 double angle,
-                                 QGraphicsItem *  parent)
+QRegularPolygon::QRegularPolygon
+(const double sides, const double radius, const QPointF & center, const double angle, QGraphicsItem * parent)
     : QGraphicsPolygonItem( parent )
 {
     if ( sides < 3 )
@@ -33,21 +30,21 @@ QRegularPolygon::QRegularPolygon(double sides,
         throw std::logic_error( "A regular polygon at least has 3 sides." );
 
 
-    m_sides  = sides;
+    m_sides = sides;
 
     m_radius = radius;
 
-    m_angle  = angle;
+    m_angle = angle;
 
     m_center = center;
 
 
-    setFlags( QGraphicsItem::ItemIsSelectable );
+    setFlags( ItemIsSelectable );
 
     draw();
 }
 
-void QRegularPolygon::addText(QString text)
+void QRegularPolygon::addText(const QString & text)
 {
     QGraphicsSimpleTextItem * item = new QGraphicsSimpleTextItem( text, this );
 
@@ -68,29 +65,36 @@ void QRegularPolygon::addText(QString text)
     item->setPos( pos );
 }
 
-void QRegularPolygon::addImage(QString source)
+void QRegularPolygon::addImage(const QString & source)
 {
-    if ( source.isEmpty() ) return;
+    if ( source.isEmpty() )
+        return;
 
     QPixmap pixmap( source );
+    if ( pixmap.isNull() )
+        return;
 
-    if ( pixmap.isNull() ) return;
+    const auto item = new QGraphicsSvgItem( source, this );
+    QRectF itemRect = item->boundingRect();
+    const QRectF polygonRect = boundingRect();
 
-    QGraphicsSvgItem * item = new QGraphicsSvgItem( source, this );
+    constexpr qreal scale = 0.25;
+    item->setScale( scale );
+    itemRect = QRectF( 0, 0, itemRect.width() * scale, itemRect.height() * scale );
 
-    auto rect = item->boundingRect();
 
-    rect.moveCenter( boundingRect().center() );
+    const QPointF centerOffset = polygonRect.center() - itemRect.center();
 
-    item->setPos( rect.topLeft() );
+    item->setPos( centerOffset );
 }
 
-void QRegularPolygon::addColor(QString color)
+void QRegularPolygon::addColor(const QString & color)
 {
     QColor shapeColor( color );
 
 
-    if ( not shapeColor.isValid() ) return;
+    if ( not shapeColor.isValid() )
+        return;
 
 
     setBrush( QBrush( shapeColor, Qt::SolidPattern ) );
@@ -100,7 +104,7 @@ void QRegularPolygon::draw()
 {
     QVector<QPointF> points;
 
-    double angle {0};
+    double angle{ 0 };
 
     double x, y;
 
@@ -108,9 +112,9 @@ void QRegularPolygon::draw()
     {
         angle = m_angle + ( 2 * M_PI * i / m_sides );
 
-        x = m_center.x() + ( m_radius * cos(angle) );
+        x = m_center.x() + ( m_radius * cos( angle ) );
 
-        y = m_center.y() + ( m_radius * sin(angle) );
+        y = m_center.y() + ( m_radius * sin( angle ) );
 
         points.append( { x, y } );
     }

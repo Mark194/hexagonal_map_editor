@@ -8,9 +8,9 @@
 #include "../entity/widgets/toolpanel.hpp"
 
 
-EditorWindow::EditorWindow(ISubscriber * subscriber,
-                           QWidget *parent)
-    : QMainWindow(parent), m_subscriber(subscriber)
+EditorWindow::EditorWindow(ISubscriber * subscriber, QWidget * parent)
+    : QMainWindow( parent )
+  , m_subscriber( subscriber )
 {
     createForm();
 
@@ -42,55 +42,42 @@ void EditorWindow::createForm()
 
     auto * panel = new ToolPanel;
 
-    panel->addButton( QIcon(":/icons/cursor"), "Выбрать" );
+    panel->addButton( QIcon( ":/icons/cursor" ), "Выбрать" );
 
-    panel->addButton( QIcon(":/icons/brush"),  "Кисть" );
+    panel->addButton( QIcon( ":/icons/brush" ), "Кисть" );
 
-    panel->addButton( QIcon(":/icons/bucket_fill"),  "Заливка" );
+    panel->addButton( QIcon( ":/icons/bucket_fill" ), "Заливка" );
 
-    panel->addButton( QIcon(":/icons/stamp"),  "Штамп" );
+    panel->addButton( QIcon( ":/icons/stamp" ), "Штамп" );
 
-    panel->addButton( QIcon(":/icons/eraser"),  "Ластик" );
+    panel->addButton( QIcon( ":/icons/eraser" ), "Ластик" );
 
-    panel->addButton( QIcon(":/icons/pippet"),  "Пипетка" );
+    panel->addButton( QIcon( ":/icons/pippet" ), "Пипетка" );
 
 
     panel->addSeparator();
 
 
-    panel->addButton( QIcon(":/icons/change_size"),  "Размер" );
+    panel->addButton( QIcon( ":/icons/change_size" ), "Размер" );
 
-    panel->addButton( QIcon(":/icons/rotate"),  "Повернуть" );
+    panel->addButton( QIcon( ":/icons/rotate" ), "Повернуть" );
 
-    panel->addButton( QIcon(":/icons/coordinate"),  "Координаты" );
+    panel->addButton( QIcon( ":/icons/coordinate" ), "Координаты" );
 
     panel->addSeparator();
 
-    auto styleButton = panel->addButton( QIcon(":/icons/styles"), "Стили" );
+    auto styleButton = panel->addButton( QIcon( ":/icons/styles" ), "Стили" );
 
-    styleButton->setCheckable(true);
+    styleButton->setCheckable( true );
 
-    auto contextPanel = new ContextPanel( this );
+    m_contextPanel = new ContextPanel( this );
 
-    connect( styleButton, &QToolButton::clicked, contextPanel, [=](){
-
-        if ( styleButton->isChecked() )
-            {
-
-        contextPanel->setOpacity(100.0);
-        contextPanel->showNearWidget( styleButton );
-            }
-            else
-                {
-                contextPanel->setOpacity(0.0);
-                    contextPanel->close();
-                }
-            } );
+    connect( styleButton, &QToolButton::clicked, m_contextPanel, &ContextPanel::changeOpacity );
 
     panel->collapse();
 
 
-    m_hexView   = new HexGrid;
+    m_hexView = new HexGrid;
 
     contentLayout->setMargin( 0 );
 

@@ -6,60 +6,56 @@
 #include <QFutureSynchronizer>
 
 
+#include "../static/project_types.hpp"
 #include "../static/types.hpp"
 
 
 using HexGridWatcher = QFutureWatcher<HexGridCells>;
 
-using CoordWatcher   = QFutureWatcher<QStringList>;
+using CoordWatcher = QFutureWatcher<QStringList>;
 
-using SyncWatcher    = QFutureWatcher<void>;
+using SyncWatcher = QFutureWatcher<void>;
 
 class EditorWindow;
 
 
 class AsyncMapWorker : public QObject
 {
-    Q_OBJECT
+    Q_OBJECT QFutureSynchronizer<void> m_synchronizer;
 
-    QFutureSynchronizer<void> m_synchronizer;
+    SyncWatcher * m_syncWatcher{};
 
-    SyncWatcher     * m_syncWatcher{};
+    HexGridWatcher * m_cellWatcher{};
 
-    HexGridWatcher  * m_cellWatcher{};
+    CoordWatcher * m_coordsWatcher{};
 
-    CoordWatcher    * m_coordsWatcher{};
+    EditorWindow * m_editor;
 
-    EditorWindow    * m_editor;
+    HexGridCells m_generatedCells{};
 
-    HexGridCells      m_generatedCells{};
+    QStringList m_generatedCoords;
 
-    QStringList       m_generatedCoords;
-
-    std::atomic_bool  m_isRunning{false};
+    std::atomic_bool m_isRunning{ false };
 
 public:
-
     explicit AsyncMapWorker(EditorWindow * window, QObject * parent = nullptr);
 
     ~AsyncMapWorker() override;
-
 
     void startGeneration(const QSize & mapSize, bool isRotate);
 
     void cancelGeneration();
 
 Q_SIGNALS:
-
     void generationStarted();
 
     void generationFinished();
 
     void generationCanceled();
 
+    void cellChanged(const HexGridCells & cells);
 
 private slots:
-
     void handleCellsFinished();
 
     void handleCoordsFinished();
@@ -67,7 +63,6 @@ private slots:
     void handleSyncFinished();
 
 private:
-
     void combineResults();
 
     void cleanup();

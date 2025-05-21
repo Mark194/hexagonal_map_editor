@@ -10,11 +10,7 @@
 
 HexMapManager::HexMapManager() = default;
 
-HexGridCells HexMapManager::generateCells
-(
-    const QSize & size,
-    const bool isRotate
-)
+HexGridCells HexMapManager::generateCells(const QSize & size, const bool isRotate)
 {
     constexpr float radius = 25.0f;
     constexpr float sqrt3 = 1.73205080757f; // √3
@@ -56,10 +52,7 @@ HexGridCells HexMapManager::generateCells
 
 const char * COORD_FMT = "%1, %2";
 
-QStringList HexMapManager::generateCoord
-(
-    const QSize & size
-)
+QStringList HexMapManager::generateCoord(const QSize & size)
 {
     const auto countCell = size.width() * size.height();
 

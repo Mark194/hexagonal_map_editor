@@ -34,7 +34,7 @@ void MenuSubForm::createStyleMenu()
 
     styleMenu->addAction( "Создать" );
 
-    styleMenu->addAction( "Добавить" );
+    m_addStyle = styleMenu->addAction( "Добавить" );
 
     styleMenu->addAction( "Изменить" );
 

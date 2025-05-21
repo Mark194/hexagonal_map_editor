@@ -9,5 +9,5 @@ class MapStylesParser
 public:
     MapStylesParser();
 
-    StylesDict load( QString fileName );
+    static StylesDict load(const QString & fileName);
 };

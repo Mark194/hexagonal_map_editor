@@ -18,6 +18,8 @@
 #include "parser/map_parser.hpp"
 
 #include "form/map_size_editor.hpp"
+#include "parser/map_styles_parser.hpp"
+#include "worker/async_style_loader.hpp"
 
 
 Regulatory::Regulatory()
@@ -37,6 +39,18 @@ void Regulatory::run()
 
 
     GuiStateProvider::createRelations( m_editor );
+
+
+    try
+    {
+        loadStyles( qApp->applicationDirPath() + "/styles.json" );
+    }
+    catch ( const std::logic_error & error )
+    {
+        QString errorMessage = "Ошибка загрузки стилей:\n";
+
+        QMessageBox::critical( m_editor, "Ошибка", errorMessage + error.what() );
+    }
 
     // m_hexGrid->setUpdatesEnabled( false );
 
@@ -97,9 +111,9 @@ void Regulatory::notifyCreateMap()
 void Regulatory::notifyOpenMap()
 {
     const QString fileName = QFileDialog::getOpenFileName( m_editor,
-                                                     "Окно выбора карты",
-                                                     qApp->applicationDirPath(),
-                                                     "Файл карты (*.json)" );
+                                                           "Окно выбора карты",
+                                                           qApp->applicationDirPath(),
+                                                           "Файл карты (*.json)" );
 
     if ( fileName.isEmpty() )
         return;
@@ -110,7 +124,15 @@ void Regulatory::notifyOpenMap()
 
     const auto maxSize = StructMapAdapter::maxSize( maxElement );
 
+
+    auto styleLoader = new AsyncStyleLoader;
+
+    styleLoader->setStyles( m_styles );
+
+    connect( m_worker, &AsyncMapWorker::cellChanged, styleLoader, &AsyncStyleLoader::setCells );
     m_worker->startGeneration( maxSize, true );
+
+    styleLoader->start( fileName );
 }
 
 void Regulatory::notifySaveMap()
@@ -149,6 +171,28 @@ void Regulatory::notifySaveMap()
 void Regulatory::notifyQuit()
 {
     qApp->exit();
+}
+
+void Regulatory::notifyLoadStyles()
+{
+    const QString fileName = QFileDialog::getOpenFileName( m_editor,
+                                                           "Окно выбора файла стилей",
+                                                           qApp->applicationDirPath(),
+                                                           "Файл стилей (*.json)" );
+
+    if ( fileName.isEmpty() )
+        return;
+
+    loadStyles( fileName );
+}
+
+void Regulatory::loadStyles(const QString & filename)
+{
+    auto styles = MapStylesParser::load( filename );
+
+    GuiStateProvider::loadStylesMiniatures( m_editor, styles );
+
+    m_styles = std::move( styles );
 }
 
 // void Regulatory::loadStyles(QList<QRegularPolygon *> & polygons, MapDict & config, const StylesDict& styles)

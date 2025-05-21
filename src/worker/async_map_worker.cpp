@@ -10,22 +10,19 @@
 
 
 AsyncMapWorker::AsyncMapWorker(EditorWindow * window, QObject * parent)
-    : QObject( parent ),
-      m_syncWatcher( new SyncWatcher( this ) ),
-      m_cellWatcher( new HexGridWatcher( this ) ),
-      m_coordsWatcher( new CoordWatcher( this ) ),
-      m_editor( window )
+    : QObject( parent )
+  , m_syncWatcher( new SyncWatcher( this ) )
+  , m_cellWatcher( new HexGridWatcher( this ) )
+  , m_coordsWatcher( new CoordWatcher( this ) )
+  , m_editor( window )
 {
     m_synchronizer.setCancelOnWait( false );
 
-    connect( m_cellWatcher, &HexGridWatcher::finished,
-             this,          &AsyncMapWorker::handleCellsFinished );
+    connect( m_cellWatcher, &HexGridWatcher::finished, this, &AsyncMapWorker::handleCellsFinished );
 
-    connect( m_coordsWatcher, &CoordWatcher::finished,
-             this,            &AsyncMapWorker::handleCoordsFinished );
+    connect( m_coordsWatcher, &CoordWatcher::finished, this, &AsyncMapWorker::handleCoordsFinished );
 
-    connect(m_syncWatcher, &SyncWatcher::finished,
-            this,          &AsyncMapWorker::handleSyncFinished );
+    connect( m_syncWatcher, &SyncWatcher::finished, this, &AsyncMapWorker::handleSyncFinished );
 }
 
 AsyncMapWorker::~AsyncMapWorker()
@@ -44,7 +41,8 @@ static void synchronizeWrapper(QFutureSynchronizer<void> * sync)
 
 void AsyncMapWorker::startGeneration(const QSize & mapSize, const bool isRotate)
 {
-    if ( m_isRunning.exchange( true ) ) cancelGeneration();
+    if ( m_isRunning.exchange( true ) )
+        cancelGeneration();
 
 
     if ( mapSize.isEmpty() )
@@ -57,16 +55,9 @@ void AsyncMapWorker::startGeneration(const QSize & mapSize, const bool isRotate)
 
     emit generationStarted();
 
-    auto cellFuture = QtConcurrent::run(
-        &HexMapManager::generateCells,
-        mapSize,
-        isRotate
-    );
+    auto cellFuture = QtConcurrent::run( &HexMapManager::generateCells, mapSize, isRotate );
 
-    auto coordFuture = QtConcurrent::run(
-        &HexMapManager::generateCoord,
-        mapSize
-    );
+    auto coordFuture = QtConcurrent::run( &HexMapManager::generateCoord, mapSize );
 
     m_synchronizer.addFuture( cellFuture );
 
@@ -84,7 +75,8 @@ void AsyncMapWorker::startGeneration(const QSize & mapSize, const bool isRotate)
 
 void AsyncMapWorker::cancelGeneration()
 {
-    if ( not m_isRunning ) return;
+    if ( not m_isRunning )
+        return;
 
     m_cellWatcher->cancel();
 
@@ -95,34 +87,35 @@ void AsyncMapWorker::cancelGeneration()
 
 void AsyncMapWorker::handleCellsFinished()
 {
-    if ( m_cellWatcher->isCanceled() ) return;
+    if ( m_cellWatcher->isCanceled() )
+        return;
 
     m_generatedCells = m_cellWatcher->result();
 }
 
 void AsyncMapWorker::handleCoordsFinished()
 {
-
-    if ( m_coordsWatcher->isCanceled() ) return;
+    if ( m_coordsWatcher->isCanceled() )
+        return;
 
     m_generatedCoords = m_coordsWatcher->result();
 }
 
 void AsyncMapWorker::handleSyncFinished()
 {
-    if ( not m_isRunning ) return;
+    if ( not m_isRunning )
+        return;
 
     if ( isAllFuturesFinished() )
         combineResults();
-    else
-        emit generationCanceled();
+    else emit generationCanceled();
 
     cleanup();
 }
 
 void AsyncMapWorker::combineResults()
 {
-    if (m_generatedCells.size() != m_generatedCoords.size())
+    if ( m_generatedCells.size() != m_generatedCoords.size() )
     {
         emit generationCanceled();
         return;
@@ -133,9 +126,13 @@ void AsyncMapWorker::combineResults()
 
     GuiStateProvider::clearCells( m_editor );
 
-    GuiStateProvider::loadCells(m_editor, m_generatedCells);
+    auto mainScene = GuiStateProvider::scene( m_editor );
+
+    GuiStateProvider::loadCells( mainScene, m_generatedCells );
 
     emit generationFinished();
+
+    emit cellChanged( m_generatedCells );
 }
 
 void AsyncMapWorker::cleanup()
@@ -147,10 +144,11 @@ void AsyncMapWorker::cleanup()
     m_synchronizer.clearFutures();
 }
 
-bool AsyncMapWorker::isAllFuturesFinished() const {
+bool AsyncMapWorker::isAllFuturesFinished() const
+{
     bool isAllFinished = true;
 
-    for ( const auto& future : m_synchronizer.futures() )
+    for ( const auto & future : m_synchronizer.futures() )
 
         isAllFinished &= future.isFinished();
 

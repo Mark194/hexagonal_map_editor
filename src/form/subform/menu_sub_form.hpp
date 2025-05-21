@@ -19,11 +19,13 @@ class MenuSubForm : public QMenuBar
 
     QAction * m_quit{};
 
+
+    QAction * m_addStyle{};
+
 public:
     MenuSubForm();
 
 private:
-
     void createFileMenu();
 
     void createStyleMenu();

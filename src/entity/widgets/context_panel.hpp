@@ -6,18 +6,21 @@
 
 class ContextPanel : public QWidget
 {
-    Q_OBJECT
-    Q_PROPERTY(qreal opacity READ opacity WRITE setOpacity)
-
-public:
-    explicit ContextPanel(QWidget *parent = nullptr);
+    Q_OBJECT Q_PROPERTY( qreal opacity READ opacity WRITE setOpacity )public:
+    explicit ContextPanel(QWidget * parent = nullptr);
 
     qreal opacity() const;
+
     void setOpacity(qreal newOpacity);
 
     void showNearWidget(QWidget * widget);
 
-signals:
+    void addWidget(QWidget * widget) const;
+
+    void clearContent();
+
+public slots:
+    void changeOpacity(bool isChecked);
 
 private:
     qreal m_opacity = 1.0;

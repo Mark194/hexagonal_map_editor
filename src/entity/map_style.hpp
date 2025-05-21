@@ -10,7 +10,7 @@ struct MapStyle
 
     QString image;
 
-    bool isValid()
+    [[nodiscard]] bool isValid() const
     {
         return not ( color.isEmpty() and image.isEmpty() );
     }

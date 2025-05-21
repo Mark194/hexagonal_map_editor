@@ -1,6 +1,7 @@
 #include "hexgrid.hpp"
 
-HexGrid::HexGrid(QRectF rect, QWidget * parent) : QGraphicsView( parent )
+HexGrid::HexGrid(QRectF rect, QWidget * parent)
+    : QGraphicsView( parent )
 {
     m_scene = new QGraphicsScene;
 
@@ -10,4 +11,7 @@ HexGrid::HexGrid(QRectF rect, QWidget * parent) : QGraphicsView( parent )
 
 
     setRenderHint( QPainter::Antialiasing );
+
+    setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+    setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
 }

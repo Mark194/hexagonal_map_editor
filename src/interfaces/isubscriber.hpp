@@ -6,10 +6,7 @@
 
 class ISubscriber : public QObject
 {
-    Q_OBJECT
-
-public:
-
+    Q_OBJECT public:
     ~ISubscriber() override = default;
 
     virtual void notifyCreateMap() = 0;
@@ -19,4 +16,7 @@ public:
     virtual void notifySaveMap() = 0;
 
     virtual void notifyQuit() = 0;
+
+
+    virtual void notifyLoadStyles() = 0;
 };
