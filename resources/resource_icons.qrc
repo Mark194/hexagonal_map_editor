@@ -12,5 +12,6 @@
         <file alias="rotate">icons/rotate.png</file>
         <file alias="coordinate">icons/coordinate.png</file>
         <file alias="styles">icons/styles.png</file>
+        <file alias="app_icon">icons/app_icon.png</file>
     </qresource>
 </RCC>
