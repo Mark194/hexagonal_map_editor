@@ -6,6 +6,7 @@
 
 #include "../entity/widgets/context_panel.hpp"
 #include "../entity/widgets/toolpanel.hpp"
+#include "../entity/widgets/dual_color_widget.hpp"
 
 
 EditorWindow::EditorWindow(ISubscriber * subscriber, QWidget * parent)
@@ -66,13 +67,18 @@ void EditorWindow::createForm()
 
     panel->addSeparator();
 
-    auto styleButton = panel->addButton( QIcon( ":/icons/styles" ), "Стили" );
+
+    const auto styleButton = panel->addButton( QIcon( ":/icons/styles" ), "Стили" );
 
     styleButton->setCheckable( true );
 
     m_contextPanel = new ContextPanel( this );
 
     connect( styleButton, &QToolButton::clicked, m_contextPanel, &ContextPanel::changeOpacity );
+
+    panel->addSeparator();
+
+    panel->addWidget( new DualColorWidget( panel ) );
 
     panel->collapse();
 

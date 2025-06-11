@@ -34,6 +34,8 @@ set(SOURCES
         entity/widgets/style_widget.hpp
         worker/async_style_loader.cpp
         worker/async_style_loader.hpp
+        entity/widgets/dual_color_widget.cpp
+        entity/widgets/dual_color_widget.hpp
 )
 
 # Список заголовочных файлов
@@ -70,6 +72,8 @@ set(HEADERS
         entity/widgets/style_widget.hpp
         worker/async_style_loader.cpp
         worker/async_style_loader.hpp
+        entity/widgets/dual_color_widget.cpp
+        entity/widgets/dual_color_widget.hpp
 )
 
 # Ресурсы
@@ -80,7 +84,7 @@ set(RESOURCES
 )
 
 # Создаем исполняемый файл
-add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${RESOURCES})
+add_executable(${PROJECT_NAME} WIN32 ${SOURCES} ${HEADERS} ${RESOURCES})
 
 # Подключаем необходимые модули Qt
 target_link_libraries(${PROJECT_NAME}
