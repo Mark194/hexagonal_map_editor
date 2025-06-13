@@ -1,12 +1,11 @@
 #pragma once
 
-#include <QWidget>
+
 #include <QToolButton>
 #include <QVBoxLayout>
-#include <QFrame>
-#include <QList>
 
-class ToolPanel : public QWidget
+
+class ToolPanel final : public QWidget
 {
     Q_OBJECT public:
     explicit ToolPanel(QWidget * parent = nullptr, bool initiallyCollapsed = false);
@@ -17,7 +16,7 @@ class ToolPanel : public QWidget
 
     void addSeparator();
 
-    void addWidget(QWidget * widget);
+    void addWidget(QWidget * widget) const;
 
     bool isCollapsed() const;
 

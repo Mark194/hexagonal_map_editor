@@ -46,7 +46,7 @@ QRegularPolygon::QRegularPolygon
 
 void QRegularPolygon::addText(const QString & text)
 {
-    QGraphicsSimpleTextItem * item = new QGraphicsSimpleTextItem( text, this );
+    const auto item = new QGraphicsSimpleTextItem( text, this );
 
     auto font = item->font();
 
@@ -88,16 +88,19 @@ void QRegularPolygon::addImage(const QString & source)
     item->setPos( centerOffset );
 }
 
-void QRegularPolygon::addColor(const QString & color)
+void QRegularPolygon::setColor(const QString & color)
 {
-    QColor shapeColor( color );
+    const QColor shapeColor( color );
 
+    setColor( shapeColor );
+}
 
-    if ( not shapeColor.isValid() )
+void QRegularPolygon::setColor(const QColor & color)
+{
+    if ( not color.isValid() )
         return;
 
-
-    setBrush( QBrush( shapeColor, Qt::SolidPattern ) );
+    setBrush( QBrush( color, Qt::SolidPattern ) );
 }
 
 void QRegularPolygon::draw()
@@ -106,15 +109,13 @@ void QRegularPolygon::draw()
 
     double angle{ 0 };
 
-    double x, y;
-
-    for ( int i = 0; i < m_sides; i++ )
+    for ( int i = 0; i < m_sides; ++i )
     {
         angle = m_angle + ( 2 * M_PI * i / m_sides );
 
-        x = m_center.x() + ( m_radius * cos( angle ) );
+        double x = m_center.x() + ( m_radius * cos( angle ) );
 
-        y = m_center.y() + ( m_radius * sin( angle ) );
+        double y = m_center.y() + ( m_radius * sin( angle ) );
 
         points.append( { x, y } );
     }

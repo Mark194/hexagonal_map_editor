@@ -123,11 +123,31 @@ void GuiStateProvider::loadStyles(const HexGridCells & cells, const MapDict & co
             continue;
         auto styleMap = styles.value( styleCoord.style );
         if ( styleCoord.customColor.isEmpty() )
-            polygon->addColor( styleMap.color );
+            polygon->setColor( styleMap.color );
         else
 
-            polygon->addColor( styleCoord.customColor );
+            polygon->setColor( styleCoord.customColor );
 
         polygon->addImage( styleMap.image );
     }
+}
+
+ActionType GuiStateProvider::actionType(const EditorWindow * window)
+{
+    auto checkedButton = window->m_buttonGroup->checkedButton();
+
+    if ( not checkedButton )
+        return ActionType::NoAction;
+
+    return checkedButton->property( "action_type" ).value<ActionType>();
+}
+
+QColor GuiStateProvider::primaryColor(const EditorWindow * window)
+{
+    return window->m_dualColorWidget->primaryColor();
+}
+
+QWidget * GuiStateProvider::hexView(const EditorWindow * window)
+{
+    return window->m_hexView;
 }

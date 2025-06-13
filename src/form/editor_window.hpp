@@ -1,6 +1,7 @@
 #pragma once
 
 
+#include <QButtonGroup>
 #include <QMainWindow>
 
 
@@ -8,6 +9,7 @@
 
 #include "../entity/widgets/hexgrid.hpp"
 #include "../entity/widgets/context_panel.hpp"
+#include "../entity/widgets/dual_color_widget.hpp"
 
 
 #include "../form/subform/menu_sub_form.hpp"
@@ -28,6 +30,10 @@ class EditorWindow final : public QMainWindow
     QObjectList m_actions;
 
     ContextPanel * m_contextPanel;
+
+    QButtonGroup * m_buttonGroup;
+
+    DualColorWidget * m_dualColorWidget;
 
 public:
     explicit EditorWindow(ISubscriber * subscriber, QWidget * parent = nullptr);

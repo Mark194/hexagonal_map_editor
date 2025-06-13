@@ -38,6 +38,10 @@ void DualColorWidget::selectPrimaryColor() { selectColor( m_primaryColor, "Prima
 
 void DualColorWidget::selectSecondaryColor() { selectColor( m_secondaryColor, "Secondary color" ); }
 
+QColor DualColorWidget::primaryColor() const { return m_primaryColor; }
+
+QColor DualColorWidget::secondaryColor() const { return m_secondaryColor; }
+
 bool DualColorWidget::eventFilter(QObject * obj, QEvent * event)
 {
     if ( event->type() == QEvent::MouseButtonPress )
@@ -83,7 +87,6 @@ void DualColorWidget::setupUi()
     mainLayout->addWidget( m_swapButton, 0, Qt::AlignCenter );
     mainLayout->addWidget( colorContainer );
 
-    // Обновляем цвета
     updateColors();
 }
 

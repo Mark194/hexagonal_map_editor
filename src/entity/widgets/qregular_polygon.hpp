@@ -24,12 +24,14 @@ public:
 
     void addImage(const QString & source);
 
-    void addColor(const QString & color);
+    void setColor(const QString & color);
+
+    void setColor(const QColor & color);
 
 
     void setCoord(const QString & coord);
 
-    QString coord() const;
+    [[nodiscard]] QString coord() const;
 
 private:
     void draw();

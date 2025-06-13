@@ -10,5 +10,5 @@ class HexGrid : public QGraphicsView
 
 public:
 
-    HexGrid(QRectF rect = QRectF(), QWidget * parent = nullptr );
+    HexGrid(const QRectF & rect = QRectF(), QWidget * parent = nullptr );
 };

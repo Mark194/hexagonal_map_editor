@@ -4,6 +4,9 @@
 #include <QObject>
 
 
+class QGraphicsItem;
+
+
 class ISubscriber : public QObject
 {
     Q_OBJECT public:
@@ -19,4 +22,6 @@ class ISubscriber : public QObject
 
 
     virtual void notifyLoadStyles() = 0;
+
+    virtual void notifyHandleClick() = 0;
 };

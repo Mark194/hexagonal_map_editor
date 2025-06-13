@@ -36,6 +36,12 @@ set(SOURCES
         worker/async_style_loader.hpp
         entity/widgets/dual_color_widget.cpp
         entity/widgets/dual_color_widget.hpp
+        entity/cmds/change_color_command.cpp
+        entity/cmds/change_color_command.hpp
+        entity/command_manager.cpp
+        entity/command_manager.hpp
+        entity/controls/scene_click_handler.cpp
+        entity/controls/scene_click_handler.hpp
 )
 
 # Список заголовочных файлов
@@ -74,6 +80,13 @@ set(HEADERS
         worker/async_style_loader.hpp
         entity/widgets/dual_color_widget.cpp
         entity/widgets/dual_color_widget.hpp
+        entity/cmds/change_color_command.cpp
+        entity/cmds/change_color_command.hpp
+        entity/command_manager.cpp
+        entity/command_manager.hpp
+        entity/controls/scene_click_handler.cpp
+        entity/controls/scene_click_handler.hpp
+        static/action_types.hpp
 )
 
 # Ресурсы

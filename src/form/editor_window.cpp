@@ -2,12 +2,14 @@
 
 
 #include "../entity/controls/mover.hpp"
+#include "../entity/controls/scene_click_handler.hpp"
 #include "../entity/controls/zoomer.hpp"
 
 #include "../entity/widgets/context_panel.hpp"
-#include "../entity/widgets/toolpanel.hpp"
 #include "../entity/widgets/dual_color_widget.hpp"
+#include "../entity/widgets/toolpanel.hpp"
 
+#include "../static/action_types.hpp"
 
 EditorWindow::EditorWindow(ISubscriber * subscriber, QWidget * parent)
     : QMainWindow( parent )
@@ -37,24 +39,37 @@ void EditorWindow::createForm()
 
 
     auto * contentLayout = new QHBoxLayout( central );
-
-
-    // QVBoxLayout * subformsLayout = new QVBoxLayout;
-
     auto * panel = new ToolPanel;
 
-    panel->addButton( QIcon( ":/icons/cursor" ), "Выбрать" );
+    m_buttonGroup = new QButtonGroup( this );
 
-    panel->addButton( QIcon( ":/icons/brush" ), "Кисть" );
+    const auto selectButton = panel->addButton( QIcon( ":/icons/cursor" ), "Выбрать" );
 
-    panel->addButton( QIcon( ":/icons/bucket_fill" ), "Заливка" );
+    selectButton->setProperty( "action_type", QVariant::fromValue( ActionType::NoAction ) );
 
-    panel->addButton( QIcon( ":/icons/stamp" ), "Штамп" );
+    const auto brushButton = panel->addButton( QIcon( ":/icons/brush" ), "Кисть" );
 
-    panel->addButton( QIcon( ":/icons/eraser" ), "Ластик" );
+    const auto bucketFillButton = panel->addButton( QIcon( ":/icons/bucket_fill" ), "Заливка" );
 
-    panel->addButton( QIcon( ":/icons/pippet" ), "Пипетка" );
+    brushButton->setProperty( "action_type", QVariant::fromValue( ActionType::ChangeColor ) );
 
+    const auto stampButton = panel->addButton( QIcon( ":/icons/stamp" ), "Штамп" );
+
+    const auto eraserButton = panel->addButton( QIcon( ":/icons/eraser" ), "Ластик" );
+
+    const auto pippetButton = panel->addButton( QIcon( ":/icons/pippet" ), "Пипетка" );
+
+    m_buttonGroup->addButton( selectButton );
+
+    m_buttonGroup->addButton( brushButton );
+
+    m_buttonGroup->addButton( bucketFillButton );
+
+    m_buttonGroup->addButton( stampButton );
+
+    m_buttonGroup->addButton( eraserButton );
+
+    m_buttonGroup->addButton( pippetButton );
 
     panel->addSeparator();
 
@@ -78,7 +93,7 @@ void EditorWindow::createForm()
 
     panel->addSeparator();
 
-    panel->addWidget( new DualColorWidget( panel ) );
+    panel->addWidget( m_dualColorWidget = new DualColorWidget( panel ) );
 
     panel->collapse();
 
@@ -109,4 +124,11 @@ void EditorWindow::createActions()
     auto * mover = new Mover( m_hexView );
 
     m_actions.append( mover );
+
+
+    auto * sceneHandler = new SceneClickHandler( m_hexView->scene(), this );
+
+    connect( sceneHandler, &SceneClickHandler::itemClicked, m_subscriber, &ISubscriber::notifyHandleClick );
+
+    m_actions.append( sceneHandler );
 }

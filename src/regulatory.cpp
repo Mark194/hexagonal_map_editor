@@ -13,6 +13,7 @@
 #include "entity/adapter/gui_state_provider.hpp"
 #include "entity/adapter/struct_map_adapter.h"
 #include "entity/controls/mover.hpp"
+#include "entity/controls/scene_click_handler.hpp"
 #include "saver/map_saver.hpp"
 
 #include "parser/map_parser.hpp"
@@ -24,7 +25,8 @@
 
 Regulatory::Regulatory()
     : m_editor( new EditorWindow( this ) )
-  , m_worker( new AsyncMapWorker( m_editor, this ) ) {}
+  , m_worker( new AsyncMapWorker( m_editor, this ) )
+  , m_commandManager( new CommandManager( GuiStateProvider::hexView( m_editor ) ) ) {}
 
 Regulatory::~Regulatory()
 {
@@ -51,48 +53,11 @@ void Regulatory::run()
 
         QMessageBox::critical( m_editor, "Ошибка", errorMessage + error.what() );
     }
-
-    // m_hexGrid->setUpdatesEnabled( false );
-
-
-    // auto polygons = create( 100, 50 );
-
-    // createCoords( polygons, 100 );
-
-
-    // try
-    // {
-    //     MapParser parserMapStruct;
-
-    //     auto mapStruct = parserMapStruct.load( qApp->applicationDirPath() + "/map.json" );
-
-
-    //     MapStylesParser parserStyles;
-
-    //     auto styles = parserStyles.load( qApp->applicationDirPath() + "/styles.json" );
-
-    //     loadStyles( polygons, mapStruct, styles );
-    // }
-    // catch ( std::logic_error & err )
-    // {
-    //     qApp->exit( -1 );
-    // }
-
-
-    // qApp->sync();
-
-    // saveToFile();
-
-    // saveToSvg();
-
-    // m_hexGrid->setUpdatesEnabled( true );
-
-    // m_hexGrid->show();
 }
 
 void Regulatory::notifyCreateMap()
 {
-    auto mapSizeEditor = new MapSizeEditor;
+    const auto mapSizeEditor = new MapSizeEditor;
 
     mapSizeEditor->setWindowTitle( "Окно создания карты" );
 
@@ -186,6 +151,41 @@ void Regulatory::notifyLoadStyles()
     loadStyles( fileName );
 }
 
+void Regulatory::notifyHandleClick()
+{
+    const auto handler = dynamic_cast<SceneClickHandler *>(sender());
+
+    if ( not handler )
+        return;
+
+    const auto shape = handler->currentItem();
+
+    if ( not shape )
+        return;
+
+    QUndoCommand * cmd = nullptr;
+
+    switch ( GuiStateProvider::actionType( m_editor ) )
+    {
+        case ActionType::NoAction:
+            return;
+
+        case ActionType::ChangeColor:
+        {
+            const auto primaryColor = GuiStateProvider::primaryColor( m_editor );
+
+            cmd = CommandManager::create( ActionType::ChangeColor, shape, primaryColor );
+
+            break;
+        }
+    }
+
+    if ( not cmd )
+        return;
+
+    m_commandManager->execute( cmd );
+}
+
 void Regulatory::loadStyles(const QString & filename)
 {
     auto styles = MapStylesParser::load( filename );
@@ -194,29 +194,3 @@ void Regulatory::loadStyles(const QString & filename)
 
     m_styles = std::move( styles );
 }
-
-// void Regulatory::loadStyles(QList<QRegularPolygon *> & polygons, MapDict & config, const StylesDict& styles)
-// {
-//     for ( auto polygon : polygons )
-//     {
-//         QString polygonCoord = polygon->coord();
-//
-//         auto styleCoord = config[polygonCoord];
-//
-//         if ( styleCoord.style == "default" )
-//
-//             continue;
-//
-//         auto styleMap = styles.value( styleCoord.style );
-//
-//         if ( styleCoord.customColor.isEmpty() )
-//
-//             polygon->addColor( styleMap.color );
-//
-//         else
-//
-//             polygon->addColor( styleCoord.customColor );
-//
-//         polygon->addImage( styleMap.image );
-//     }
-// }

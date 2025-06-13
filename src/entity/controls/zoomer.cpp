@@ -6,7 +6,9 @@
 #include <QtMath>
 
 
-Zoomer::Zoomer(QGraphicsView * view) : QObject( view ), m_view{view}
+Zoomer::Zoomer(QGraphicsView * view)
+    : QObject( view )
+  , m_view{ view }
 {
     m_view->viewport()->installEventFilter( this );
 
@@ -34,13 +36,12 @@ void Zoomer::gentleZoom(double factor)
 
     m_view->centerOn( m_targetScenePos );
 
-    QPointF viewport( m_view->viewport()->width()  / 2.0,
-                      m_view->viewport()->height() / 2.0  );
+    const QPointF viewport( m_view->viewport()->width() / 2.0, m_view->viewport()->height() / 2.0 );
 
-    QPointF deltaViewportPos = m_targetViewportPos - viewport;
+    const QPointF deltaViewportPos = m_targetViewportPos - viewport;
 
 
-    auto viewportCenter = m_view->mapFromScene( m_targetScenePos ) - deltaViewportPos;
+    const auto viewportCenter = m_view->mapFromScene( m_targetScenePos ) - deltaViewportPos;
 
     m_view->centerOn( m_view->mapToScene( viewportCenter.toPoint() ) );
 
@@ -51,15 +52,14 @@ bool Zoomer::eventFilter(QObject * object, QEvent * event)
 {
     Q_UNUSED( object )
 
-    switch( event->type() )
+    switch ( event->type() )
     {
         case QEvent::MouseMove:
         {
-            QMouseEvent * mouseEvent = static_cast<QMouseEvent *>( event );
+            const auto * mouseEvent = dynamic_cast<QMouseEvent *>(event);
 
-            QPointF delta = m_targetViewportPos - mouseEvent->pos();
-
-            if ( qAbs( delta.x() ) > 5 or qAbs( delta.y() ) > 5 )
+            if ( const QPointF delta = m_targetViewportPos - mouseEvent->pos();
+                qAbs( delta.x() ) > 5 or qAbs( delta.y() ) > 5 )
             {
                 m_targetViewportPos = mouseEvent->pos();
 
@@ -71,24 +71,23 @@ bool Zoomer::eventFilter(QObject * object, QEvent * event)
 
         case QEvent::Wheel:
         {
-            QWheelEvent * wheelEvent = static_cast<QWheelEvent *>( event );
+            const auto * wheelEvent = dynamic_cast<QWheelEvent *>(event);
 
-            if ( QApplication::keyboardModifiers() != m_modifiers or
-
-                 wheelEvent->orientation() != Qt::Vertical)
+            if ( QApplication::keyboardModifiers() != m_modifiers or wheelEvent->orientation() != Qt::Vertical )
 
                 return false;
 
-            double angle = wheelEvent->angleDelta().y();
+            const double angle = wheelEvent->angleDelta().y();
 
-            double factor = qPow( m_baseZoomFactor, angle );
+            const double factor = qPow( m_baseZoomFactor, angle );
 
             gentleZoom( factor );
 
             return true;
         }
 
-        default: return false;
+        default:
+            return QObject::eventFilter( object, event );
     }
 
     return false;

@@ -7,9 +7,7 @@
 
 class Zoomer : public QObject
 {
-    Q_OBJECT
-
-    QGraphicsView * m_view;
+    Q_OBJECT QGraphicsView * m_view;
 
     Qt::KeyboardModifiers m_modifiers;
 
@@ -20,7 +18,7 @@ class Zoomer : public QObject
     QPointF m_targetViewportPos;
 
 public:
-    explicit Zoomer(QGraphicsView *view = nullptr);
+    explicit Zoomer(QGraphicsView * view = nullptr);
 
 
     void setBaseZoomFactor(double baseZoomFactor);
@@ -31,11 +29,8 @@ public:
     void gentleZoom(double factor);
 
 signals:
-
     void zoomed();
 
 private:
-
-    bool eventFilter( QObject * object, QEvent * event );
-
+    bool eventFilter(QObject * object, QEvent * event) override;
 };

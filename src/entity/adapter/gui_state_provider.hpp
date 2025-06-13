@@ -2,8 +2,10 @@
 
 
 #include "../../form/editor_window.hpp"
-#include "../../static/types.hpp"
+
+#include "../../static/action_types.hpp"
 #include "../../static/project_types.hpp"
+#include "../../static/types.hpp"
 
 
 class GuiStateProvider : public QObject
@@ -26,5 +28,12 @@ class GuiStateProvider : public QObject
     static void loadStylesMiniatures(const EditorWindow * window, const StylesDict & styles);
 
     static void loadStyles(const HexGridCells & cells, const MapDict & config, const StylesDict & styles);
+
+
+    static ActionType actionType(const EditorWindow * window);
+
+    static QColor primaryColor(const EditorWindow * window);
+
+    static QWidget * hexView(const EditorWindow * window);
 };
 

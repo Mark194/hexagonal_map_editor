@@ -22,6 +22,10 @@ public slots:
 
     void selectSecondaryColor();
 
+    [[nodiscard]] QColor primaryColor() const;
+
+    [[nodiscard]] QColor secondaryColor() const;
+
 protected:
     bool eventFilter(QObject * obj, QEvent * event) override;
 

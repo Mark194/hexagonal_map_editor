@@ -1,6 +1,7 @@
 #include "toolpanel.hpp"
 #include <QStyle>
 #include <QFontMetrics>
+#include <QFrame>
 
 ToolPanel::ToolPanel(QWidget * parent, bool initiallyCollapsed)
     : QWidget( parent )
@@ -38,11 +39,13 @@ ToolPanel::ToolPanel(QWidget * parent, bool initiallyCollapsed)
 
 QToolButton * ToolPanel::addButton(const QIcon & icon, const QString & text)
 {
-    QToolButton * button = new QToolButton( this );
+    auto * button = new QToolButton( this );
     button->setIcon( icon );
     button->setToolTip( text );
     button->setIconSize( m_iconSize );
     button->setAutoRaise( true );
+    button->setCheckable( true );
+    button->setAutoExclusive( true );
     button->setStyleSheet( "QToolButton { border: none; text-align: left; }" );
 
     if ( not m_isCollapsed and not text.isEmpty() )
@@ -61,9 +64,9 @@ QToolButton * ToolPanel::addButton(const QIcon & icon, const QString & text)
     // Update expanded width if needed
     if ( not m_isCollapsed )
     {
-        QFontMetrics fm( button->font() );
-        int textWidth = fm.horizontalAdvance( text );
-        int buttonWidth = m_iconSize.width() + textWidth + 5;
+        const QFontMetrics fm( button->font() );
+        const int textWidth = fm.horizontalAdvance( text );
+        const int buttonWidth = m_iconSize.width() + textWidth + 5;
         m_expandedWidth = qMax( m_expandedWidth, buttonWidth );
         updateGeometry();
     }
@@ -84,7 +87,7 @@ QToolButton * ToolPanel::addButtonWithText(const QIcon & icon, const QString & t
 
 void ToolPanel::addSeparator()
 {
-    QFrame * separator = new QFrame( this );
+    auto * separator = new QFrame( this );
     separator->setFrameShape( QFrame::HLine );
     separator->setFrameShadow( QFrame::Sunken );
     separator->setFixedHeight( 12 );
@@ -94,7 +97,7 @@ void ToolPanel::addSeparator()
     m_toolWidgets.append( separator );
 }
 
-void ToolPanel::addWidget(QWidget * widget)
+void ToolPanel::addWidget(QWidget * widget) const
 {
     m_mainLayout->insertWidget( m_mainLayout->count() - 1, widget );
 }
@@ -113,7 +116,7 @@ QSize ToolPanel::sizeHint() const
 {
     int width = m_isCollapsed ? m_iconSize.width() + 5 : m_expandedWidth;
     int height = QWidget::sizeHint().height();
-    return QSize( width, height );
+    return { width, height };
 }
 
 void ToolPanel::setSpacing(int spacing)
@@ -127,7 +130,7 @@ void ToolPanel::setIconSize(const QSize & size)
     m_iconSize = size;
     for ( QWidget * widget : m_toolWidgets )
 
-        if ( QToolButton * button = qobject_cast<QToolButton *>( widget ) )
+        if ( auto * button = qobject_cast<QToolButton *>( widget ) )
 
             button->setIconSize( m_iconSize );
 
@@ -153,7 +156,7 @@ void ToolPanel::updateButtonsVisibility()
 {
     for ( QWidget * widget : m_toolWidgets )
     {
-        if ( QToolButton * button = qobject_cast<QToolButton *>( widget ) )
+        if ( auto * button = qobject_cast<QToolButton *>( widget ) )
         {
             if ( m_isCollapsed )
             {
@@ -212,7 +215,7 @@ int ToolPanel::calculateExpandedWidth() const
 
     for ( QWidget * widget : m_toolWidgets )
     {
-        if ( QToolButton * button = qobject_cast<QToolButton *>( widget ) )
+        if ( auto * button = qobject_cast<QToolButton *>( widget ) )
         {
             if ( !button->text().isEmpty() )
                 continue;
