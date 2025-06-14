@@ -1,8 +1,9 @@
 #include "style_widget.hpp"
 
 #include <cmath>
+#include <qapplication.h>
+#include <QFileInfo>
 #include <QHelpEvent>
-#include <qfileinfo.h>
 #include <QLabel>
 #include <QPainter>
 #include <QSvgWidget>
@@ -10,17 +11,16 @@
 #include <QVBoxLayout>
 
 
-class QHelpEvent;
-
 StyleWidget::StyleWidget(const QString & styleName, const QColor & color, const QString & imagePath, QWidget * parent)
     : QWidget( parent )
+  , m_isSelected( false )
   , m_styleName( styleName )
   , m_color( color )
 {
     setFixedSize( 60, 60 );
     setWindowFlags( windowFlags() | Qt::FramelessWindowHint );
 
-    setToolTip( styleName ); // Устанавливаем подсказку
+    setToolTip( styleName );
     setAttribute( Qt::WA_Hover, true );
 
     auto * layout = new QVBoxLayout( this );
@@ -29,12 +29,26 @@ StyleWidget::StyleWidget(const QString & styleName, const QColor & color, const 
     layout->setContentsMargins( 0, 0, 0, 0 );
 
 
-    auto iconWidget = loadIcon( imagePath );
-    if ( iconWidget )
+    if ( auto iconWidget = loadIcon( imagePath ) )
         layout->addWidget( iconWidget, 0, Qt::AlignCenter );
 
 
     setLayout( layout );
+}
+
+bool StyleWidget::isSelected() const
+{
+    return m_isSelected;
+}
+
+void StyleWidget::setSelected(const bool selected)
+{
+    if ( m_isSelected != selected )
+    {
+        m_isSelected = selected;
+
+        update();
+    }
 }
 
 void StyleWidget::paintEvent(QPaintEvent * event)
@@ -42,16 +56,24 @@ void StyleWidget::paintEvent(QPaintEvent * event)
     QPainter painter( this );
     painter.setRenderHint( QPainter::Antialiasing );
     painter.setBrush( m_color );
-    painter.setPen( QPen( Qt::black, 1 ) );
+
+    if ( m_isSelected )
+    {
+        painter.setPen( QPen( palette().highlight(), 3 ) );
+    }
+    else
+    {
+        painter.setPen( QPen( Qt::black, 1 ) );
+    }
 
     QPolygonF hexagon;
-    int centerX = width() / 2;
-    int centerY = height() / 2;
-    int radius = qMin( width(), height() ) / 2 - 5;
+    const int centerX = width() / 2;
+    const int centerY = height() / 2;
+    const int radius = qMin( width(), height() ) / 2 - 5;
 
     for ( int i = 0; i < 6; ++i )
     {
-        double angle = 2 * M_PI * i / 6 + M_PI / 6; // Поворачиваем на 30 градусов
+        const double angle = 2 * M_PI * i / 6 + M_PI / 6; // Поворачиваем на 30 градусов
         hexagon << QPointF( centerX + radius * cos( angle ), centerY + radius * sin( angle ) );
     }
 
@@ -60,12 +82,32 @@ void StyleWidget::paintEvent(QPaintEvent * event)
     QWidget::paintEvent( event );
 }
 
+void StyleWidget::mousePressEvent(QMouseEvent * event)
+{
+    if ( event->button() == Qt::LeftButton )
+    {
+        setSelected( not m_isSelected );
+
+        emit clicked();
+    }
+
+    QWidget::mousePressEvent( event );
+}
+
 bool StyleWidget::event(QEvent * event)
 {
     if ( event->type() == QEvent::ToolTip )
     {
-        QToolTip::showText( static_cast<QHelpEvent *>(event)->globalPos(), m_styleName, this );
+        QToolTip::showText( dynamic_cast<QHelpEvent *>(event)->globalPos(), m_styleName, this );
         return true;
+    }
+    if ( event->type() == QEvent::HoverEnter )
+    {
+        setCursor( Qt::PointingHandCursor );
+    }
+    else if ( event->type() == QEvent::HoverLeave )
+    {
+        setCursor( Qt::ArrowCursor );
     }
 
     return QWidget::event( event );
@@ -76,9 +118,9 @@ QWidget * StyleWidget::loadIcon(const QString & imagePath)
     if ( imagePath.isEmpty() )
         return nullptr;
 
-    QFileInfo fileInfo( imagePath );
+    const QFileInfo fileInfo( imagePath );
 
-    QString suffix = fileInfo.suffix().toLower();
+    const QString suffix = fileInfo.suffix().toLower();
 
     if ( suffix == "svg" )
     {

@@ -6,7 +6,10 @@
 #include "../../services/hex_map_manager.hpp"
 #include "../widgets/qregular_polygon.hpp"
 #include "../widgets/style_widget.hpp"
+#include "../widgets/style_widget_group.hpp"
 
+
+class StyleWidgetGroup;
 
 GuiStateProvider::GuiStateProvider() = default;
 
@@ -96,14 +99,18 @@ void GuiStateProvider::loadStylesMiniatures(const EditorWindow * window, const S
 
     int i = 0;
 
+    const auto group = new StyleWidgetGroup( contentWidget );
+
     for ( auto it = styles.begin(); it != styles.end(); ++it )
     {
-        auto styleWidget = new StyleWidget( it.key(), it.value().color, it.value().image );
+        const auto styleWidget = new StyleWidget( it.key(), it.value().color, it.value().image );
 
-        int row = i / 2;
-        int col = i % 2;
+        const int row = i / 2;
+        const int col = i % 2;
 
         layout->addWidget( styleWidget, row, col, Qt::AlignCenter );
+
+        group->addWidget( styleWidget );
 
         ++i;
     }

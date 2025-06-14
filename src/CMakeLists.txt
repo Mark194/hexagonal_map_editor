@@ -42,6 +42,8 @@ set(SOURCES
         entity/command_manager.hpp
         entity/controls/scene_click_handler.cpp
         entity/controls/scene_click_handler.hpp
+        entity/widgets/style_widget_group.cpp
+        entity/widgets/style_widget_group.hpp
 )
 
 # Список заголовочных файлов
@@ -87,6 +89,8 @@ set(HEADERS
         entity/controls/scene_click_handler.cpp
         entity/controls/scene_click_handler.hpp
         static/action_types.hpp
+        entity/widgets/style_widget_group.cpp
+        entity/widgets/style_widget_group.hpp
 )
 
 # Ресурсы
