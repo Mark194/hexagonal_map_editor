@@ -17,7 +17,7 @@ class CommandManager : public QObject
 public:
     explicit CommandManager(QObject * parent = nullptr);
 
-    static QUndoCommand * create(ActionType type, QGraphicsItem * item, const QVariant & data);
+    static QUndoCommand * create(ActionType type, QGraphicsItem * item, const QVariant & data = QVariant());
 
     void execute(QUndoCommand * cmd);
 

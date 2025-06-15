@@ -30,6 +30,8 @@ public:
 
     QString image() const;
 
+    void clearImage();
+
     void setColor(const QString & color);
 
     void setColor(const QColor & color);

@@ -59,6 +59,8 @@ void EditorWindow::createForm()
 
     const auto eraserButton = panel->addButton( QIcon( ":/icons/eraser" ), "Ластик" );
 
+    eraserButton->setProperty( "action_type", QVariant::fromValue( ActionType::ClearStyle ) );
+
     const auto pippetButton = panel->addButton( QIcon( ":/icons/pippet" ), "Пипетка" );
 
     m_buttonGroup->addButton( selectButton );

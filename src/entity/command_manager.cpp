@@ -12,6 +12,7 @@
 #include "cmds/change_style_command.hpp"
 
 #include "../entity/map_style.hpp"
+#include "cmds/clear_style_command.hpp"
 
 CommandManager::CommandManager(QObject * parent)
     : QObject( parent )
@@ -51,6 +52,9 @@ QUndoCommand * CommandManager::create(const ActionType type, QGraphicsItem * ite
 
         case ActionType::ChangeStyle:
             return new ChangeStyleCommand( shape, data.value<MapStyle>() );
+
+        case ActionType::ClearStyle:
+            return new ClearStyleCommand( shape );
     }
 
     return nullptr;

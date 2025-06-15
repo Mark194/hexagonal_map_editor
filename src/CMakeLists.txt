@@ -48,6 +48,8 @@ set(SOURCES
         entity/widgets/style_widget_group.hpp
         entity/cmds/change_style_command.cpp
         entity/cmds/change_style_command.hpp
+        entity/cmds/clear_style_command.cpp
+        entity/cmds/clear_style_command.hpp
 )
 
 # Список заголовочных файлов
@@ -97,6 +99,8 @@ set(HEADERS
         entity/widgets/style_widget_group.hpp
         entity/cmds/change_style_command.cpp
         entity/cmds/change_style_command.hpp
+        entity/cmds/clear_style_command.cpp
+        entity/cmds/clear_style_command.hpp
 )
 
 # Ресурсы

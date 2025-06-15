@@ -99,6 +99,14 @@ QString QRegularPolygon::image() const
     return m_image;
 }
 
+void QRegularPolygon::clearImage()
+{
+    QByteArray emptySvg = "<svg xmlns='http://www.w3.org/2000/svg'/>";
+    auto emptyRenderer = new QSvgRenderer( emptySvg );
+
+    m_imageItem->setSharedRenderer( emptyRenderer );
+}
+
 void QRegularPolygon::setColor(const QString & color)
 {
     const QColor shapeColor( color );

@@ -201,6 +201,11 @@ void Regulatory::notifyHandleClick()
 
             break;
         }
+
+        case ActionType::ClearStyle:
+            cmd = CommandManager::create( ActionType::ClearStyle, shape );
+
+            break;
     }
 
     if ( not cmd )
