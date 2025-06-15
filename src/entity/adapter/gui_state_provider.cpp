@@ -75,6 +75,7 @@ QGraphicsScene * GuiStateProvider::scene(const EditorWindow * window)
     return window->m_hexView->scene();
 }
 
+
 void GuiStateProvider::loadStylesMiniatures(const EditorWindow * window, const StylesDict & styles)
 {
     window->m_contextPanel->clearContent();
@@ -99,7 +100,9 @@ void GuiStateProvider::loadStylesMiniatures(const EditorWindow * window, const S
 
     int i = 0;
 
-    const auto group = new StyleWidgetGroup( contentWidget );
+    const auto group = new StyleWidgetGroup( const_cast<EditorWindow *>(window) );
+
+    group->setObjectName( "styleGroup" );
 
     for ( auto it = styles.begin(); it != styles.end(); ++it )
     {
@@ -157,4 +160,17 @@ QColor GuiStateProvider::primaryColor(const EditorWindow * window)
 QWidget * GuiStateProvider::hexView(const EditorWindow * window)
 {
     return window->m_hexView;
+}
+
+QString GuiStateProvider::selectedStyle(const EditorWindow * window)
+{
+    const auto styleGroup = window->findChild<StyleWidgetGroup *>( "styleGroup" );
+
+    if ( not styleGroup )
+        throw std::logic_error( "no style group found" );
+
+    if ( auto selectedWidget = styleGroup->selectedWidget() )
+        return selectedWidget->styleName();
+
+    throw std::logic_error( "no style selected" );
 }

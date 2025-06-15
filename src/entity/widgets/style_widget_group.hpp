@@ -21,6 +21,8 @@ public:
 
     void setSelectedWidget(StyleWidget * styleWidget);
 
+    [[nodiscard]] StyleWidget * selectedWidget() const;
+
 private:
     QList<StyleWidget *> m_styleWidgets;
 

@@ -7,7 +7,11 @@
 #include <qaction.h>
 
 #include "adapter/gui_state_provider.hpp"
+
 #include "cmds/change_color_command.hpp"
+#include "cmds/change_style_command.hpp"
+
+#include "../entity/map_style.hpp"
 
 CommandManager::CommandManager(QObject * parent)
     : QObject( parent )
@@ -44,6 +48,9 @@ QUndoCommand * CommandManager::create(const ActionType type, QGraphicsItem * ite
 
         case ActionType::ChangeColor:
             return new ChangeColorCommand( shape, data.value<QColor>() );
+
+        case ActionType::ChangeStyle:
+            return new ChangeStyleCommand( shape, data.value<MapStyle>() );
     }
 
     return nullptr;

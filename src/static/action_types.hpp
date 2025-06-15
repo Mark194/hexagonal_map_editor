@@ -8,7 +8,8 @@
 enum class ActionType
 {
     NoAction,
-    ChangeColor
+    ChangeColor,
+    ChangeStyle
 };
 
 Q_DECLARE_METATYPE( ActionType )

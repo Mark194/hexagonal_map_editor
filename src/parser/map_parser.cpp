@@ -38,14 +38,9 @@ MapDict MapParser::load(const QString & fileName)
     {
         auto jsonStyle = it.value().toObject();
 
-        StructMap structMap
-        {
-            jsonStyle.value( "custom_color" ).toString(),
-            jsonStyle.value( "style" ).toString()
-        };
+        ElementMap structMap{ jsonStyle.value( "custom_color" ).toString(), jsonStyle.value( "style" ).toString() };
 
         dict.insert( it.key(), structMap );
-
     }
     return dict;
 }

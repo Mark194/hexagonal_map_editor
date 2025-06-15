@@ -51,6 +51,11 @@ void StyleWidget::setSelected(const bool selected)
     }
 }
 
+QString StyleWidget::styleName() const
+{
+    return m_styleName;
+}
+
 void StyleWidget::paintEvent(QPaintEvent * event)
 {
     QPainter painter( this );

@@ -55,6 +55,8 @@ void EditorWindow::createForm()
 
     const auto stampButton = panel->addButton( QIcon( ":/icons/stamp" ), "Штамп" );
 
+    stampButton->setProperty( "action_type", QVariant::fromValue( ActionType::ChangeStyle ) );
+
     const auto eraserButton = panel->addButton( QIcon( ":/icons/eraser" ), "Ластик" );
 
     const auto pippetButton = panel->addButton( QIcon( ":/icons/pippet" ), "Пипетка" );

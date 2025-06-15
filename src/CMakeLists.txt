@@ -5,6 +5,8 @@ set(CMAKE_CXX_STANDARD 17)
 
 find_package(Qt5 5.15.2 REQUIRED COMPONENTS Core Gui Svg Widgets Concurrent)
 
+add_definitions(-DQT_MESSAGELOGCONTEXT)
+
 # Список исходных файлов
 set(SOURCES
         entity/adapter/gui_state_provider.cpp
@@ -44,6 +46,8 @@ set(SOURCES
         entity/controls/scene_click_handler.hpp
         entity/widgets/style_widget_group.cpp
         entity/widgets/style_widget_group.hpp
+        entity/cmds/change_style_command.cpp
+        entity/cmds/change_style_command.hpp
 )
 
 # Список заголовочных файлов
@@ -54,7 +58,7 @@ set(HEADERS
         entity/controls/mover.hpp
         entity/controls/zoomer.hpp
         entity/map_style.hpp
-        entity/struct_map.hpp
+        entity/element_map.hpp
         entity/widgets/context_panel.hpp
         entity/widgets/hexgrid.hpp
         entity/widgets/qregular_polygon.hpp
@@ -91,6 +95,8 @@ set(HEADERS
         static/action_types.hpp
         entity/widgets/style_widget_group.cpp
         entity/widgets/style_widget_group.hpp
+        entity/cmds/change_style_command.cpp
+        entity/cmds/change_style_command.hpp
 )
 
 # Ресурсы

@@ -21,6 +21,11 @@ void StyleWidgetGroup::setSelectedWidget(StyleWidget * styleWidget)
     m_selectedWidget = styleWidget;
 }
 
+StyleWidget * StyleWidgetGroup::selectedWidget() const
+{
+    return m_selectedWidget;
+}
+
 void StyleWidgetGroup::changeSelectedWidget()
 {
     auto selectedWidget = dynamic_cast<StyleWidget *>(sender());

@@ -2,6 +2,7 @@
 
 
 #include <cmath>
+#include <iostream>
 
 
 #include <QApplication>
@@ -178,6 +179,28 @@ void Regulatory::notifyHandleClick()
 
             break;
         }
+        case ActionType::ChangeStyle:
+        {
+            try
+            {
+                const auto selectedStyleName = GuiStateProvider::selectedStyle( m_editor );
+
+                const auto selectedStyle = m_styles.value( selectedStyleName );
+
+                if ( not selectedStyle.isValid() )
+                    throw std::logic_error( "unknown style" );
+
+                const auto style = QVariant::fromValue( selectedStyle );
+
+                cmd = CommandManager::create( ActionType::ChangeStyle, shape, style );
+            }
+            catch ( const std::logic_error & err )
+            {
+                std::cout << err.what();
+            }
+
+            break;
+        }
     }
 
     if ( not cmd )
@@ -192,5 +215,5 @@ void Regulatory::loadStyles(const QString & filename)
 
     GuiStateProvider::loadStylesMiniatures( m_editor, styles );
 
-    m_styles = std::move( styles );
+    m_styles = styles;
 }

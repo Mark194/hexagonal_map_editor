@@ -24,6 +24,7 @@ QString QRegularPolygon::coord() const
 QRegularPolygon::QRegularPolygon
 (const double sides, const double radius, const QPointF & center, const double angle, QGraphicsItem * parent)
     : QGraphicsPolygonItem( parent )
+  , m_imageItem( new QGraphicsSvgItem( this ) )
 {
     if ( sides < 3 )
 
@@ -74,18 +75,28 @@ void QRegularPolygon::addImage(const QString & source)
     if ( pixmap.isNull() )
         return;
 
-    const auto item = new QGraphicsSvgItem( source, this );
-    QRectF itemRect = item->boundingRect();
+    m_image = source;
+
+    const auto render = new QSvgRenderer( source );
+
+    m_imageItem->setSharedRenderer( render );
+
+    QRectF itemRect = m_imageItem->boundingRect();
     const QRectF polygonRect = boundingRect();
 
     constexpr qreal scale = 0.25;
-    item->setScale( scale );
+    m_imageItem->setScale( scale );
     itemRect = QRectF( 0, 0, itemRect.width() * scale, itemRect.height() * scale );
 
 
     const QPointF centerOffset = polygonRect.center() - itemRect.center();
 
-    item->setPos( centerOffset );
+    m_imageItem->setPos( centerOffset );
+}
+
+QString QRegularPolygon::image() const
+{
+    return m_image;
 }
 
 void QRegularPolygon::setColor(const QString & color)

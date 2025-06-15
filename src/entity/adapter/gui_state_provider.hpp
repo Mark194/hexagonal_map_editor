@@ -8,9 +8,13 @@
 #include "../../static/types.hpp"
 
 
+#include <QDebug>
+
 class GuiStateProvider : public QObject
 {
-    Q_OBJECT public:
+    Q_OBJECT //
+
+public:
     GuiStateProvider();
 
     ~GuiStateProvider() override;
@@ -35,5 +39,7 @@ class GuiStateProvider : public QObject
     static QColor primaryColor(const EditorWindow * window);
 
     static QWidget * hexView(const EditorWindow * window);
+
+    static QString selectedStyle(const EditorWindow * window);
 };
 

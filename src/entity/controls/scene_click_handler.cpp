@@ -7,6 +7,8 @@
 
 #include <QGraphicsSceneMouseEvent>
 
+#include "../widgets/qregular_polygon.hpp"
+
 
 SceneClickHandler::SceneClickHandler(QGraphicsScene * scene, QObject * parent)
     : QObject( parent )
@@ -18,7 +20,19 @@ SceneClickHandler::SceneClickHandler(QGraphicsScene * scene, QObject * parent)
 
 QGraphicsItem * SceneClickHandler::currentItem() const
 {
-    return m_scene->itemAt( m_scenePos, QTransform() );
+    auto item = m_scene->itemAt( m_scenePos, QTransform() );
+
+    if ( auto polygonItem = dynamic_cast<QRegularPolygon *>(item) )
+    {
+        return polygonItem;
+    }
+
+    if ( auto polygonItem = dynamic_cast<QRegularPolygon *>(item->parentItem()) )
+    {
+        return polygonItem;
+    }
+
+    return nullptr;
 }
 
 bool SceneClickHandler::eventFilter(QObject * watched, QEvent * event)

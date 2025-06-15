@@ -11,7 +11,7 @@
 #include "../widgets/qregular_polygon.hpp"
 
 
-class ChangeColorCommand final : public QUndoCommand
+class ChangeColorCommand : public QUndoCommand
 {
 public:
     ChangeColorCommand(QRegularPolygon * shape, QColor color);
@@ -20,7 +20,7 @@ public:
 
     void redo() override;
 
-private:
+protected:
     QRegularPolygon * m_shape;
 
     QColor m_color;

@@ -10,8 +10,12 @@ struct MapStyle
 
     QString image;
 
+    MapStyle() = default;
+
     [[nodiscard]] bool isValid() const
     {
-        return not ( color.isEmpty() and image.isEmpty() );
+        return not( color.isEmpty() and image.isEmpty() );
     }
 };
+
+Q_DECLARE_METATYPE( MapStyle )

@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include <QGraphicsPolygonItem>
+#include <QGraphicsSvgItem>
 
 
 class QRegularPolygon : public QGraphicsPolygonItem
@@ -16,6 +16,10 @@ class QRegularPolygon : public QGraphicsPolygonItem
 
     QString m_coord;
 
+    QString m_image;
+
+    QGraphicsSvgItem * m_imageItem;
+
 public:
     QRegularPolygon
     (double sides, double radius, const QPointF & center, double angle = 0.0, QGraphicsItem * parent = nullptr);
@@ -23,6 +27,8 @@ public:
     void addText(const QString & text);
 
     void addImage(const QString & source);
+
+    QString image() const;
 
     void setColor(const QString & color);
 

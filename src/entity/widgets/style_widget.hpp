@@ -16,6 +16,8 @@ public:
 
     void setSelected(bool selected);
 
+    [[nodiscard]] QString styleName() const;
+
 signals:
     void clicked();
 
