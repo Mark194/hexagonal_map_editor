@@ -174,3 +174,8 @@ QString GuiStateProvider::selectedStyle(const EditorWindow * window)
 
     throw std::logic_error( "no style selected" );
 }
+
+IDualColorSelector * GuiStateProvider::colorSelector(const EditorWindow * window)
+{
+    return window->m_dualColorWidget;
+}

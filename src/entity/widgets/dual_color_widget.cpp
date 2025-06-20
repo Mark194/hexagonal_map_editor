@@ -38,7 +38,21 @@ void DualColorWidget::selectPrimaryColor() { selectColor( m_primaryColor, "Prima
 
 void DualColorWidget::selectSecondaryColor() { selectColor( m_secondaryColor, "Secondary color" ); }
 
+void DualColorWidget::setPrimaryColor(const QColor & color)
+{
+    m_primaryColor = color;
+
+    updateColors();
+}
+
 QColor DualColorWidget::primaryColor() const { return m_primaryColor; }
+
+void DualColorWidget::setSecondaryColor(const QColor & color)
+{
+    m_secondaryColor = color;
+
+    updateColors();
+}
 
 QColor DualColorWidget::secondaryColor() const { return m_secondaryColor; }
 

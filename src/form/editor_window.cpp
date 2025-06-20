@@ -61,7 +61,9 @@ void EditorWindow::createForm()
 
     eraserButton->setProperty( "action_type", QVariant::fromValue( ActionType::ClearStyle ) );
 
-    const auto pippetButton = panel->addButton( QIcon( ":/icons/pippet" ), "Пипетка" );
+    const auto grabButton = panel->addButton( QIcon( ":/icons/pippet" ), "Пипетка" );
+
+    grabButton->setProperty( "action_type", QVariant::fromValue( ActionType::GrabColor ) );
 
     m_buttonGroup->addButton( selectButton );
 
@@ -73,7 +75,7 @@ void EditorWindow::createForm()
 
     m_buttonGroup->addButton( eraserButton );
 
-    m_buttonGroup->addButton( pippetButton );
+    m_buttonGroup->addButton( grabButton );
 
     panel->addSeparator();
 

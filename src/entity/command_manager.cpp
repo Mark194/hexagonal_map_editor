@@ -13,6 +13,7 @@
 
 #include "../entity/map_style.hpp"
 #include "cmds/clear_style_command.hpp"
+#include "cmds/grab_color_command.hpp"
 
 CommandManager::CommandManager(QObject * parent)
     : QObject( parent )
@@ -39,9 +40,6 @@ QUndoCommand * CommandManager::create(const ActionType type, QGraphicsItem * ite
 {
     const auto shape = dynamic_cast<QRegularPolygon *>(item);
 
-    if ( not shape )
-        return nullptr;
-
     switch ( type )
     {
         case ActionType::NoAction:
@@ -55,6 +53,9 @@ QUndoCommand * CommandManager::create(const ActionType type, QGraphicsItem * ite
 
         case ActionType::ClearStyle:
             return new ClearStyleCommand( shape );
+
+        case ActionType::GrabColor:
+            return new GrabColorCommand( shape, data.value<IDualColorSelector *>() );
     }
 
     return nullptr;

@@ -11,6 +11,7 @@ enum class ActionType
     ChangeColor,
     ChangeStyle,
     ClearStyle,
+    GrabColor
 };
 
 Q_DECLARE_METATYPE( ActionType )

@@ -50,6 +50,8 @@ set(SOURCES
         entity/cmds/change_style_command.hpp
         entity/cmds/clear_style_command.cpp
         entity/cmds/clear_style_command.hpp
+        entity/cmds/grab_color_command.cpp
+        entity/cmds/grab_color_command.hpp
 )
 
 # Список заголовочных файлов
@@ -101,6 +103,9 @@ set(HEADERS
         entity/cmds/change_style_command.hpp
         entity/cmds/clear_style_command.cpp
         entity/cmds/clear_style_command.hpp
+        entity/cmds/grab_color_command.cpp
+        entity/cmds/grab_color_command.hpp
+        interfaces/idual_color_selector.hpp
 )
 
 # Ресурсы

@@ -10,7 +10,10 @@
 #include <QWidget>
 
 
-class DualColorWidget : public QWidget
+#include "../../interfaces/idual_color_selector.hpp"
+
+
+class DualColorWidget : public QWidget, public IDualColorSelector
 {
 public:
     explicit DualColorWidget(QWidget * parent = nullptr);
@@ -22,7 +25,11 @@ public slots:
 
     void selectSecondaryColor();
 
-    [[nodiscard]] QColor primaryColor() const;
+    void setPrimaryColor(const QColor & color) override;
+
+    [[nodiscard]] QColor primaryColor() const override;
+
+    void setSecondaryColor(const QColor & color);
 
     [[nodiscard]] QColor secondaryColor() const;
 

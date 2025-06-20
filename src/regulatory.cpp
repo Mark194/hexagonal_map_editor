@@ -50,7 +50,7 @@ void Regulatory::run()
     }
     catch ( const std::logic_error & error )
     {
-        QString errorMessage = "Ошибка загрузки стилей:\n";
+        const QString errorMessage = "Ошибка загрузки стилей:\n";
 
         QMessageBox::critical( m_editor, "Ошибка", errorMessage + error.what() );
     }
@@ -177,6 +177,7 @@ void Regulatory::notifyHandleClick()
 
             cmd = CommandManager::create( ActionType::ChangeColor, shape, primaryColor );
 
+
             break;
         }
         case ActionType::ChangeStyle:
@@ -203,7 +204,19 @@ void Regulatory::notifyHandleClick()
         }
 
         case ActionType::ClearStyle:
+
+            CommandManager::assertShape( shape );
+
             cmd = CommandManager::create( ActionType::ClearStyle, shape );
+
+
+            break;
+
+        case ActionType::GrabColor:
+
+            const auto colorSelector = GuiStateProvider::colorSelector( m_editor );
+
+            cmd = CommandManager::create( ActionType::GrabColor, shape, QVariant::fromValue( colorSelector ) );
 
             break;
     }
