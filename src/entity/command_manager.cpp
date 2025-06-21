@@ -9,9 +9,10 @@
 #include "adapter/gui_state_provider.hpp"
 
 #include "cmds/change_color_command.hpp"
-#include "cmds/change_style_command.hpp"
 
-#include "../entity/map_style.hpp"
+// #include "adapter/presenter_state_provider.hpp"
+#include "adapter/regulatory_state_provider.hpp"
+#include "cmds/change_style_command.hpp"
 #include "cmds/clear_style_command.hpp"
 #include "cmds/grab_color_command.hpp"
 
@@ -36,7 +37,7 @@ CommandManager::CommandManager(QObject * parent)
     widget->addAction( redoAction );
 }
 
-QUndoCommand * CommandManager::create(const ActionType type, QGraphicsItem * item, const QVariant & data)
+QUndoCommand * CommandManager::create(const ActionType type, QGraphicsItem * item, EditorWindow * editorWindow)
 {
     const auto shape = dynamic_cast<QRegularPolygon *>(item);
 
@@ -46,22 +47,51 @@ QUndoCommand * CommandManager::create(const ActionType type, QGraphicsItem * ite
             return nullptr;
 
         case ActionType::ChangeColor:
-            return new ChangeColorCommand( shape, data.value<QColor>() );
+        {
+            const QColor color = GuiStateProvider::primaryColor( editorWindow );
+            return new ChangeColorCommand( shape, color );
+        }
 
         case ActionType::ChangeStyle:
-            return new ChangeStyleCommand( shape, data.value<MapStyle>() );
+            return createCommandChangeStyle( shape, editorWindow );
 
         case ActionType::ClearStyle:
             return new ClearStyleCommand( shape );
 
         case ActionType::GrabColor:
-            return new GrabColorCommand( shape, data.value<IDualColorSelector *>() );
-    }
+        {
+            const auto colorSelector = GuiStateProvider::colorSelector( editorWindow );
 
-    return nullptr;
+            return new GrabColorCommand( shape, colorSelector );
+        }
+
+        default:
+            return nullptr;
+    }
 }
 
 void CommandManager::execute(QUndoCommand * cmd)
 {
     m_undoStack->push( cmd );
+}
+
+QUndoCommand * CommandManager::createCommandChangeStyle(QRegularPolygon * shape, EditorWindow * editorWindow)
+{
+    try
+    {
+        const auto selectedStyleName = GuiStateProvider::selectedStyle( editorWindow );
+
+        const auto subscriber = GuiStateProvider::subscriber( editorWindow );
+
+        const auto selectedStyle = RegulatoryStateProvider::mapStyle( subscriber, selectedStyleName );
+
+        if ( not selectedStyle.isValid() )
+            throw std::logic_error( "unknown style" );
+
+        return new ChangeStyleCommand( shape, selectedStyle );
+    }
+    catch ( [[maybe_unused]] const std::logic_error & err )
+    {
+        return nullptr;
+    }
 }

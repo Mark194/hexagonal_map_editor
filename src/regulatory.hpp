@@ -2,6 +2,7 @@
 
 
 #include "entity/command_manager.hpp"
+#include "entity/adapter/friend_regulatory_state_provider.hpp"
 #include "entity/widgets/qregular_polygon.hpp"
 
 #include "form/editor_window.hpp"
@@ -14,6 +15,10 @@
 
 class Regulatory : public ISubscriber
 {
+    Q_OBJECT //
+
+    DECLARE_REGULATORY_STATE_PROVIDER_FRIEND()
+
     EditorWindow * m_editor;
 
     AsyncMapWorker * m_worker;

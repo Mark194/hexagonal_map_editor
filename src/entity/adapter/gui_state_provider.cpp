@@ -179,3 +179,8 @@ IDualColorSelector * GuiStateProvider::colorSelector(const EditorWindow * window
 {
     return window->m_dualColorWidget;
 }
+
+ISubscriber * GuiStateProvider::subscriber(const EditorWindow * window)
+{
+    return window->m_subscriber;
+}

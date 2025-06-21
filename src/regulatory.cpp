@@ -164,63 +164,7 @@ void Regulatory::notifyHandleClick()
     if ( not shape )
         return;
 
-    QUndoCommand * cmd = nullptr;
-
-    switch ( GuiStateProvider::actionType( m_editor ) )
-    {
-        case ActionType::NoAction:
-            return;
-
-        case ActionType::ChangeColor:
-        {
-            const auto primaryColor = GuiStateProvider::primaryColor( m_editor );
-
-            cmd = CommandManager::create( ActionType::ChangeColor, shape, primaryColor );
-
-
-            break;
-        }
-        case ActionType::ChangeStyle:
-        {
-            try
-            {
-                const auto selectedStyleName = GuiStateProvider::selectedStyle( m_editor );
-
-                const auto selectedStyle = m_styles.value( selectedStyleName );
-
-                if ( not selectedStyle.isValid() )
-                    throw std::logic_error( "unknown style" );
-
-                const auto style = QVariant::fromValue( selectedStyle );
-
-                cmd = CommandManager::create( ActionType::ChangeStyle, shape, style );
-            }
-            catch ( const std::logic_error & err )
-            {
-                std::cout << err.what();
-            }
-
-            break;
-        }
-
-        case ActionType::ClearStyle:
-
-            CommandManager::assertShape( shape );
-
-            cmd = CommandManager::create( ActionType::ClearStyle, shape );
-
-
-            break;
-
-        case ActionType::GrabColor:
-
-            const auto colorSelector = GuiStateProvider::colorSelector( m_editor );
-
-            cmd = CommandManager::create( ActionType::GrabColor, shape, QVariant::fromValue( colorSelector ) );
-
-            break;
-    }
-
+    auto cmd = CommandManager::create( GuiStateProvider::actionType( m_editor ), shape, m_editor );
     if ( not cmd )
         return;
 

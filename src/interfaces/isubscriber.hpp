@@ -4,12 +4,10 @@
 #include <QObject>
 
 
-class QGraphicsItem;
-
-
 class ISubscriber : public QObject
 {
-    Q_OBJECT public:
+    Q_OBJECT //
+public:
     ~ISubscriber() override = default;
 
     virtual void notifyCreateMap() = 0;

@@ -19,7 +19,9 @@
 
 class EditorWindow final : public QMainWindow
 {
-    Q_OBJECT DECLARE_GUI_STATE_PROVIDER_FRIEND()
+    Q_OBJECT //
+
+    DECLARE_GUI_STATE_PROVIDER_FRIEND()
 
     ISubscriber * m_subscriber;
 

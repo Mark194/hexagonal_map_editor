@@ -43,5 +43,7 @@ public:
     static QString selectedStyle(const EditorWindow * window);
 
     static IDualColorSelector * colorSelector(const EditorWindow * window);
+
+    static ISubscriber * subscriber(const EditorWindow * window);
 };
 

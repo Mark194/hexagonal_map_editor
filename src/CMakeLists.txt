@@ -52,6 +52,8 @@ set(SOURCES
         entity/cmds/clear_style_command.hpp
         entity/cmds/grab_color_command.cpp
         entity/cmds/grab_color_command.hpp
+        entity/adapter/regulatory_state_provider.cpp
+        entity/adapter/regulatory_state_provider.hpp
 )
 
 # Список заголовочных файлов
@@ -106,6 +108,9 @@ set(HEADERS
         entity/cmds/grab_color_command.cpp
         entity/cmds/grab_color_command.hpp
         interfaces/idual_color_selector.hpp
+        entity/adapter/regulatory_state_provider.cpp
+        entity/adapter/regulatory_state_provider.hpp
+        entity/adapter/friend_regulatory_state_provider.hpp
 )
 
 # Ресурсы
