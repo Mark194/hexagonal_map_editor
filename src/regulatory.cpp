@@ -165,6 +165,7 @@ void Regulatory::notifyHandleClick()
         return;
 
     auto cmd = CommandManager::create( GuiStateProvider::actionType( m_editor ), shape, m_editor );
+
     if ( not cmd )
         return;
 

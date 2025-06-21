@@ -14,6 +14,7 @@
 #include "adapter/regulatory_state_provider.hpp"
 #include "cmds/change_style_command.hpp"
 #include "cmds/clear_style_command.hpp"
+#include "cmds/fill_color_command.hpp"
 #include "cmds/grab_color_command.hpp"
 
 CommandManager::CommandManager(QObject * parent)
@@ -63,6 +64,15 @@ QUndoCommand * CommandManager::create(const ActionType type, QGraphicsItem * ite
             const auto colorSelector = GuiStateProvider::colorSelector( editorWindow );
 
             return new GrabColorCommand( shape, colorSelector );
+        }
+
+        case ActionType::FillColor:
+        {
+            const QColor color = GuiStateProvider::primaryColor( editorWindow );
+
+            const auto polygons = GuiStateProvider::polygons( editorWindow );
+
+            return new FillColorCommand( shape, color, polygons );
         }
 
         default:

@@ -45,5 +45,10 @@ public:
     static IDualColorSelector * colorSelector(const EditorWindow * window);
 
     static ISubscriber * subscriber(const EditorWindow * window);
+
+    static HexGridCells polygons(const EditorWindow * window);
+
+private:
+    static QGraphicsItemGroup * findGroup(const QGraphicsScene * scene);
 };
 

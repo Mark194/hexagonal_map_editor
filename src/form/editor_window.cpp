@@ -49,9 +49,11 @@ void EditorWindow::createForm()
 
     const auto brushButton = panel->addButton( QIcon( ":/icons/brush" ), "Кисть" );
 
+    brushButton->setProperty( "action_type", QVariant::fromValue( ActionType::ChangeColor ) );
+
     const auto bucketFillButton = panel->addButton( QIcon( ":/icons/bucket_fill" ), "Заливка" );
 
-    brushButton->setProperty( "action_type", QVariant::fromValue( ActionType::ChangeColor ) );
+    bucketFillButton->setProperty( "action_type", QVariant::fromValue( ActionType::FillColor ) );
 
     const auto stampButton = panel->addButton( QIcon( ":/icons/stamp" ), "Штамп" );
 

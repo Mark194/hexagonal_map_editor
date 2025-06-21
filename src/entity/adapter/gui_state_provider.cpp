@@ -33,7 +33,6 @@ void GuiStateProvider::createRelations(EditorWindow * window)
 void GuiStateProvider::loadCells(QGraphicsScene * graphicsScene, const HexGridCells & cells)
 {
     auto * groupCells = new QGraphicsItemGroup;
-
     graphicsScene->blockSignals( true );
 
     graphicsScene->addItem( groupCells );
@@ -183,4 +182,32 @@ IDualColorSelector * GuiStateProvider::colorSelector(const EditorWindow * window
 ISubscriber * GuiStateProvider::subscriber(const EditorWindow * window)
 {
     return window->m_subscriber;
+}
+
+HexGridCells GuiStateProvider::polygons(const EditorWindow * window)
+{
+    auto group = findGroup( window->m_hexView->scene() );
+
+    auto items = group->childItems();
+
+    HexGridCells cells;
+
+    for ( auto item : items )
+        if ( auto polygon = dynamic_cast<QRegularPolygon *>(item) )
+            cells.append( polygon );
+
+    return cells;
+}
+
+QGraphicsItemGroup * GuiStateProvider::findGroup(const QGraphicsScene * scene)
+{
+    for ( QGraphicsItem * item : scene->items() )
+    {
+        if ( item->type() == QGraphicsItemGroup::Type )
+        {
+            return dynamic_cast<QGraphicsItemGroup *>(item);
+        }
+    }
+
+    return nullptr;
 }
