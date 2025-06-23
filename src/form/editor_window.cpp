@@ -9,6 +9,8 @@
 #include "../entity/widgets/dual_color_widget.hpp"
 #include "../entity/widgets/toolpanel.hpp"
 
+#include "../entity/builder/gui_builder.hpp"
+
 #include "../static/action_types.hpp"
 
 EditorWindow::EditorWindow(ISubscriber * subscriber, QWidget * parent)
@@ -43,29 +45,38 @@ void EditorWindow::createForm()
 
     m_buttonGroup = new QButtonGroup( this );
 
-    const auto selectButton = panel->addButton( QIcon( ":/icons/cursor" ), "Выбрать" );
+    const auto selectButton = GuiBuilder::createToolButton( panel,
+                                                            ":/icons/cursor",
+                                                            "Выбрать",
+                                                            ActionType::NoAction );
 
-    selectButton->setProperty( "action_type", QVariant::fromValue( ActionType::NoAction ) );
+    const auto brushButton = GuiBuilder::createToolButton( panel,
+                                                           ":/icons/brush",
+                                                           "Кисть",
+                                                           ActionType::ChangeColor );
 
-    const auto brushButton = panel->addButton( QIcon( ":/icons/brush" ), "Кисть" );
+    const auto bucketFillButton = GuiBuilder::createToolButton( panel,
+                                                                ":/icons/bucket_fill",
+                                                                "Заливка",
+                                                                ActionType::FillColor );
 
-    brushButton->setProperty( "action_type", QVariant::fromValue( ActionType::ChangeColor ) );
+    const auto stampButton = GuiBuilder::createToolButton( panel,
+                                                           ":/icons/stamp",
+                                                           "Штамп",
+                                                           ActionType::ChangeStyle );
 
-    const auto bucketFillButton = panel->addButton( QIcon( ":/icons/bucket_fill" ), "Заливка" );
 
-    bucketFillButton->setProperty( "action_type", QVariant::fromValue( ActionType::FillColor ) );
+    const auto eraserButton = GuiBuilder::createToolButton( panel,
+                                                            ":/icons/eraser",
+                                                            "Ластик",
+                                                            ActionType::ClearStyle );
 
-    const auto stampButton = panel->addButton( QIcon( ":/icons/stamp" ), "Штамп" );
 
-    stampButton->setProperty( "action_type", QVariant::fromValue( ActionType::ChangeStyle ) );
+    const auto grabButton = GuiBuilder::createToolButton( panel,
+                                                          ":/icons/pippet",
+                                                          "Пипетка",
+                                                          ActionType::GrabColor );
 
-    const auto eraserButton = panel->addButton( QIcon( ":/icons/eraser" ), "Ластик" );
-
-    eraserButton->setProperty( "action_type", QVariant::fromValue( ActionType::ClearStyle ) );
-
-    const auto grabButton = panel->addButton( QIcon( ":/icons/pippet" ), "Пипетка" );
-
-    grabButton->setProperty( "action_type", QVariant::fromValue( ActionType::GrabColor ) );
 
     m_buttonGroup->addButton( selectButton );
 
@@ -82,22 +93,29 @@ void EditorWindow::createForm()
     panel->addSeparator();
 
 
-    panel->addButton( QIcon( ":/icons/change_size" ), "Размер" );
+    panel->addButton( QIcon( ":/icons/change_size" ),
+                      "Размер" );
 
-    panel->addButton( QIcon( ":/icons/rotate" ), "Повернуть" );
+    panel->addButton( QIcon( ":/icons/rotate" ),
+                      "Повернуть" );
 
-    panel->addButton( QIcon( ":/icons/coordinate" ), "Координаты" );
+    panel->addButton( QIcon( ":/icons/coordinate" ),
+                      "Координаты" );
 
     panel->addSeparator();
 
 
-    const auto styleButton = panel->addButton( QIcon( ":/icons/styles" ), "Стили" );
+    const auto styleButton = panel->addButton( QIcon( ":/icons/styles" ),
+                                               "Стили" );
 
     styleButton->setCheckable( true );
 
     m_contextPanel = new ContextPanel( this );
 
-    connect( styleButton, &QToolButton::clicked, m_contextPanel, &ContextPanel::changeOpacity );
+    connect( styleButton,
+             &QToolButton::clicked,
+             m_contextPanel,
+             &ContextPanel::changeOpacity );
 
     panel->addSeparator();
 
@@ -110,14 +128,19 @@ void EditorWindow::createForm()
 
     contentLayout->setMargin( 0 );
 
-    contentLayout->setContentsMargins( 0, 0, 0, 0 );
+    contentLayout->setContentsMargins( 0,
+                                       0,
+                                       0,
+                                       0 );
 
     contentLayout->setSpacing( 0 );
 
 
-    contentLayout->addWidget( panel, 1 );
+    contentLayout->addWidget( panel,
+                              1 );
 
-    contentLayout->addWidget( m_hexView, 5 );
+    contentLayout->addWidget( m_hexView,
+                              5 );
 }
 
 void EditorWindow::createActions()
@@ -134,9 +157,13 @@ void EditorWindow::createActions()
     m_actions.append( mover );
 
 
-    auto * sceneHandler = new SceneClickHandler( m_hexView->scene(), this );
+    auto * sceneHandler = new SceneClickHandler( m_hexView->scene(),
+                                                 this );
 
-    connect( sceneHandler, &SceneClickHandler::itemClicked, m_subscriber, &ISubscriber::notifyHandleClick );
+    connect( sceneHandler,
+             &SceneClickHandler::itemClicked,
+             m_subscriber,
+             &ISubscriber::notifyHandleClick );
 
     m_actions.append( sceneHandler );
 }
