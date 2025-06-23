@@ -46,4 +46,7 @@ private:
     void createForm();
 
     void createActions();
+
+private slots:
+    void changeCursor(QAbstractButton * button);
 };

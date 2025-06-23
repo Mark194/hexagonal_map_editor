@@ -1,6 +1,9 @@
 #include "editor_window.hpp"
 
 
+#include <QApplication>
+
+
 #include "../entity/controls/mover.hpp"
 #include "../entity/controls/scene_click_handler.hpp"
 #include "../entity/controls/zoomer.hpp"
@@ -16,7 +19,13 @@
 EditorWindow::EditorWindow(ISubscriber * subscriber, QWidget * parent)
     : QMainWindow( parent )
   , m_subscriber( subscriber )
+  , m_buttonGroup( new QButtonGroup( this ) )
 {
+    connect( m_buttonGroup,
+             qOverload<QAbstractButton *>( &QButtonGroup::buttonClicked ),
+             this,
+             &EditorWindow::changeCursor );
+
     createForm();
 
     m_menuForm = new MenuSubForm;
@@ -43,7 +52,6 @@ void EditorWindow::createForm()
     auto * contentLayout = new QHBoxLayout( central );
     auto * panel = new ToolPanel;
 
-    m_buttonGroup = new QButtonGroup( this );
 
     const auto selectButton = GuiBuilder::createToolButton( panel,
                                                             "Выбрать",
@@ -166,4 +174,24 @@ void EditorWindow::createActions()
              &ISubscriber::notifyHandleClick );
 
     m_actions.append( sceneHandler );
+}
+
+void EditorWindow::changeCursor(QAbstractButton * button)
+{
+    if ( not button )
+        return;
+
+    auto buttonIcon = button->icon();
+
+    if ( buttonIcon.isNull() )
+    {
+        m_hexView->setCursor( Qt::ArrowCursor );
+    }
+    else
+    {
+        const auto cursorRed = QCursor( buttonIcon.pixmap( buttonIcon.actualSize( { 30, 30 } ) ),
+                                        0,
+                                        0 );
+        m_hexView->setCursor( cursorRed );
+    }
 }
