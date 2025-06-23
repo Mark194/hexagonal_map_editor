@@ -40,7 +40,7 @@ HexGridCells FillColorCommand::findMatchingPolygons(QRegularPolygon * current, c
     HexGridCells queue;
 
 
-    QColor targetColor = current->brush().color();
+    const QColor targetColor = current->brush().color();
 
     int startIndex = -1;
     for ( int i = 0; i < polygons.size(); ++i )
@@ -65,7 +65,7 @@ HexGridCells FillColorCommand::findMatchingPolygons(QRegularPolygon * current, c
         for ( int i = 0; i < polygons.size(); ++i )
         {
             if ( processedIndices.contains( i ) )
-                continue; // Пропускаем обработанные
+                continue;
 
             QRegularPolygon * neighbor = polygons[ i ];
             if ( neighbor->brush().color() != targetColor )
