@@ -23,17 +23,18 @@ CommandManager::CommandManager(QObject * parent)
 {
     m_undoStack->setUndoLimit( 10 );
 
-    auto * undoAction = m_undoStack->createUndoAction( parent, "Undo" );
+    auto * undoAction = m_undoStack->createUndoAction( parent,
+                                                       "Undo" );
 
     undoAction->setShortcut( QKeySequence::Undo );
 
-    auto * redoAction = m_undoStack->createRedoAction( parent, "Redo" );
+    auto * redoAction = m_undoStack->createRedoAction( parent,
+                                                       "Redo" );
 
     redoAction->setShortcut( QKeySequence::Redo );
 
     const auto widget = dynamic_cast<QWidget *>(parent);
 
-    widget->setContextMenuPolicy( Qt::ActionsContextMenu );
     widget->addAction( undoAction );
     widget->addAction( redoAction );
 }
@@ -50,11 +51,13 @@ QUndoCommand * CommandManager::create(const ActionType type, QGraphicsItem * ite
         case ActionType::ChangeColor:
         {
             const QColor color = GuiStateProvider::primaryColor( editorWindow );
-            return new ChangeColorCommand( shape, color );
+            return new ChangeColorCommand( shape,
+                                           color );
         }
 
         case ActionType::ChangeStyle:
-            return createCommandChangeStyle( shape, editorWindow );
+            return createCommandChangeStyle( shape,
+                                             editorWindow );
 
         case ActionType::ClearStyle:
             return new ClearStyleCommand( shape );
@@ -63,7 +66,8 @@ QUndoCommand * CommandManager::create(const ActionType type, QGraphicsItem * ite
         {
             const auto colorSelector = GuiStateProvider::colorSelector( editorWindow );
 
-            return new GrabColorCommand( shape, colorSelector );
+            return new GrabColorCommand( shape,
+                                         colorSelector );
         }
 
         case ActionType::FillColor:
@@ -72,7 +76,9 @@ QUndoCommand * CommandManager::create(const ActionType type, QGraphicsItem * ite
 
             const auto polygons = GuiStateProvider::polygons( editorWindow );
 
-            return new FillColorCommand( shape, color, polygons );
+            return new FillColorCommand( shape,
+                                         color,
+                                         polygons );
         }
 
         default:
@@ -93,12 +99,14 @@ QUndoCommand * CommandManager::createCommandChangeStyle(QRegularPolygon * shape,
 
         const auto subscriber = GuiStateProvider::subscriber( editorWindow );
 
-        const auto selectedStyle = RegulatoryStateProvider::mapStyle( subscriber, selectedStyleName );
+        const auto selectedStyle = RegulatoryStateProvider::mapStyle( subscriber,
+                                                                      selectedStyleName );
 
         if ( not selectedStyle.isValid() )
             throw std::logic_error( "unknown style" );
 
-        return new ChangeStyleCommand( shape, selectedStyle );
+        return new ChangeStyleCommand( shape,
+                                       selectedStyle );
     }
     catch ( [[maybe_unused]] const std::logic_error & err )
     {
