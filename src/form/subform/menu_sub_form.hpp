@@ -22,6 +22,8 @@ class MenuSubForm : public QMenuBar
 
     QAction * m_addStyle{};
 
+    QAction * m_createStyle{};
+
 public:
     MenuSubForm();
 

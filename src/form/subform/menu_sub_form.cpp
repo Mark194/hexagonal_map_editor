@@ -32,7 +32,7 @@ void MenuSubForm::createStyleMenu()
 {
     QMenu * styleMenu = addMenu( "Стили" );
 
-    styleMenu->addAction( "Создать" );
+    m_createStyle = styleMenu->addAction( "Создать" );
 
     m_addStyle = styleMenu->addAction( "Добавить" );
 

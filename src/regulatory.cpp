@@ -20,13 +20,15 @@
 #include "parser/map_parser.hpp"
 
 #include "form/map_size_editor.hpp"
+#include "form/style_dialog.hpp"
 #include "parser/map_styles_parser.hpp"
 #include "worker/async_style_loader.hpp"
 
 
 Regulatory::Regulatory()
     : m_editor( new EditorWindow( this ) )
-  , m_worker( new AsyncMapWorker( m_editor, this ) )
+  , m_worker( new AsyncMapWorker( m_editor,
+                                  this ) )
   , m_commandManager( new CommandManager( GuiStateProvider::hexView( m_editor ) ) ) {}
 
 Regulatory::~Regulatory()
@@ -52,7 +54,9 @@ void Regulatory::run()
     {
         const QString errorMessage = "Ошибка загрузки стилей:\n";
 
-        QMessageBox::critical( m_editor, "Ошибка", errorMessage + error.what() );
+        QMessageBox::critical( m_editor,
+                               "Ошибка",
+                               errorMessage + error.what() );
     }
 }
 
@@ -71,7 +75,8 @@ void Regulatory::notifyCreateMap()
 
     const auto isRotateCell = mapSizeEditor->isRotate();
 
-    m_worker->startGeneration( mapSize, isRotateCell );
+    m_worker->startGeneration( mapSize,
+                               isRotateCell );
 }
 
 void Regulatory::notifyOpenMap()
@@ -95,8 +100,12 @@ void Regulatory::notifyOpenMap()
 
     styleLoader->setStyles( m_styles );
 
-    connect( m_worker, &AsyncMapWorker::cellChanged, styleLoader, &AsyncStyleLoader::setCells );
-    m_worker->startGeneration( maxSize, true );
+    connect( m_worker,
+             &AsyncMapWorker::cellChanged,
+             styleLoader,
+             &AsyncStyleLoader::setCells );
+    m_worker->startGeneration( maxSize,
+                               true );
 
     styleLoader->start( fileName );
 }
@@ -124,13 +133,18 @@ void Regulatory::notifySaveMap()
 
         auto scene = GuiStateProvider::scene( m_editor );
 
-        saver->save( fileName, scene );
+        saver->save( fileName,
+                     scene );
 
-        QMessageBox::information( m_editor, "Окно сообщения", "Успешно сохранено!" );
+        QMessageBox::information( m_editor,
+                                  "Окно сообщения",
+                                  "Успешно сохранено!" );
     }
     catch ( const std::logic_error & err )
     {
-        QMessageBox::critical( m_editor, "Окно ошибки", err.what() );
+        QMessageBox::critical( m_editor,
+                               "Окно ошибки",
+                               err.what() );
     }
 }
 
@@ -164,7 +178,9 @@ void Regulatory::notifyHandleClick()
     if ( not shape )
         return;
 
-    auto cmd = CommandManager::create( GuiStateProvider::actionType( m_editor ), shape, m_editor );
+    auto cmd = CommandManager::create( GuiStateProvider::actionType( m_editor ),
+                                       shape,
+                                       m_editor );
 
     if ( not cmd )
         return;
@@ -172,11 +188,32 @@ void Regulatory::notifyHandleClick()
     m_commandManager->execute( cmd );
 }
 
+void Regulatory::notifyCreateStyle()
+{
+    auto styleEditor = new StyleDialog;
+
+    styleEditor->setWindowTitle( "Окно создания стиля" );
+
+    styleEditor->setMinimumSize( 300,
+                                 100 );
+
+    if ( styleEditor->exec() != QDialog::Accepted )
+        return;
+
+    const MapStyle style{ .color = styleEditor->colorName(), .image = styleEditor->image() };
+
+    m_styles[ styleEditor->styleName() ] = style;
+
+    GuiStateProvider::loadStylesMiniatures( m_editor,
+                                            m_styles );
+}
+
 void Regulatory::loadStyles(const QString & filename)
 {
     auto styles = MapStylesParser::load( filename );
 
-    GuiStateProvider::loadStylesMiniatures( m_editor, styles );
+    GuiStateProvider::loadStylesMiniatures( m_editor,
+                                            styles );
 
     m_styles = styles;
 }

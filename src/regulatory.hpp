@@ -48,6 +48,8 @@ public:
 
     void notifyHandleClick() override;
 
+    void notifyCreateStyle() override;
+
 private:
     void loadStyles(const QString & filename);
 };

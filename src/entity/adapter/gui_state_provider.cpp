@@ -19,15 +19,35 @@ void GuiStateProvider::createRelations(EditorWindow * window)
 {
     auto menuForm = window->m_menuForm;
 
-    connect( menuForm->m_createMap, &QAction::triggered, window->m_subscriber, &ISubscriber::notifyCreateMap );
+    connect( menuForm->m_createMap,
+             &QAction::triggered,
+             window->m_subscriber,
+             &ISubscriber::notifyCreateMap );
 
-    connect( menuForm->m_openMap, &QAction::triggered, window->m_subscriber, &ISubscriber::notifyOpenMap );
+    connect( menuForm->m_openMap,
+             &QAction::triggered,
+             window->m_subscriber,
+             &ISubscriber::notifyOpenMap );
 
-    connect( menuForm->m_saveMap, &QAction::triggered, window->m_subscriber, &ISubscriber::notifySaveMap );
+    connect( menuForm->m_saveMap,
+             &QAction::triggered,
+             window->m_subscriber,
+             &ISubscriber::notifySaveMap );
 
-    connect( menuForm->m_quit, &QAction::triggered, window->m_subscriber, &ISubscriber::notifyQuit );
+    connect( menuForm->m_quit,
+             &QAction::triggered,
+             window->m_subscriber,
+             &ISubscriber::notifyQuit );
 
-    connect( menuForm->m_addStyle, &QAction::triggered, window->m_subscriber, &ISubscriber::notifyLoadStyles );
+    connect( menuForm->m_addStyle,
+             &QAction::triggered,
+             window->m_subscriber,
+             &ISubscriber::notifyLoadStyles );
+
+    connect( menuForm->m_createStyle,
+             &QAction::triggered,
+             window->m_subscriber,
+             &ISubscriber::notifyCreateStyle );
 }
 
 void GuiStateProvider::loadCells(QGraphicsScene * graphicsScene, const HexGridCells & cells)
@@ -95,7 +115,10 @@ void GuiStateProvider::loadStylesMiniatures(const EditorWindow * window, const S
     layout->setSpacing( 0 );
     layout->setHorizontalSpacing( 0 );
     layout->setVerticalSpacing( 0 );
-    layout->setContentsMargins( 0, 0, 0, 0 );
+    layout->setContentsMargins( 0,
+                                0,
+                                0,
+                                0 );
 
     int i = 0;
 
@@ -105,12 +128,17 @@ void GuiStateProvider::loadStylesMiniatures(const EditorWindow * window, const S
 
     for ( auto it = styles.begin(); it != styles.end(); ++it )
     {
-        const auto styleWidget = new StyleWidget( it.key(), it.value().color, it.value().image );
+        const auto styleWidget = new StyleWidget( it.key(),
+                                                  it.value().color,
+                                                  it.value().image );
 
         const int row = i / 2;
         const int col = i % 2;
 
-        layout->addWidget( styleWidget, row, col, Qt::AlignCenter );
+        layout->addWidget( styleWidget,
+                           row,
+                           col,
+                           Qt::AlignCenter );
 
         group->addWidget( styleWidget );
 

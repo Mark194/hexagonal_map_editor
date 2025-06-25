@@ -56,6 +56,12 @@ set(SOURCES
         entity/adapter/regulatory_state_provider.hpp
         entity/cmds/fill_color_command.cpp
         entity/cmds/fill_color_command.hpp
+        form/style_dialog.cpp
+        form/style_dialog.hpp
+        entity/widgets/color_selector.cpp
+        entity/widgets/color_selector.hpp
+        entity/widgets/image_selector.cpp
+        entity/widgets/image_selector.hpp
 )
 
 # Список заголовочных файлов
@@ -115,6 +121,12 @@ set(HEADERS
         entity/adapter/friend_regulatory_state_provider.hpp
         entity/cmds/fill_color_command.cpp
         entity/cmds/fill_color_command.hpp
+        form/style_dialog.cpp
+        form/style_dialog.hpp
+        entity/widgets/color_selector.cpp
+        entity/widgets/color_selector.hpp
+        entity/widgets/image_selector.cpp
+        entity/widgets/image_selector.hpp
 )
 
 # Ресурсы
