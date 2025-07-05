@@ -24,4 +24,6 @@ public:
     virtual void notifyHandleClick() = 0;
 
     virtual void notifyCreateStyle() = 0;
+
+    virtual void notifyChangeStyle() = 0;
 };

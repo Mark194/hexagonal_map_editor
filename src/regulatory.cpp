@@ -7,6 +7,7 @@
 
 #include <QApplication>
 #include <QFileDialog>
+#include <QInputDialog>
 #include <QMessageBox>
 #include <QSvgGenerator>
 
@@ -193,6 +194,46 @@ void Regulatory::notifyCreateStyle()
     auto styleEditor = new StyleDialog;
 
     styleEditor->setWindowTitle( "Окно создания стиля" );
+
+    styleEditor->setMinimumSize( 300,
+                                 100 );
+
+    if ( styleEditor->exec() != QDialog::Accepted )
+        return;
+
+    const MapStyle style{ .color = styleEditor->colorName(), .image = styleEditor->image() };
+
+    m_styles[ styleEditor->styleName() ] = style;
+
+    GuiStateProvider::loadStylesMiniatures( m_editor,
+                                            m_styles );
+}
+
+void Regulatory::notifyChangeStyle()
+{
+    bool isSelected;
+
+    auto item = QInputDialog::getItem( m_editor,
+                                       "Окно выбора стиля",
+                                       "Стиль:",
+                                       m_styles.keys(),
+                                       0,
+                                       false,
+                                       &isSelected );
+
+    if ( not isSelected )
+        return;
+
+    auto currentStyle = m_styles.value( item );
+
+
+    auto styleEditor = new StyleDialog;
+
+    styleEditor->loadStyle( item,
+                            currentStyle.color,
+                            currentStyle.image );
+
+    styleEditor->setWindowTitle( "Окно редактирования стиля" );
 
     styleEditor->setMinimumSize( 300,
                                  100 );

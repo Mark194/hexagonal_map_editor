@@ -19,14 +19,6 @@ class Regulatory : public ISubscriber
 
     DECLARE_REGULATORY_STATE_PROVIDER_FRIEND()
 
-    EditorWindow * m_editor;
-
-    AsyncMapWorker * m_worker;
-
-    StylesDict m_styles;
-
-    CommandManager * m_commandManager;
-
 public:
     Regulatory();
 
@@ -50,6 +42,16 @@ public:
 
     void notifyCreateStyle() override;
 
+    void notifyChangeStyle() override;
+
 private:
+    EditorWindow * m_editor;
+
+    AsyncMapWorker * m_worker;
+
+    StylesDict m_styles;
+
+    CommandManager * m_commandManager;
+
     void loadStyles(const QString & filename);
 };

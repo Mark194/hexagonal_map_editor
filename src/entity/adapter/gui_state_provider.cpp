@@ -48,6 +48,11 @@ void GuiStateProvider::createRelations(EditorWindow * window)
              &QAction::triggered,
              window->m_subscriber,
              &ISubscriber::notifyCreateStyle );
+
+    connect( menuForm->m_changeStyle,
+             &QAction::triggered,
+             window->m_subscriber,
+             &ISubscriber::notifyChangeStyle );
 }
 
 void GuiStateProvider::loadCells(QGraphicsScene * graphicsScene, const HexGridCells & cells)
