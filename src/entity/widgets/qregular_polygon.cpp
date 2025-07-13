@@ -47,7 +47,8 @@ QRegularPolygon::QRegularPolygon
 
 void QRegularPolygon::addText(const QString & text)
 {
-    const auto item = new QGraphicsSimpleTextItem( text, this );
+    const auto item = new QGraphicsSimpleTextItem( text,
+                                                   this );
 
     auto font = item->font();
 
@@ -86,7 +87,10 @@ void QRegularPolygon::addImage(const QString & source)
 
     constexpr qreal scale = 0.25;
     m_imageItem->setScale( scale );
-    itemRect = QRectF( 0, 0, itemRect.width() * scale, itemRect.height() * scale );
+    itemRect = QRectF( 0,
+                       0,
+                       itemRect.width() * scale,
+                       itemRect.height() * scale );
 
 
     const QPointF centerOffset = polygonRect.center() - itemRect.center();
@@ -119,7 +123,8 @@ void QRegularPolygon::setColor(const QColor & color)
     if ( not color.isValid() )
         return;
 
-    setBrush( QBrush( color, Qt::SolidPattern ) );
+    setBrush( QBrush( color,
+                      Qt::SolidPattern ) );
 }
 
 void QRegularPolygon::draw()
@@ -140,4 +145,42 @@ void QRegularPolygon::draw()
     }
 
     setPolygon( { points } );
+}
+
+void QRegularPolygon::addImage(const QString & source, HexCorner corner)
+{
+    auto * svgItem = new QGraphicsSvgItem();
+
+    svgItem->setSharedRenderer( new QSvgRenderer( source ) );
+    if ( not svgItem->renderer()->isValid() )
+    {
+        delete svgItem;
+        return;
+    }
+
+    QRectF svgRect = svgItem->boundingRect();
+    QRectF hexRect = boundingRect();
+
+    QPointF position;
+    switch ( corner )
+    {
+        case NORTHEAST:
+            position = QPointF( hexRect.right() - svgRect.width(),
+                                hexRect.top() );
+            break;
+        case SOUTHEAST:
+            position = QPointF( hexRect.right() - svgRect.width(),
+                                hexRect.bottom() - svgRect.height() );
+            break;
+        case SOUTHWEST:
+            position = QPointF( hexRect.left(),
+                                hexRect.bottom() - svgRect.height() );
+            break;
+        case NORTHWEST:
+            position = QPointF( hexRect.left(),
+                                hexRect.top() );
+            break;
+    }
+
+    svgItem->setPos( position );
 }
