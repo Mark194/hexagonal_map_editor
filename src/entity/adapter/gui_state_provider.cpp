@@ -53,6 +53,11 @@ void GuiStateProvider::createRelations(EditorWindow * window)
              &QAction::triggered,
              window->m_subscriber,
              &ISubscriber::notifyChangeStyle );
+
+    connect( menuForm->m_saveStyle,
+             &QAction::triggered,
+             window->m_subscriber,
+             &ISubscriber::notifySaveStyles );
 }
 
 void GuiStateProvider::loadCells(QGraphicsScene * graphicsScene, const HexGridCells & cells)
@@ -230,6 +235,22 @@ HexGridCells GuiStateProvider::polygons(const EditorWindow * window)
             cells.append( polygon );
 
     return cells;
+}
+
+StylesDict GuiStateProvider::styles(const EditorWindow * window)
+{
+    const auto styleGroup = window->findChild<StyleWidgetGroup *>( "styleGroup" );
+
+    auto styleWidgets = styleGroup->styleWidgets();
+
+    StylesDict styles;
+
+    for ( auto styleWidget : styleWidgets )
+
+        styles[ styleWidget->styleName() ] = { styleWidget->color().name(), styleWidget->imagePath() };
+
+
+    return styles;
 }
 
 QGraphicsItemGroup * GuiStateProvider::findGroup(const QGraphicsScene * scene)

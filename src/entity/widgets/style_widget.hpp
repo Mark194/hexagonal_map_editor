@@ -18,6 +18,10 @@ public:
 
     [[nodiscard]] QString styleName() const;
 
+    [[nodiscard]] QColor color() const;
+
+    [[nodiscard]] QString imagePath() const;
+
 signals:
     void clicked();
 
@@ -34,6 +38,8 @@ private:
     QString m_styleName;
 
     QColor m_color;
+
+    QString m_imagePath;
 
     QWidget * loadIcon(const QString & imagePath);
 };

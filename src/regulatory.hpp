@@ -44,6 +44,8 @@ public:
 
     void notifyChangeStyle() override;
 
+    void notifySaveStyles() override;
+
 private:
     EditorWindow * m_editor;
 

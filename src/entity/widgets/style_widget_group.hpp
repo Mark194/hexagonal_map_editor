@@ -23,6 +23,8 @@ public:
 
     [[nodiscard]] StyleWidget * selectedWidget() const;
 
+    [[nodiscard]] QList<StyleWidget *> styleWidgets() const { return m_styleWidgets; }
+
 private:
     QList<StyleWidget *> m_styleWidgets;
 

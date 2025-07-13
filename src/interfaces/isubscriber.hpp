@@ -26,4 +26,6 @@ public:
     virtual void notifyCreateStyle() = 0;
 
     virtual void notifyChangeStyle() = 0;
+
+    virtual void notifySaveStyles() = 0;
 };

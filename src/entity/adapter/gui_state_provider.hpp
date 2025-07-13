@@ -48,6 +48,8 @@ public:
 
     static HexGridCells polygons(const EditorWindow * window);
 
+    static StylesDict styles(const EditorWindow * window);
+
 private:
     static QGraphicsItemGroup * findGroup(const QGraphicsScene * scene);
 };

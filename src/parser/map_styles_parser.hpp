@@ -10,4 +10,6 @@ public:
     MapStylesParser();
 
     static StylesDict load(const QString & fileName);
+
+    static void save(const QString & fileName, const StylesDict & stylesDict);
 };

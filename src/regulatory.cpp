@@ -249,6 +249,22 @@ void Regulatory::notifyChangeStyle()
                                             m_styles );
 }
 
+void Regulatory::notifySaveStyles()
+{
+    const QString fileName = QFileDialog::getSaveFileName( m_editor,
+                                                           "Окно сохранения файла стилей",
+                                                           qApp->applicationDirPath(),
+                                                           "Файл стилей (*.json)" );
+
+    if ( fileName.isEmpty() )
+        return;
+
+    auto styles = GuiStateProvider::styles( m_editor );
+
+    MapStylesParser::save( fileName,
+                           styles );
+}
+
 void Regulatory::loadStyles(const QString & filename)
 {
     auto styles = MapStylesParser::load( filename );

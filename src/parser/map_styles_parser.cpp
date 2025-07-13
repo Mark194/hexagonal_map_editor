@@ -2,10 +2,10 @@
 
 
 #include <QApplication>
-#include <qdir.h>
+#include <QDir>
 #include <QFile>
-#include <qfileinfo.h>
-#include <qjsonarray.h>
+#include <QFileInfo>
+#include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonParseError>
 
@@ -27,7 +27,8 @@ StylesDict MapStylesParser::load(const QString & fileName)
 
     QJsonParseError parser{};
 
-    const auto doc = QJsonDocument::fromJson( content, &parser );
+    const auto doc = QJsonDocument::fromJson( content,
+                                              &parser );
 
     if ( parser.error != QJsonParseError::NoError )
 
@@ -38,9 +39,9 @@ StylesDict MapStylesParser::load(const QString & fileName)
 
     StylesDict dict;
 
-    QFileInfo fileInfo( fileName );
+    const QFileInfo fileInfo( fileName );
 
-    auto fileDir = fileInfo.absoluteDir().absolutePath();
+    const auto fileDir = fileInfo.absoluteDir().absolutePath();
 
     for ( const auto & value : array )
     {
@@ -51,22 +52,44 @@ StylesDict MapStylesParser::load(const QString & fileName)
             fileDir + "/" + jsonStyle.value( "image" ).toString()
         };
 
-        dict.insert( jsonStyle.value( "name" ).toString(), styleMap );
+        dict.insert( jsonStyle.value( "name" ).toString(),
+                     styleMap );
     }
 
-
-    // for ( auto it = obj.begin(); it != obj.end(); ++it )
-    // {
-    //     auto jsonStyle = it.value().toObject();
-    //
-    //     MapStyle styleMap{ jsonStyle.value( "color" ).toString(),
-    //                        jsonStyle.value( "image" ).toString()  };
-    //
-    //     if ( styleMap.image[0] == '.' ) styleMap.image.replace( 0, 1, qApp->applicationDirPath() );
-    //
-    //     dict.insert( it.key(), styleMap );
-    // }
-
-
     return dict;
+}
+
+void MapStylesParser::save(const QString & fileName, const StylesDict & stylesDict)
+{
+    QJsonObject rootObject;
+
+    QString appDir = QApplication::applicationDirPath();
+
+    for ( auto it = stylesDict.constKeyValueBegin(); it != stylesDict.constKeyValueEnd(); ++it )
+    {
+        const auto [ name, style ] = *it;
+
+        QJsonObject styleObject;
+        if ( not style.color.isEmpty() )
+
+            styleObject[ "color" ] = style.color;
+
+        if ( not style.image.isEmpty() )
+
+            styleObject[ "image" ] = QDir( appDir ).relativeFilePath( style.image );
+
+
+        rootObject[ name ] = styleObject;
+    }
+
+    QJsonDocument doc( rootObject );
+    QFile file( fileName );
+    if ( not file.open( QIODevice::WriteOnly ) )
+    {
+        qWarning( "Couldn't open file for writing" );
+        return;
+    }
+
+    file.write( doc.toJson() );
+    file.close();
 }
