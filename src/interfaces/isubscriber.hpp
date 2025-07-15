@@ -28,4 +28,6 @@ public:
     virtual void notifyChangeStyle() = 0;
 
     virtual void notifySaveStyles() = 0;
+
+    virtual void notifyLoadBuildings() = 0;
 };

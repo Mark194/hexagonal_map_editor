@@ -8,7 +8,7 @@
 #include "../entity/controls/scene_click_handler.hpp"
 #include "../entity/controls/zoomer.hpp"
 
-#include "../entity/widgets/context_panel.hpp"
+#include "../entity/widgets/collapsible_panel.hpp"
 #include "../entity/widgets/dual_color_widget.hpp"
 #include "../entity/widgets/toolpanel.hpp"
 
@@ -113,17 +113,26 @@ void EditorWindow::createForm()
     panel->addSeparator();
 
 
-    const auto styleButton = panel->addButton( QIcon( ":/icons/styles" ),
-                                               "Стили" );
+    m_stylePanel = new CollapsiblePanel( panel,
+                                         QIcon( ":/icons/styles" ),
+                                         "Стили" );
 
-    styleButton->setCheckable( true );
+    // const auto styleButton = panel->addButton( QIcon( ":/icons/styles" ),
+    //                                            "Стили" );
+    //
+    // styleButton->setCheckable( true );
 
-    m_contextPanel = new ContextPanel( this );
+    // m_contextPanel = new ContextPanel( this );
+    //
+    // connect( styleButton,
+    //          &QToolButton::clicked,
+    //          m_contextPanel,
+    //          &ContextPanel::changeOpacity );
 
-    connect( styleButton,
-             &QToolButton::clicked,
-             m_contextPanel,
-             &ContextPanel::changeOpacity );
+
+    m_buildingPanel = new CollapsiblePanel( panel,
+                                            QIcon( ":/icons/house" ),
+                                            "Постройки" );
 
     panel->addSeparator();
 

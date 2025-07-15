@@ -50,7 +50,7 @@ void ContextPanel::showNearWidget(QWidget * widget)
     anim->setEndValue( 0.95 );
     anim->start( QAbstractAnimation::DeleteWhenStopped );
 
-    QWidget::show();
+    show();
 }
 
 void ContextPanel::addWidget(QWidget * widget) const

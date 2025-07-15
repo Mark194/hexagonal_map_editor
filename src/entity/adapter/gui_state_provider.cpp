@@ -107,10 +107,10 @@ QGraphicsScene * GuiStateProvider::scene(const EditorWindow * window)
 
 void GuiStateProvider::loadStylesMiniatures(const EditorWindow * window, const StylesDict & styles)
 {
-    window->m_contextPanel->clearContent();
+    window->m_stylePanel->clearContent();
 
 
-    auto * scrollArea = new QScrollArea( window->m_contextPanel );
+    auto * scrollArea = new QScrollArea( window->m_stylePanel );
 
     scrollArea->setWidgetResizable( true );
     scrollArea->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
@@ -155,7 +155,7 @@ void GuiStateProvider::loadStylesMiniatures(const EditorWindow * window, const S
         ++i;
     }
 
-    window->m_contextPanel->addWidget( scrollArea );
+    window->m_stylePanel->addWidget( scrollArea );
 }
 
 void GuiStateProvider::loadStyles(const HexGridCells & cells, const MapDict & config, const StylesDict & styles)
@@ -177,6 +177,58 @@ void GuiStateProvider::loadStyles(const HexGridCells & cells, const MapDict & co
 
         polygon->addImage( styleMap.image );
     }
+}
+
+void GuiStateProvider::loadBuildingsMiniatures(const EditorWindow * window, const BuildingsDict & config)
+{
+    window->m_buildingPanel->clearContent();
+
+    auto * scrollArea = new QScrollArea( window->m_buildingPanel );
+
+    scrollArea->setWidgetResizable( true );
+    scrollArea->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+
+
+    auto contentWidget = new QWidget();
+
+    scrollArea->setWidget( contentWidget );
+
+    auto * layout = new QGridLayout( contentWidget );
+    layout->setMargin( 0 );
+    layout->setSpacing( 0 );
+    layout->setHorizontalSpacing( 0 );
+    layout->setVerticalSpacing( 0 );
+    layout->setContentsMargins( 0,
+                                0,
+                                0,
+                                0 );
+
+    int i = 0;
+
+    const auto group = new StyleWidgetGroup( const_cast<EditorWindow *>(window) );
+
+    group->setObjectName( "styleGroup" );
+
+    for ( auto it = config.begin(); it != config.end(); ++it )
+    {
+        const auto styleWidget = new StyleWidget( it.key(),
+                                                  Qt::transparent,
+                                                  it.value().imagePath );
+
+        const int row = i / 2;
+        const int col = i % 2;
+
+        layout->addWidget( styleWidget,
+                           row,
+                           col,
+                           Qt::AlignCenter );
+
+        group->addWidget( styleWidget );
+
+        ++i;
+    }
+
+    window->m_buildingPanel->addWidget( scrollArea );
 }
 
 ActionType GuiStateProvider::actionType(const EditorWindow * window)

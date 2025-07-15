@@ -6,6 +6,7 @@
 
 
 #include "../entity/adapter/friend_gui_state_provider.hpp"
+#include "../entity/widgets/collapsible_panel.hpp"
 
 #include "../entity/widgets/hexgrid.hpp"
 #include "../entity/widgets/context_panel.hpp"
@@ -31,7 +32,9 @@ class EditorWindow final : public QMainWindow
 
     QObjectList m_actions;
 
-    ContextPanel * m_contextPanel;
+    CollapsiblePanel * m_stylePanel;
+
+    CollapsiblePanel * m_buildingPanel;
 
     QButtonGroup * m_buttonGroup;
 

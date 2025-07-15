@@ -13,5 +13,6 @@
         <file alias="coordinate">icons/coordinate.png</file>
         <file alias="styles">icons/styles.png</file>
         <file alias="app_icon">icons/app_icon.png</file>
+        <file alias="house">icons/house.png</file>
     </qresource>
 </RCC>

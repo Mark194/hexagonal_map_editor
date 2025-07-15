@@ -33,6 +33,8 @@ public:
 
     static void loadStyles(const HexGridCells & cells, const MapDict & config, const StylesDict & styles);
 
+    static void loadBuildingsMiniatures(const EditorWindow * window, const BuildingsDict & config);
+
 
     static ActionType actionType(const EditorWindow * window);
 

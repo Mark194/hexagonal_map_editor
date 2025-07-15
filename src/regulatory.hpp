@@ -46,6 +46,8 @@ public:
 
     void notifySaveStyles() override;
 
+    void notifyLoadBuildings() override;
+
 private:
     EditorWindow * m_editor;
 
@@ -53,7 +55,11 @@ private:
 
     StylesDict m_styles;
 
+    BuildingsDict m_buildings;
+
     CommandManager * m_commandManager;
 
     void loadStyles(const QString & filename);
+
+    void loadBuildings(const QString & filename);
 };

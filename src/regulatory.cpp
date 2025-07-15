@@ -22,6 +22,7 @@
 
 #include "form/map_size_editor.hpp"
 #include "form/style_dialog.hpp"
+#include "parser/map_buildings_parser.hpp"
 #include "parser/map_styles_parser.hpp"
 #include "worker/async_style_loader.hpp"
 
@@ -50,6 +51,8 @@ void Regulatory::run()
     try
     {
         loadStyles( qApp->applicationDirPath() + "/styles.json" );
+
+        loadBuildings( qApp->applicationDirPath() + "/buildings.json" );
     }
     catch ( const std::logic_error & error )
     {
@@ -265,6 +268,19 @@ void Regulatory::notifySaveStyles()
                            styles );
 }
 
+void Regulatory::notifyLoadBuildings()
+{
+    const QString fileName = QFileDialog::getOpenFileName( m_editor,
+                                                           "Окно выбора файла построек",
+                                                           qApp->applicationDirPath(),
+                                                           "Файл построек (*.json)" );
+
+    if ( fileName.isEmpty() )
+        return;
+
+    loadBuildings( fileName );
+}
+
 void Regulatory::loadStyles(const QString & filename)
 {
     auto styles = MapStylesParser::load( filename );
@@ -273,4 +289,13 @@ void Regulatory::loadStyles(const QString & filename)
                                             styles );
 
     m_styles = styles;
+}
+
+void Regulatory::loadBuildings(const QString & filename)
+{
+    auto buildings = MapBuildingsParser::load( filename );
+
+    GuiStateProvider::loadBuildingsMiniatures( m_editor, buildings);
+
+    m_buildings = buildings;
 }

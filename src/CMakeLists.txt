@@ -62,6 +62,10 @@ set(SOURCES
         entity/widgets/color_selector.hpp
         entity/widgets/image_selector.cpp
         entity/widgets/image_selector.hpp
+        entity/widgets/collapsible_panel.cpp
+        entity/widgets/collapsible_panel.hpp
+        parser/map_buildings_parser.cpp
+        parser/map_buildings_parser.hpp
 )
 
 # Список заголовочных файлов
@@ -127,6 +131,11 @@ set(HEADERS
         entity/widgets/color_selector.hpp
         entity/widgets/image_selector.cpp
         entity/widgets/image_selector.hpp
+        entity/widgets/collapsible_panel.cpp
+        entity/widgets/collapsible_panel.hpp
+        entity/building_style.hpp
+        parser/map_buildings_parser.cpp
+        parser/map_buildings_parser.hpp
 )
 
 # Ресурсы
