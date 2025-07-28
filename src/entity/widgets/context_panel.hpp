@@ -6,10 +6,12 @@
 
 class ContextPanel : public QWidget
 {
-    Q_OBJECT Q_PROPERTY( qreal opacity READ opacity WRITE setOpacity )public:
+    Q_OBJECT                                                  //
+    Q_PROPERTY( qreal opacity READ opacity WRITE setOpacity ) //
+public:
     explicit ContextPanel(QWidget * parent = nullptr);
 
-    qreal opacity() const;
+    [[nodiscard]] qreal opacity() const;
 
     void setOpacity(qreal newOpacity);
 
@@ -25,4 +27,3 @@ public slots:
 private:
     qreal m_opacity = 1.0;
 };
-

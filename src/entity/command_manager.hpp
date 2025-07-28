@@ -27,4 +27,6 @@ private:
     QUndoStack * m_undoStack;
 
     static QUndoCommand * createCommandChangeStyle(QRegularPolygon * shape, EditorWindow * editorWindow);
+
+    static QUndoCommand * createBuildingStyle(QRegularPolygon * shape, EditorWindow * editorWindow);
 };

@@ -66,6 +66,8 @@ set(SOURCES
         entity/widgets/collapsible_panel.hpp
         parser/map_buildings_parser.cpp
         parser/map_buildings_parser.hpp
+        entity/cmds/change_building_command.cpp
+        entity/cmds/change_building_command.hpp
 )
 
 # Список заголовочных файлов
@@ -136,6 +138,8 @@ set(HEADERS
         entity/building_style.hpp
         parser/map_buildings_parser.cpp
         parser/map_buildings_parser.hpp
+        entity/cmds/change_building_command.cpp
+        entity/cmds/change_building_command.hpp
 )
 
 # Ресурсы

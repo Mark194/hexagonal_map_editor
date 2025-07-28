@@ -28,3 +28,24 @@ QToolButton * GuiBuilder::createToolButton
 
     return button;
 }
+
+QToolButton * GuiBuilder::createToolButton(const QString & text, const QString & iconPath, ActionType action)
+{
+    auto * button = new QToolButton;
+    button->setIcon( QIcon( iconPath ) );
+    button->setToolTip( text );
+    button->setIconSize( QSize( 30,
+                                30 ) );
+    button->setAutoRaise( true );
+    button->setCheckable( true );
+    button->setAutoExclusive( true );
+    button->setStyleSheet( "QToolButton { border: none; text-align: left; }" );
+
+    button->setProperty( "action_type",
+                         QVariant::fromValue( action ) );
+
+    button->setText( text );
+    button->setToolButtonStyle( Qt::ToolButtonTextBesideIcon );
+
+    return button;
+}

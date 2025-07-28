@@ -18,4 +18,6 @@ class RegulatoryStateProvider final : public QObject
 
 public:
     static MapStyle mapStyle(ISubscriber * subscriber, const QString & styleName);
+
+    static MapStyle buildingsStyle(ISubscriber * subscriber, const QString & styleName);
 };

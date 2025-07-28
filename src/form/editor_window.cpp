@@ -63,15 +63,29 @@ void EditorWindow::createForm()
                                                            ":/icons/brush",
                                                            ActionType::ChangeColor );
 
+
     const auto bucketFillButton = GuiBuilder::createToolButton( panel,
                                                                 "Заливка",
                                                                 ":/icons/bucket_fill",
                                                                 ActionType::FillColor );
 
-    const auto stampButton = GuiBuilder::createToolButton( panel,
-                                                           "Штамп",
+    auto stampPanel = new CollapsiblePanel( panel,
+                                            QIcon( ":/icons/stamp" ),
+                                            "Стили" );
+
+    const auto stampButton = GuiBuilder::createToolButton( "Штамп стиля",
                                                            ":/icons/stamp",
                                                            ActionType::ChangeStyle );
+
+    const auto stampBuilding = GuiBuilder::createToolButton( "Штамп здания",
+                                                             ":/icons/stamp_buildings",
+                                                             ActionType::ChangeBuilding );
+
+    stampPanel->addWidget( stampButton );
+
+    stampPanel->addWidget( stampBuilding );
+
+    panel->addWidget( stampPanel );
 
 
     const auto eraserButton = GuiBuilder::createToolButton( panel,
@@ -93,6 +107,8 @@ void EditorWindow::createForm()
     m_buttonGroup->addButton( bucketFillButton );
 
     m_buttonGroup->addButton( stampButton );
+
+    m_buttonGroup->addButton( stampBuilding );
 
     m_buttonGroup->addButton( eraserButton );
 
@@ -116,18 +132,6 @@ void EditorWindow::createForm()
     m_stylePanel = new CollapsiblePanel( panel,
                                          QIcon( ":/icons/styles" ),
                                          "Стили" );
-
-    // const auto styleButton = panel->addButton( QIcon( ":/icons/styles" ),
-    //                                            "Стили" );
-    //
-    // styleButton->setCheckable( true );
-
-    // m_contextPanel = new ContextPanel( this );
-    //
-    // connect( styleButton,
-    //          &QToolButton::clicked,
-    //          m_contextPanel,
-    //          &ContextPanel::changeOpacity );
 
 
     m_buildingPanel = new CollapsiblePanel( panel,

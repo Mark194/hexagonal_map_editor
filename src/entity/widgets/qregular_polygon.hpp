@@ -24,7 +24,11 @@ public:
 
     [[nodiscard]] QString image() const;
 
+    [[nodiscard]] QString image(HexCorner corner) const;
+
     void clearImage();
+
+    void clearImage(HexCorner corner);
 
     void setColor(const QString & color);
 
@@ -36,6 +40,8 @@ public:
     [[nodiscard]] QString coord() const;
 
     void addImage(const QString & source, HexCorner corner);
+
+    [[nodiscard]] HexCorner cornerNearestToMouse(const QPointF & point) const;
 
 private:
     double m_sides;
@@ -51,6 +57,10 @@ private:
     QString m_image;
 
     QGraphicsSvgItem * m_imageItem;
+
+    QStringList m_images;
+
+    QList<QGraphicsSvgItem *> m_items;
 
     void draw();
 };

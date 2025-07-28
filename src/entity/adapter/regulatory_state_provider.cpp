@@ -14,3 +14,10 @@ MapStyle RegulatoryStateProvider::mapStyle(ISubscriber * subscriber, const QStri
 
     return regulatory->m_styles.value( styleName );
 }
+
+MapStyle RegulatoryStateProvider::buildingsStyle(ISubscriber * subscriber, const QString & styleName)
+{
+    const auto regulatory = dynamic_cast<Regulatory *>(subscriber);
+
+    return regulatory->m_buildings.value( styleName );
+}

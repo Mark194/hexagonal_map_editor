@@ -13,13 +13,15 @@ ContextPanel::ContextPanel(QWidget * parent)
 
 
     auto * layout = new QVBoxLayout;
-    layout->setContentsMargins( 10, 10, 10, 10 );
+    layout->setContentsMargins( 10,
+                                10,
+                                10,
+                                10 );
     layout->setSpacing( 5 );
 
     setLayout( layout );
 
     setOpacity( 0.0 );
-    // resize( 200, 180 );
 }
 
 qreal ContextPanel::opacity() const
@@ -40,11 +42,14 @@ void ContextPanel::showNearWidget(QWidget * widget)
         return;
 
     // Позиционируем панель рядом с виджетом
-    QPoint globalPos = widget->mapToGlobal( QPoint( 0, 0 ) );
-    move( globalPos.x() + widget->width() + 5, globalPos.y() );
+    QPoint globalPos = widget->mapToGlobal( QPoint( 0,
+                                                    0 ) );
+    move( globalPos.x() + widget->width() + 5,
+          globalPos.y() );
 
     // Анимация появления
-    auto * anim = new QPropertyAnimation( this, "opacity" );
+    auto * anim = new QPropertyAnimation( this,
+                                          "opacity" );
     anim->setDuration( 150 );
     anim->setStartValue( 0.0 );
     anim->setEndValue( 0.95 );

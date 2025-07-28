@@ -2,11 +2,13 @@
 
 
 #include <cmath>
+#include <iostream>
 #include <stdexcept>
 
 
 #include <QBrush>
 #include <QFont>
+#include <QGraphicsScene>
 #include <QGraphicsSvgItem>
 #include <QSvgRenderer>
 
@@ -39,6 +41,11 @@ QRegularPolygon::QRegularPolygon
 
     m_center = center;
 
+    for ( int i = NORTHEAST; i <= NORTHWEST; ++i )
+    {
+        m_images << "";
+        m_items << nullptr;
+    }
 
     setFlags( ItemIsSelectable );
 
@@ -103,12 +110,29 @@ QString QRegularPolygon::image() const
     return m_image;
 }
 
+QString QRegularPolygon::image(HexCorner corner) const
+{
+    return m_images.value( corner );
+}
+
 void QRegularPolygon::clearImage()
 {
     QByteArray emptySvg = "<svg xmlns='http://www.w3.org/2000/svg'/>";
     auto emptyRenderer = new QSvgRenderer( emptySvg );
 
     m_imageItem->setSharedRenderer( emptyRenderer );
+}
+
+void QRegularPolygon::clearImage(const HexCorner corner)
+{
+    auto item = m_items.value( corner );
+
+    if ( not item )
+        return;
+
+    delete item;
+
+    m_items[ corner ] = nullptr;
 }
 
 void QRegularPolygon::setColor(const QString & color)
@@ -150,37 +174,79 @@ void QRegularPolygon::draw()
 void QRegularPolygon::addImage(const QString & source, HexCorner corner)
 {
     auto * svgItem = new QGraphicsSvgItem();
-
     svgItem->setSharedRenderer( new QSvgRenderer( source ) );
-    if ( not svgItem->renderer()->isValid() )
+
+    if ( !svgItem->renderer()->isValid() )
     {
         delete svgItem;
         return;
     }
 
+    // Размеры SVG и шестиугольника
     QRectF svgRect = svgItem->boundingRect();
     QRectF hexRect = boundingRect();
+    QPointF hexCenter = hexRect.center();
 
-    QPointF position;
+    // Масштаб изображения (25% от исходного размера)
+    constexpr qreal imageScale = 0.35;
+    qreal scaledWidth = svgRect.width() * imageScale;
+    qreal scaledHeight = svgRect.height() * imageScale;
+
+    // Радиус шестиугольника (расстояние от центра до вершины)
+    qreal hexRadius = hexRect.width() / 2;
+
+    // Безопасный радиус (уменьшенный, чтобы изображения не касались границ)
+    qreal safeRadius = hexRadius * 0.45; // 70% от исходного радиуса
+
+    // Углы для размещения изображений (смещённые на 45°)
+    qreal angle = 0.0;
     switch ( corner )
     {
         case NORTHEAST:
-            position = QPointF( hexRect.right() - svgRect.width(),
-                                hexRect.top() );
-            break;
+            angle = M_PI / 4;
+            break; // 45°
         case SOUTHEAST:
-            position = QPointF( hexRect.right() - svgRect.width(),
-                                hexRect.bottom() - svgRect.height() );
-            break;
+            angle = 3 * M_PI / 4;
+            break; // 135°
         case SOUTHWEST:
-            position = QPointF( hexRect.left(),
-                                hexRect.bottom() - svgRect.height() );
-            break;
+            angle = 5 * M_PI / 4;
+            break; // 225°
         case NORTHWEST:
-            position = QPointF( hexRect.left(),
-                                hexRect.top() );
-            break;
+            angle = 7 * M_PI / 4;
+            break; // 315°
     }
 
-    svgItem->setPos( position );
+    // Позиция внутри безопасной зоны
+    QPointF imagePos( hexCenter.x() + safeRadius * cos( angle ),
+                      hexCenter.y() + safeRadius * sin( angle ) );
+
+    // Корректируем позицию с учётом размера изображения (центрируем)
+    QPointF finalPos( imagePos.x() - scaledWidth / 2,
+                      imagePos.y() - scaledHeight / 2 );
+
+    svgItem->setScale( imageScale );
+    svgItem->setPos( finalPos );
+
+    m_items[ corner ] = svgItem;
+    scene()->addItem( svgItem );
+}
+
+[[nodiscard]] QRegularPolygon::HexCorner QRegularPolygon::cornerNearestToMouse(const QPointF & point) const
+{
+    QPointF relPos = point - m_center; // Смещаем точку в систему координат центра
+
+    if ( relPos.x() >= 0 )
+    {
+        if ( relPos.y() >= 0 )
+            return NORTHEAST; // Верхний правый угол (северо-восток)
+        else
+            return NORTHWEST; // Нижний правый угол (юго-восток)
+    }
+    else
+    {
+        if ( relPos.y() >= 0 )
+            return SOUTHEAST; // Верхний левый угол (северо-запад)
+        else
+            return SOUTHWEST; // Нижний левый угол (юго-запад)
+    }
 }

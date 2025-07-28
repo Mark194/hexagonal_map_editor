@@ -14,5 +14,6 @@
         <file alias="styles">icons/styles.png</file>
         <file alias="app_icon">icons/app_icon.png</file>
         <file alias="house">icons/house.png</file>
+        <file alias="stamp_buildings">icons/stamp_buildings.png</file>
     </qresource>
 </RCC>

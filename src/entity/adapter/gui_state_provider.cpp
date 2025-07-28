@@ -132,7 +132,7 @@ void GuiStateProvider::loadStylesMiniatures(const EditorWindow * window, const S
 
     int i = 0;
 
-    const auto group = new StyleWidgetGroup( const_cast<EditorWindow *>(window) );
+    const auto group = new StyleWidgetGroup( window->m_stylePanel );
 
     group->setObjectName( "styleGroup" );
 
@@ -179,7 +179,7 @@ void GuiStateProvider::loadStyles(const HexGridCells & cells, const MapDict & co
     }
 }
 
-void GuiStateProvider::loadBuildingsMiniatures(const EditorWindow * window, const BuildingsDict & config)
+void GuiStateProvider::loadBuildingsMiniatures(const EditorWindow * window, const StylesDict & config)
 {
     window->m_buildingPanel->clearContent();
 
@@ -205,15 +205,15 @@ void GuiStateProvider::loadBuildingsMiniatures(const EditorWindow * window, cons
 
     int i = 0;
 
-    const auto group = new StyleWidgetGroup( const_cast<EditorWindow *>(window) );
+    const auto group = new StyleWidgetGroup( window->m_stylePanel );
 
-    group->setObjectName( "styleGroup" );
+    group->setObjectName( "buildingsGroup" );
 
     for ( auto it = config.begin(); it != config.end(); ++it )
     {
         const auto styleWidget = new StyleWidget( it.key(),
                                                   Qt::transparent,
-                                                  it.value().imagePath );
+                                                  it.value().image );
 
         const int row = i / 2;
         const int col = i % 2;
@@ -291,7 +291,7 @@ HexGridCells GuiStateProvider::polygons(const EditorWindow * window)
 
 StylesDict GuiStateProvider::styles(const EditorWindow * window)
 {
-    const auto styleGroup = window->findChild<StyleWidgetGroup *>( "styleGroup" );
+    auto styleGroup = window->findChild<StyleWidgetGroup *>( "styleGroup" );
 
     auto styleWidgets = styleGroup->styleWidgets();
 
@@ -303,6 +303,19 @@ StylesDict GuiStateProvider::styles(const EditorWindow * window)
 
 
     return styles;
+}
+
+QString GuiStateProvider::buildings(const EditorWindow * window)
+{
+    const auto styleGroup = window->findChild<StyleWidgetGroup *>( "buildingsGroup" );
+
+    if ( not styleGroup )
+        throw std::logic_error( "no style group found" );
+
+    if ( auto selectedWidget = styleGroup->selectedWidget() )
+        return selectedWidget->styleName();
+
+    throw std::logic_error( "no style selected" );
 }
 
 QGraphicsItemGroup * GuiStateProvider::findGroup(const QGraphicsScene * scene)

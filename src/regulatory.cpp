@@ -293,9 +293,10 @@ void Regulatory::loadStyles(const QString & filename)
 
 void Regulatory::loadBuildings(const QString & filename)
 {
-    auto buildings = MapBuildingsParser::load( filename );
+    auto buildings = MapStylesParser::load( filename );
 
-    GuiStateProvider::loadBuildingsMiniatures( m_editor, buildings);
+    GuiStateProvider::loadBuildingsMiniatures( m_editor,
+                                               buildings );
 
     m_buildings = buildings;
 }

@@ -55,7 +55,7 @@ private:
 
     StylesDict m_styles;
 
-    BuildingsDict m_buildings;
+    StylesDict m_buildings;
 
     CommandManager * m_commandManager;
 

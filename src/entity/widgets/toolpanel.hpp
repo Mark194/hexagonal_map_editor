@@ -7,7 +7,8 @@
 
 class ToolPanel final : public QWidget
 {
-    Q_OBJECT public:
+    Q_OBJECT //
+public:
     explicit ToolPanel(QWidget * parent = nullptr, bool initiallyCollapsed = false);
 
     QToolButton * addButton(const QIcon & icon, const QString & text = "");
@@ -18,9 +19,9 @@ class ToolPanel final : public QWidget
 
     void addWidget(QWidget * widget) const;
 
-    bool isCollapsed() const;
+    [[nodiscard]] bool isCollapsed() const;
 
-    QSize sizeHint() const override;
+    [[nodiscard]] QSize sizeHint() const override;
 
     void setSpacing(int spacing);
 

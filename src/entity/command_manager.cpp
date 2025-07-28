@@ -11,7 +11,10 @@
 #include "cmds/change_color_command.hpp"
 
 // #include "adapter/presenter_state_provider.hpp"
+#include <iostream>
+
 #include "adapter/regulatory_state_provider.hpp"
+#include "cmds/change_building_command.hpp"
 #include "cmds/change_style_command.hpp"
 #include "cmds/clear_style_command.hpp"
 #include "cmds/fill_color_command.hpp"
@@ -81,6 +84,12 @@ QUndoCommand * CommandManager::create(const ActionType type, QGraphicsItem * ite
                                          polygons );
         }
 
+        case ActionType::ChangeBuilding:
+        {
+            return createBuildingStyle( shape,
+                                        editorWindow );
+        }
+
         default:
             return nullptr;
     }
@@ -107,6 +116,40 @@ QUndoCommand * CommandManager::createCommandChangeStyle(QRegularPolygon * shape,
 
         return new ChangeStyleCommand( shape,
                                        selectedStyle );
+    }
+    catch ( [[maybe_unused]] const std::logic_error & err )
+    {
+        return nullptr;
+    }
+}
+
+QUndoCommand * CommandManager::createBuildingStyle(QRegularPolygon * shape, EditorWindow * editorWindow)
+{
+    try
+    {
+        const auto selectedStyleName = GuiStateProvider::buildings( editorWindow );
+
+        const auto subscriber = GuiStateProvider::subscriber( editorWindow );
+
+        const auto selectedStyle = RegulatoryStateProvider::buildingsStyle( subscriber,
+                                                                            selectedStyleName );
+
+        if ( not selectedStyle.isValid() )
+            throw std::logic_error( "unknown style" );
+
+        QPoint globalCursorPos = QCursor::pos();
+
+        auto scene = GuiStateProvider::scene( editorWindow );
+
+        QGraphicsView * view = scene->views().first(); // Берём первый view (если их несколько, нужно уточнить)
+        QPointF sceneCursorPos = view->mapToScene( view->mapFromGlobal( globalCursorPos ) );
+        QPointF itemCursorPos = shape->mapFromScene( sceneCursorPos );
+
+        auto corner = shape->cornerNearestToMouse( itemCursorPos );
+
+        return new ChangeBuildingCommand( shape,
+                                          selectedStyle.image,
+                                          corner );
     }
     catch ( [[maybe_unused]] const std::logic_error & err )
     {

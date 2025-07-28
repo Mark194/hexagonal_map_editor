@@ -33,7 +33,7 @@ public:
 
     static void loadStyles(const HexGridCells & cells, const MapDict & config, const StylesDict & styles);
 
-    static void loadBuildingsMiniatures(const EditorWindow * window, const BuildingsDict & config);
+    static void loadBuildingsMiniatures(const EditorWindow * window, const StylesDict & config);
 
 
     static ActionType actionType(const EditorWindow * window);
@@ -51,6 +51,8 @@ public:
     static HexGridCells polygons(const EditorWindow * window);
 
     static StylesDict styles(const EditorWindow * window);
+
+    static QString buildings(const EditorWindow * window);
 
 private:
     static QGraphicsItemGroup * findGroup(const QGraphicsScene * scene);

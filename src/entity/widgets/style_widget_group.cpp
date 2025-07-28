@@ -13,7 +13,10 @@ void StyleWidgetGroup::addWidget(StyleWidget * styleWidget)
 {
     m_styleWidgets.append( styleWidget );
 
-    connect( styleWidget, &StyleWidget::clicked, this, &StyleWidgetGroup::changeSelectedWidget );
+    connect( styleWidget,
+             &StyleWidget::clicked,
+             this,
+             &StyleWidgetGroup::changeSelectedWidget );
 }
 
 void StyleWidgetGroup::setSelectedWidget(StyleWidget * styleWidget)
@@ -24,6 +27,17 @@ void StyleWidgetGroup::setSelectedWidget(StyleWidget * styleWidget)
 StyleWidget * StyleWidgetGroup::selectedWidget() const
 {
     return m_selectedWidget;
+}
+
+void StyleWidgetGroup::clearSelection()
+{
+    m_selectedWidget->blockSignals( true );
+
+    m_selectedWidget->setSelected( false );
+
+    m_selectedWidget->blockSignals( false );
+
+    m_selectedWidget = nullptr;
 }
 
 void StyleWidgetGroup::changeSelectedWidget()

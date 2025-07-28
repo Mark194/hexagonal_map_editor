@@ -25,6 +25,8 @@ public:
 
     [[nodiscard]] QList<StyleWidget *> styleWidgets() const { return m_styleWidgets; }
 
+    void clearSelection();
+
 private:
     QList<StyleWidget *> m_styleWidgets;
 
