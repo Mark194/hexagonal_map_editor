@@ -84,4 +84,4 @@ cmake --build . --config Release
 
 ## 📦 Pre-built Binaries
 
-Pre-built binaries for Windows, Linux, and macOS are available in the Releases section.
+Pre-built binaries for Windows, Linux, and macOS are available in the [Releases section](./releases).
