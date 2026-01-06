@@ -84,4 +84,4 @@ cmake --build . --config Release
 
 ## 📦 Pre-built Binaries
 
-Pre-built binaries for Windows, Linux, and macOS are available in the [Releases section](./releases).
+Pre-built binaries for Windows, Linux, and macOS are available in the [Releases section](https://github.com/Mark194/hexagonal_map_editor/releases).
