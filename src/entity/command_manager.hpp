@@ -29,4 +29,6 @@ private:
     static QUndoCommand * createCommandChangeStyle(QRegularPolygon * shape, EditorWindow * editorWindow);
 
     static QUndoCommand * createBuildingStyle(QRegularPolygon * shape, EditorWindow * editorWindow);
+
+    static QUndoCommand * createBuildingClear(QRegularPolygon * shape, EditorWindow * editorWindow);
 };

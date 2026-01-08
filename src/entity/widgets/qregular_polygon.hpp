@@ -43,6 +43,8 @@ public:
 
     [[nodiscard]] HexCorner cornerNearestToMouse(const QPointF & point) const;
 
+    [[nodiscard]] QList<QGraphicsSvgItem *> items() const;
+
 private:
     double m_sides;
 

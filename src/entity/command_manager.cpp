@@ -16,6 +16,7 @@
 #include "adapter/regulatory_state_provider.hpp"
 #include "cmds/change_building_command.hpp"
 #include "cmds/change_style_command.hpp"
+#include "cmds/clear_building_command.hpp"
 #include "cmds/clear_style_command.hpp"
 #include "cmds/fill_color_command.hpp"
 #include "cmds/grab_color_command.hpp"
@@ -90,6 +91,11 @@ QUndoCommand * CommandManager::create(const ActionType type, QGraphicsItem * ite
                                         editorWindow );
         }
 
+        case ActionType::ClearBuilding:
+        {
+            return createBuildingClear( shape, editorWindow );
+        }
+
         default:
             return nullptr;
     }
@@ -150,6 +156,30 @@ QUndoCommand * CommandManager::createBuildingStyle(QRegularPolygon * shape, Edit
         return new ChangeBuildingCommand( shape,
                                           selectedStyle.image,
                                           corner );
+    }
+    catch ( [[maybe_unused]] const std::logic_error & err )
+    {
+        return nullptr;
+    }
+}
+
+QUndoCommand *
+CommandManager::createBuildingClear( QRegularPolygon * shape,
+                                     EditorWindow * editorWindow )
+{
+    try
+    {
+        QPoint globalCursorPos = QCursor::pos();
+
+        const auto scene = GuiStateProvider::scene( editorWindow );
+
+        QGraphicsView * view = scene->views().first();
+        QPointF sceneCursorPos = view->mapToScene( view->mapFromGlobal( globalCursorPos ) );
+        QPointF itemCursorPos = shape->mapFromScene( sceneCursorPos );
+
+        const auto corner = shape->cornerNearestToMouse( itemCursorPos );
+
+        return new ClearBuildingCommand( shape, corner );
     }
     catch ( [[maybe_unused]] const std::logic_error & err )
     {

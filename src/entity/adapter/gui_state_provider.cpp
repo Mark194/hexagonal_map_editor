@@ -233,7 +233,7 @@ void GuiStateProvider::loadBuildingsMiniatures(const EditorWindow * window, cons
 
 ActionType GuiStateProvider::actionType(const EditorWindow * window)
 {
-    auto checkedButton = window->m_buttonGroup->checkedButton();
+    const auto checkedButton = window->m_buttonGroup->checkedButton();
 
     if ( not checkedButton )
         return ActionType::NoAction;

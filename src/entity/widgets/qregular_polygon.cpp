@@ -124,7 +124,7 @@ void QRegularPolygon::clearImage()
 
 void QRegularPolygon::clearImage(const HexCorner corner)
 {
-    auto item = m_items.value( corner );
+    const auto item = m_items.value( corner );
 
     if ( not item )
         return;
@@ -172,7 +172,7 @@ void QRegularPolygon::draw()
 
 void QRegularPolygon::addImage(const QString & source, HexCorner corner)
 {
-    auto * svgItem = new QGraphicsSvgItem();
+    auto * svgItem = new QGraphicsSvgItem(this);
     svgItem->setSharedRenderer( new QSvgRenderer( source ) );
 
     if ( !svgItem->renderer()->isValid() )
@@ -248,4 +248,9 @@ void QRegularPolygon::addImage(const QString & source, HexCorner corner)
         else
             return SOUTHWEST; // Нижний левый угол (юго-запад)
     }
+}
+
+QList<QGraphicsSvgItem *> QRegularPolygon::items() const
+{
+    return m_items;
 }

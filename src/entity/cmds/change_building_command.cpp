@@ -8,8 +8,8 @@ ChangeBuildingCommand::ChangeBuildingCommand
 (QRegularPolygon * shape, const QString & imagePath, QRegularPolygon::HexCorner corner)
     : m_shape( shape )
   , m_imagePath( imagePath )
-  , m_corner( corner )
-  , m_oldImagePath( shape->image( corner ) ) {}
+  , m_oldImagePath( shape->image( corner ) )
+  , m_corner( corner ) {}
 
 void ChangeBuildingCommand::undo()
 {

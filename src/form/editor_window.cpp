@@ -93,11 +93,26 @@ void EditorWindow::createForm()
                                                             ":/icons/eraser",
                                                             ActionType::ClearStyle );
 
+    const auto eraserBuildingButton = GuiBuilder::createToolButton( panel,
+                                                            "Ластик здания",
+                                                            ":/icons/eraser",
+                                                            ActionType::ClearBuilding );
+
+    auto eraserPanel = new CollapsiblePanel( panel,
+                                            QIcon( ":/icons/eraser" ),
+                                            "Ластики" );
+
+    eraserPanel->addWidget( eraserButton );
+    eraserPanel->addWidget( eraserBuildingButton );
+
+    panel->addWidget( eraserPanel );
 
     const auto grabButton = GuiBuilder::createToolButton( panel,
                                                           "Пипетка",
                                                           ":/icons/pippet",
                                                           ActionType::GrabColor );
+
+
 
 
     m_buttonGroup->addButton( selectButton );
@@ -111,6 +126,8 @@ void EditorWindow::createForm()
     m_buttonGroup->addButton( stampBuilding );
 
     m_buttonGroup->addButton( eraserButton );
+
+    m_buttonGroup->addButton( eraserBuildingButton );
 
     m_buttonGroup->addButton( grabButton );
 
