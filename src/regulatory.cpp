@@ -1,16 +1,12 @@
 #include "regulatory.hpp"
 
-
 #include <cmath>
-#include <iostream>
-
 
 #include <QApplication>
 #include <QFileDialog>
 #include <QInputDialog>
 #include <QMessageBox>
 #include <QSvgGenerator>
-
 
 #include "entity/adapter/gui_state_provider.hpp"
 #include "entity/adapter/struct_map_adapter.h"
@@ -22,7 +18,6 @@
 
 #include "form/map_size_editor.hpp"
 #include "form/style_dialog.hpp"
-#include "parser/map_buildings_parser.hpp"
 #include "parser/map_styles_parser.hpp"
 #include "worker/async_style_loader.hpp"
 
@@ -44,15 +39,13 @@ void Regulatory::run()
 {
     m_editor->showMaximized();
 
-
     GuiStateProvider::createRelations( m_editor );
-
 
     try
     {
-        loadStyles( qApp->applicationDirPath() + "/styles.json" );
+        loadStyles( QApplication::applicationDirPath() + "/styles.json" );
 
-        loadBuildings( qApp->applicationDirPath() + "/buildings.json" );
+        loadBuildings( QApplication::applicationDirPath() + "/buildings.json" );
     }
     catch ( const std::logic_error & error )
     {
@@ -66,18 +59,18 @@ void Regulatory::run()
 
 void Regulatory::notifyCreateMap()
 {
-    const auto mapSizeEditor = new MapSizeEditor;
+    MapSizeEditor mapSizeEditor;
 
-    mapSizeEditor->setWindowTitle( "Окно создания карты" );
+    mapSizeEditor.setWindowTitle( "Окно создания карты" );
 
 
-    if ( mapSizeEditor->exec() != QDialog::Accepted )
+    if ( mapSizeEditor.exec() != QDialog::Accepted )
         return;
 
 
-    const auto mapSize = mapSizeEditor->mapSize();
+    const auto mapSize = mapSizeEditor.mapSize();
 
-    const auto isRotateCell = mapSizeEditor->isRotate();
+    const auto isRotateCell = mapSizeEditor.isRotate();
 
     m_worker->startGeneration( mapSize,
                                isRotateCell );
@@ -118,7 +111,7 @@ void Regulatory::notifySaveMap()
 {
     QString selectedFilter;
 
-    const QString tempFileName = qApp->applicationDirPath() + "/map";
+    const QString tempFileName = QApplication::applicationDirPath() + "/map";
 
     const QString formats = MapSaver::supportedFormats();
 
@@ -154,7 +147,7 @@ void Regulatory::notifySaveMap()
 
 void Regulatory::notifyQuit()
 {
-    qApp->exit();
+    QApplication::exit();
 }
 
 void Regulatory::notifyLoadStyles()
@@ -256,7 +249,7 @@ void Regulatory::notifySaveStyles()
 {
     const QString fileName = QFileDialog::getSaveFileName( m_editor,
                                                            "Окно сохранения файла стилей",
-                                                           qApp->applicationDirPath(),
+                                                           QApplication::applicationDirPath(),
                                                            "Файл стилей (*.json)" );
 
     if ( fileName.isEmpty() )
@@ -272,7 +265,7 @@ void Regulatory::notifyLoadBuildings()
 {
     const QString fileName = QFileDialog::getOpenFileName( m_editor,
                                                            "Окно выбора файла построек",
-                                                           qApp->applicationDirPath(),
+                                                            QApplication::applicationDirPath(),
                                                            "Файл построек (*.json)" );
 
     if ( fileName.isEmpty() )

@@ -79,8 +79,7 @@ void QRegularPolygon::addImage(const QString & source)
     if ( source.isEmpty() )
         return;
 
-    QPixmap pixmap( source );
-    if ( pixmap.isNull() )
+    if ( const QPixmap pixmap( source );  pixmap.isNull() )
         return;
 
     m_image = source;
